@@ -1,6 +1,6 @@
 var React = require('react');
 
-var LocationApp = require('./components/HidogsApp.react');
+var LocationApp = require('./components/Shop.react');
 
 /*
 React.render(
@@ -10,7 +10,7 @@ React.render(
 */
 
 
-var mountNode = document.getElementById("react-main-mount");
-React.render(new LocationApp({}), mountNode);
+//var mountNode = document.getElementById("react-main-mount");
+//React.render(new LocationApp({}), mountNode);
 
 

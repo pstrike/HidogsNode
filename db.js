@@ -12,9 +12,25 @@ var insertDocument = function(db, data, callback) {
     });
 };
 
+var findDocument = function(db, callback) {
+    var cursor =db.collection('shop').find().limit(1);
+
+    cursor.each(function(err, doc) {
+        if (doc != null) {
+            console.dir(doc);
+        } else {
+            callback(err);
+        }
+    });
+
+};
+
 MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
+    /*
     insertDocument(db, shopData, function() {
         db.close();
     });
+    */
+    findDocument(db, function(err){console.log(err)});
 });

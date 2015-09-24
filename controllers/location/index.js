@@ -1,6 +1,7 @@
-var db = require('../../db/db');
+var db = require('../../db/db_dump');
 var React = require('react'),
 ReactApp = React.createFactory(require('../../app/components/HidogsApp.react'));
+//ReactApp = React.createFactory(require('../../app/components/Shop.react'));
 
 exports.engine = 'ejs';
 

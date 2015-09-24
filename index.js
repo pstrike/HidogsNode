@@ -1,11 +1,12 @@
 var express = require('express');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var MongoClient = require('mongodb').MongoClient;
+var db = require("./db/db");
 
 var app = module.exports = express();
 var path = require('path');
 var config = require('./config')();
+
 
 // Make sure to include the JSX transpiler
 require("node-jsx").install();
@@ -60,18 +61,6 @@ app.use(express.static(__dirname + '/public'));
 // parse request bodies (req.body)
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// get db connection
-MongoClient.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/hidogs', function(err, db) {
-    if (err) {
-        console.log('Sorry, there is no mongo db server running.');
-    } else {
-        var attachDB = function (req, res, next) {
-            req.db = db;
-            next();
-        };
-    }
-});
-
 // load controllers
 require('./lib/boot')(app, { verbose: !module.parent });
 
@@ -97,9 +86,18 @@ app.use(function(req, res){
 
 /* istanbul ignore next */
 if (!module.parent) {
-    app.listen(config.port);
-    console.log(
-            'Successfully connected to mongodb://' + config.mongo.host + ':' + config.mongo.port,
-            '\nExpress server listening on port ' + config.port
-    );
+
+    db.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/hidogs', function(err) {
+        if (err) {
+            console.log('Sorry, there is no mongo db server running.');
+        }
+        else
+        {
+            app.listen(config.port);
+            console.log(
+                    'Successfully connected to mongodb://' + config.mongo.host + ':' + config.mongo.port,
+                    '\nExpress server listening on port ' + config.port
+            );
+        }
+    });
 }
