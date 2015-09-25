@@ -17,9 +17,9 @@ var config = {
     },
     production: {
         mode: 'production',
-        port: 5000,
+        port: 80,
         mongo: {
-            host: '127.0.0.1',
+            host: '120.25.105.129',
             port: 27017
         }
     }

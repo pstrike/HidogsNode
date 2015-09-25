@@ -1,5 +1,7 @@
 var express = require('express');
 var xml2js = require('xml2js');
+var db = require('./db/db');
+var config = require('./config')('production');
 
 var app = express();
 
@@ -50,6 +52,7 @@ app.post('/', function(req, res){
     var createTime = new Date();
     var eventType = req.body.xml.Event;
     var eventKey = req.body.xml.EventKey;
+    var responseXML="test";
 
 
     if(msgType == "event" && eventType == "LOCATION")
@@ -62,22 +65,73 @@ app.post('/', function(req, res){
     {
         var redirectUrl = encodeURI("120.25.105.129");
         var resContent="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxaddd7cf2ed2848ac&redirect_uri="+redirectUrl+"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
-        var responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA["+resContent+"]]></Content></xml>";
+        responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA["+resContent+"]]></Content></xml>";
+
+        console.log(responseXML);
+        res.send(responseXML);
     }
     else if(msgType == "event" && eventType == "CLICK" && eventKey == "find_food")
     {
-        var resContent="正在查找美食. 位置:"+app.latitude+";"+app.longitude;
-        var responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[news]]></MsgType><ArticleCount>3</ArticleCount><Articles><item><Title><![CDATA["+resContent+"]]></Title><Url><![CDATA[http://120.25.105.129:3000/index.html]]></Url></item><item><Title><![CDATA[Location1]]></Title><Url><![CDATA[http://120.25.105.129:3000/index.html]]></Url></item><item><Title><![CDATA[location2]]></Title><Url><![CDATA[http://120.25.105.129:3000/index.html]]></Url></item></Articles></xml>";
+        db.get().collection('shop').find().toArray(function(err, docs) {
+            var shopList=new Array();
+            for (i = 0, count = docs.length; i < count; i++) {
+                shopList.push("<item><Title><![CDATA["+docs[i].name+"]]></Title><Url><![CDATA[http://120.25.105.129:3000/shop/view/"+docs[i]._id+"]]></Url></item>");
+            }
+
+            var resContent="正在查找美食. 位置:"+app.latitude+";"+app.longitude;
+            responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[news]]></MsgType><ArticleCount>"+docs.length+"</ArticleCount><Articles>"+shopList+"</Articles></xml>";
+
+            console.log(responseXML);
+            res.send(responseXML);
+        });
+    }
+    else if(msgType == "text")
+    {
+        db.get().collection('shop').find({"type":content[0]}).toArray(function(err, docs) {
+            var shopList=new Array();
+            for (i = 0, count = docs.length; i < count; i++) {
+                shopList.push("<item><Title><![CDATA["+docs[i].name+"]]></Title><Url><![CDATA[http://120.25.105.129:3000/shop/view/"+docs[i]._id+"]]></Url></item>");
+            }
+
+            if(docs.length==0)
+            {
+                //responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[没找到相关地点]]></Content></xml>";
+                responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[没找到相关地点]]></Content></xml>";
+            }
+            else
+            {
+                var resContent="正在查找美食. 位置:"+app.latitude+";"+app.longitude;
+                responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[news]]></MsgType><ArticleCount>"+docs.length+"</ArticleCount><Articles>"+shopList+"</Articles></xml>";
+            }
+
+            console.log(responseXML);
+            res.send(responseXML);
+        });
     }
     else
     {
         var resContent="你好,"+toUser;
-        var responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA["+resContent+"]]></Content></xml>";
+        responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA["+resContent+"]]></Content></xml>";
+
+        console.log(responseXML);
+        res.send(responseXML);
     }
 
-    res.send(responseXML);
+    //console.log(responseXML);
+    //res.send(responseXML);
     //console.log(req.body);
 });
 
-
-app.listen('80');
+db.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/hidogs', function(err) {
+    if (err) {
+        console.log('Sorry, there is no mongo db server running.');
+    }
+    else
+    {
+        app.listen(80);
+        console.log(
+                'Successfully connected to mongodb://' + config.mongo.host + ':' + config.mongo.port,
+                '\nExpress server listening on port ' + config.port
+        );
+    }
+});
