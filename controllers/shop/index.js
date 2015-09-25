@@ -25,16 +25,7 @@ exports.show = function(req, res, next){
 };
 
 exports.page = function(req, res, next){
-
-    db.get().collection('shop').find({"_id":"1"}).toArray(function(err, docs) {
-        var shop = docs[0];
-
-        var reactHtml = React.renderToString(ReactApp({"initData": shop}));
-        // Output html rendered by react
-        res.render('index.ejs', {reactOutput: reactHtml});
-
-    });
-
-
-
+    var reactHtml = React.renderToString(ReactApp({"initData": req.shop}));
+    // Output html rendered by react
+    res.render('index.ejs', {reactOutput: reactHtml, shopId: req.shop._id});
 };

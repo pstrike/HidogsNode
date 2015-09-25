@@ -2,11 +2,13 @@
 
 var React = require('react');
 var HidogsConstants = require('../constants/HidogsConstants');
+var ShopStore = require('../stores/ShopStore');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var HidogsActions = require('../actions/HidogsActions');
+var ShopComment = require('./ShopComment.react');
 
 function getShopState() {
-    return {};
+    return ShopStore.getShop();
 }
 
 var HidogsApp = React.createClass({
@@ -21,19 +23,35 @@ var HidogsApp = React.createClass({
     },
 
     componentDidMount: function() {
-        console.log("mount shop react")
-        //LocationStore.addChangeListener(this._onChange);
-        //HidogsActions.getLocation(0);
+        ShopStore.addChangeListener(this._onChange);
+        HidogsActions.getShopById(this.props.shopId);
     },
 
     componentWillUnmount: function() {
-        //LocationStore.removeChangeListener(this._onChange);
+        ShopStore.removeChangeListener(this._onChange);
     },
 
     render: function() {
+        var isCommentShown = false;
+        var comments = this.state.comment;
+        var commentList = [];
+
+        for (var key in comments) {
+            commentList.push(<ShopComment comment={comments[key]}/>);
+            isCommentShown = true;
+        }
+
+        var theme;
+        if(this.state.type == "宠物店") {
+            theme = "blue";
+        }
+        else if(this.state.type == "餐厅") {
+            theme = "yellow";
+        }
+
         return (
-            <div className="container shop theme_blue">
-                <div className="container background theme_blue"></div>
+            <div className={"container shop theme_"+theme}>
+                <div className={"container background theme_"+theme}></div>
 
                 <div className="container header">
                     <div className="row text-center component">
@@ -43,44 +61,34 @@ var HidogsApp = React.createClass({
                         <span className="glyphicon glyphicon-asterisk category-icon" aria-hidden="true" ></span><span  className="category-note">{this.state.name}</span>
                     </div>
                     <div className="row text-center component">
-                        <div className="col-xs-5 col-xs-offset-1"><button type="button" className="btn btn-default theme_blue">投票</button></div>
-                        <div className="col-xs-5"><button type="button" className="btn btn-default theme_blue">评论</button></div>
+                        <div className="col-xs-5 col-xs-offset-1"><button type="button" className={"btn btn-default theme_"+theme}>投票</button></div>
+                        <div className="col-xs-5"><button type="button" className={"btn btn-default theme_"+theme}>评论</button></div>
                     </div>
                 </div>
 
                 <div className="container info">
-                    <div className="row text-center component dark">
-                        <span className="glyphicon glyphicon-map-marker" aria-hidden="true" ></span>广州市海珠区琶洲商业广场
+                    <div className={"row text-center component dark theme_"+theme}>
+                        <span className="glyphicon glyphicon-map-marker" aria-hidden="true" ></span>{this.state.address}
                     </div>
-                    <div className="row text-center component">
-                        <span className="glyphicon glyphicon-earphone" aria-hidden="true" ></span>020-88110022
+                    <div className={"row text-center component theme_"+theme}>
+                        <span className="glyphicon glyphicon-earphone" aria-hidden="true" ></span>{this.state.tel}
                     </div>
                 </div>
 
                 <div className="container description">
                     <div className="row text-center description-icon"><span className="glyphicon glyphicon-pencil" aria-hidden="true" ></span></div>
-                    <div className="row description-note">
-                        <p>我家NaNa小姐系系老板这里买的，三个月的小家伙！非常活泼可爱，而且品种优良！最重要是带回家几天都非常健康的！然后来了我家住了一个礼拜后，我搞度距饱亲屙肚一次，琴晚就饿......</p>
-                        <img className="img-responsive" src="../img/20130910163136-1048260609.jpg"/>
-                    </div>
+                    <div className="row description-note" dangerouslySetInnerHTML={{__html:this.state.description}}></div>
                 </div>
 
-                <div className="container comment">
-                    <div className="row text-center comment-icon"><span className="glyphicon glyphicon-comment" aria-hidden="true" ></span></div>
-                    <div className="row component">
-                        <div className="col-xs-2 col-xs-offset-1 text-center">
-                            <img src="../img/ppl_icon.png"/><br/>
-                            <span className="small">小新</span>
-                        </div>
-                        <div className="col-xs-8">
-                            <em className="date small">2015.9.15, 14:30</em>
-                            <p>我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
+                {isCommentShown ?
+                    <div className="container comment">
+                        <div className="row text-center comment-icon"><span className="glyphicon glyphicon-comment" aria-hidden="true" ></span></div>
+                            {commentList}
+                        <div className="row text-center component">
+                        <button type="button" className={"btn btn-default theme_"+theme}>查看其他16条评论</button>
                         </div>
                     </div>
-                    <div className="row text-center component">
-                        <button type="button" className="btn btn-default theme_blue">查看其他16条评论</button>
-                    </div>
-                </div>
+                : null}
 
                 <div className="container footer">
                     <div className="row text-center title"><span>欢宠</span></div>
@@ -95,9 +103,7 @@ var HidogsApp = React.createClass({
     },
 
     _onChange: function() {
-        console.log('callback');
-        //console.log(LocationStore.getLocation());
-        //this.setState(getLocationState());
+        this.setState(getShopState());
     }
 
 });

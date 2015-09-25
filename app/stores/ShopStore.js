@@ -5,20 +5,17 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-function createOrder(userId, coupon)
-{
+var _shop = {};
+
+function getShopById(id, callback){
     $.ajax({
-        url: "http://localhost:3000/" + "order",
-        type: 'post',
-        data: {userId: userId, coupon: coupon},
-        datatype: "json",
+        //url: "http://localhost:3000/" + "shop/" + id,
+        //url: window.location.host + "/shop/" + id,
+        url: "http://120.25.105.129:3000/shop/" + id,
         cache: false,
         success: function(data) {
-            console.log('create order done')
-            pingpp.createPayment(data, function(result, err) {
-                console.log(result);
-                console.log(err);
-            });
+            _shop = data;
+            callback();
         }.bind(this),
         error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
@@ -26,7 +23,10 @@ function createOrder(userId, coupon)
     });
 }
 
-var UserOrderStore = assign({}, EventEmitter.prototype, {
+var ShopStore = assign({}, EventEmitter.prototype, {
+    getShop: function() {
+        return _shop;
+    },
 
     emitChange: function() {
         this.emit(CHANGE_EVENT);
@@ -51,10 +51,9 @@ AppDispatcher.register(function(action) {
     var text;
 
     switch(action.actionType) {
-        case HidogsConstants.HIDOGS_CREATE_ORDER:
+        case HidogsConstants.HIDOGS_GET_SHOP:
 
-            createOrder(action.userId, action.coupon);
-            UserOrderStore.emitChange();
+            getShopById(action.id, function() {ShopStore.emitChange();});
             break;
 
         default:
@@ -62,4 +61,4 @@ AppDispatcher.register(function(action) {
     }
 });
 
-module.exports = UserOrderStore;
+module.exports = ShopStore;

@@ -8,17 +8,17 @@
     <title>Hidogs</title>
 
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../css/shop.css" rel="stylesheet">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/shop.css" rel="stylesheet">
 </head>
 <body>
-<div id="react-main-mount">
+<div id="react-main-mount" shop-id="<%- shopId%>">
     <%- reactOutput %>
 </div>
 
 <!-- comment out main.js to see server side only rendering -->
-<script src="/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>
+<script src="../../js/shopMain.js"></script>
 </body>
 </html>

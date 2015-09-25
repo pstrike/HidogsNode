@@ -1,6 +1,7 @@
 var config = {
     local: {
         mode: 'local',
+        host: 'localhost',
         port: 3000,
         mongo: {
             host: '127.0.0.1',
@@ -9,6 +10,7 @@ var config = {
     },
     staging: {
         mode: 'staging',
+        host: 'localhost',
         port: 4000,
         mongo: {
             host: '127.0.0.1',
@@ -17,6 +19,7 @@ var config = {
     },
     production: {
         mode: 'production',
+        host: 'localhost',
         port: 80,
         mongo: {
             host: '120.25.105.129',

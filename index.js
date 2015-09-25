@@ -62,7 +62,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // load controllers
-require('./lib/boot')(app, { verbose: !module.parent });
+require('./router/boot')(app, { verbose: !module.parent });
 
 // middleware with an arity of 4 are considered
 // error handling middleware. When you next(err)

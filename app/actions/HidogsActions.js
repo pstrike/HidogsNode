@@ -26,6 +26,13 @@ var HidogsActions = {
             userId: userId,
             coupon: coupon
         });
+    },
+
+    getShopById: function(id) {
+        AppDispatcher.dispatch({
+            actionType: HidogsConstants.HIDOGS_GET_SHOP,
+            id: id
+        });
     }
 
 };

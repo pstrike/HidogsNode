@@ -3,21 +3,36 @@ body {
     font-size: 14px;
 }
 
-.shop.theme_blue {
+.shop {
     padding: 0 0;
+}
+
+.shop.theme_blue {
     background-color: #E6F6FF;
     color: #2B97E8;
 }
 
+.shop.theme_yellow {
+    background-color: #FFFAE8;
+    color: #F39D1C;
+}
+
 .shop .background {
     padding: 0 0;
-    background: linear-gradient(to bottom,rgba(8,123,240,.15),rgba(23,158,211,0));
     opacity: 1;
     height: 400px;
     width: 100%;
     position: fixed;
     top: 0;
     bottom: 0;
+}
+
+.shop .background.theme_blue {
+    background: linear-gradient(to bottom,rgba(8,123,240,.15),rgba(23,158,211,0));
+}
+
+.shop .background.theme_yellow {
+    background: linear-gradient(to bottom,rgba(241,149,32,.15),rgba(235,216,0,0));
 }
 
 .shop .header {
@@ -52,14 +67,23 @@ body {
     padding-left: 5px;
 }
 
-.shop .btn.theme_blue {
-    background-color: rgba(23,158,211,0);
+.shop .btn {;
     border-radius: 20px;
-    border: 1px solid #2B97E8;
     font-size: 14px;
-    color: #2B97E8;
     line-height: 14px;
     width: 140px;
+}
+
+.shop .btn.theme_blue {
+    background-color: rgba(23,158,211,0);
+    border: 1px solid #2B97E8;
+    color: #2B97E8;
+}
+
+.shop .btn.theme_yellow {
+    background-color: rgba(23,158,211,0);
+    border: 1px solid #F39D1C;
+    color: #F39D1C;
 }
 
 .shop .info {
@@ -70,11 +94,22 @@ body {
     font-size: 14px;
     line-height: 35px;
     vertical-align: middle;
+}
+
+.shop .info .component.theme_blue {
     background: rgba(43,150,232,0.05);
 }
 
-.shop .info .component.dark {
+.shop .info .component.dark.theme_blue {
     background: rgba(43,150,232,0.10);
+}
+
+.shop .info .component.theme_yellow {
+    background: rgba(243,157,28,0.05);
+}
+
+.shop .info .component.dark.theme_yellow {
+    background: rgba(243,157,28,0.10);
 }
 
 .shop .description {

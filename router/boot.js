@@ -55,7 +55,7 @@ module.exports = function(parent, options){
                     break;
                 case 'page':
                     method = 'get';
-                    path = '/' + name + '/page';
+                    path = '/' + name + '/view/:' + name + '_id';
                     break;
                 default:
                     /* istanbul ignore next */

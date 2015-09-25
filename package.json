@@ -27,7 +27,7 @@
         "node-jsx": "~0.2.0"
     },
     "scripts": {
-        "start": "watchify -o public/main.js -v -d app/app.js",
+        "start": "watchify -o public/js/shopMain.js -v -d app/shopApp.js",
         "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js"
     },
     "browserify": {
