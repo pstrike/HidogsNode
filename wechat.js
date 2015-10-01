@@ -72,7 +72,22 @@ app.post('/', function(req, res){
     }
     else if(msgType == "event" && eventType == "CLICK" && eventKey == "find_food")
     {
-        db.get().collection('shop').find().toArray(function(err, docs) {
+        db.get().collection('shop').find({"type":"餐厅"}).toArray(function(err, docs) {
+            var shopList=new Array();
+            for (i = 0, count = docs.length; i < count; i++) {
+                shopList.push("<item><Title><![CDATA["+docs[i].name+"]]></Title><Url><![CDATA[http://120.25.105.129:3000/shop/view/"+docs[i]._id+"]]></Url></item>");
+            }
+
+            var resContent="正在查找美食. 位置:"+app.latitude+";"+app.longitude;
+            responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[news]]></MsgType><ArticleCount>"+docs.length+"</ArticleCount><Articles>"+shopList+"</Articles></xml>";
+
+            console.log(responseXML);
+            res.send(responseXML);
+        });
+    }
+    else if(msgType == "event" && eventType == "CLICK" && eventKey == "find_cfd")
+    {
+        db.get().collection('shop').find({"type":"宠物店"}).toArray(function(err, docs) {
             var shopList=new Array();
             for (i = 0, count = docs.length; i < count; i++) {
                 shopList.push("<item><Title><![CDATA["+docs[i].name+"]]></Title><Url><![CDATA[http://120.25.105.129:3000/shop/view/"+docs[i]._id+"]]></Url></item>");
@@ -87,7 +102,7 @@ app.post('/', function(req, res){
     }
     else if(msgType == "text")
     {
-        db.get().collection('shop').find({"type":content[0]}).toArray(function(err, docs) {
+        db.get().collection('shop').find({"tab":content[0]}).toArray(function(err, docs) {
             var shopList=new Array();
             for (i = 0, count = docs.length; i < count; i++) {
                 shopList.push("<item><Title><![CDATA["+docs[i].name+"]]></Title><Url><![CDATA[http://120.25.105.129:3000/shop/view/"+docs[i]._id+"]]></Url></item>");
