@@ -37,15 +37,11 @@ module.exports = function(parent, options){
                     method = 'get';
                     path = '/' + name + 's';
                     break;
-                case 'edit':
-                    method = 'get';
-                    path = '/' + name + '/:' + name + '_id/edit';
-                    break;
                 case 'update':
                     method = 'put';
                     path = '/' + name + '/:' + name + '_id';
                     break;
-                case 'create':
+                case 'insert':
                     method = 'post';
                     path = '/' + name;
                     break;

@@ -20,6 +20,34 @@ function error(status, msg) {
     return err;
 }
 
+// parse request query into filter and projection
+function queryParser(req, res, next) {
+    if(req.query.filter) {
+        var rawFilter = req.query.filter.split(",");
+
+        var filter = {};
+        for(var i=0; i<rawFilter.length; i=i+2) {
+                filter[rawFilter[i]] = rawFilter[i+1];
+        }
+        req.filter = filter;
+    }
+
+
+    if(req.query.projection) {
+        var rawProjection = req.query.projection.split(",");
+
+        var projection = {};
+        for(i in rawProjection)
+        {
+            projection[rawProjection[i]] = "1";
+        }
+        req.projection = projection;
+    }
+
+
+    next();
+}
+
 // if we wanted to supply more than JSON, we could
 // use something similar to the content-negotiation
 // example.
@@ -60,6 +88,8 @@ app.use(express.static(__dirname + '/public'));
 
 // parse request bodies (req.body)
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(queryParser);
 
 // load controllers
 require('./router/boot')(app, { verbose: !module.parent });

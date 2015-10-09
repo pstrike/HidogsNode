@@ -2,6 +2,8 @@ var express = require('express');
 var xml2js = require('xml2js');
 var db = require('./db/db');
 var config = require('./config')('production');
+var bodyParser = require('body-parser');
+var request = require('request');
 
 var app = express();
 
@@ -36,10 +38,36 @@ function xmlBodyParser(req, res, next) {
     });
 };
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(xmlBodyParser);
 
 app.get('/', function(req, res){
-    console.log(req.body);
+    console.log(req.query);
+    var responseContent = "Hello World";
+
+    if(req.query.code) {
+        responseContent = req.query.code;
+        var url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxaddd7cf2ed2848ac&secret=32a1a3ab9838fca79131c42c82fd7017&code="+req.query.code+"&grant_type=authorization_code";
+
+        request(url, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var token = JSON.parse(body);
+                console.log(token)
+
+
+                var lastURL = "https://api.weixin.qq.com/sns/userinfo?access_token="+token.access_token+"&openid="+token.openid+"&lang=zh_CN";
+
+                request(lastURL, function (error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        var user = JSON.parse(body);
+                        console.log(user)
+                    }
+                })
+            }
+        })
+    }
+
+    res.send(responseContent);
 });
 
 app.post('/', function(req, res){
@@ -63,8 +91,8 @@ app.post('/', function(req, res){
 
     if(content == "登录")
     {
-        var redirectUrl = encodeURI("120.25.105.129");
-        var resContent="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxaddd7cf2ed2848ac&redirect_uri="+redirectUrl+"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+        var redirectUrl = encodeURI("http://www.hidogs.cn/");
+        var resContent="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxaddd7cf2ed2848ac&redirect_uri="+redirectUrl+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
         responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA["+resContent+"]]></Content></xml>";
 
         console.log(responseXML);
