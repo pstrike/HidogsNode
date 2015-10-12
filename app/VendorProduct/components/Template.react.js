@@ -2,7 +2,7 @@
 
 var React = require('react');
 var HidogsConstants = require('../constants/HidogsConstants');
-var ShopStore = require('../stores/ShopStore');
+var ShopStore = require('./ShopStore');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var HidogsActions = require('../actions/VendorProdutActions');
 

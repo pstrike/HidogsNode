@@ -1,6 +1,6 @@
 var React = require('react');
 
-var ShopApp = require('./components/Shop.react');
+var ShopApp = require('./VendorProduct/components/Shop.react');
 
 /*
 React.render(

@@ -1,12 +1,12 @@
 /** @jsx React.DOM */
 
 var React = require('react');
+var VendorProductConstants = require('../constants/VendorProductConstants');
 var HidogsActions = require('../actions/VendorProdutActions');
 
 var ProductForm = require('./VendorProduct.ProductForm.react.js');
 var ProductDetail = require('./VendorProduct.ProductDetail.react.js');
 var ProductDelete = require('./VendorProduct.ProductDelete.react.js');
-var VendorProductStore = require('../stores/VendorProductStore');
 
 var ProductModal = React.createClass({
 
@@ -14,19 +14,19 @@ var ProductModal = React.createClass({
         var status = this.props.status;
 
         switch (status) {
-            case VendorProductStore.getStatusList().NEW:
+            case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_NEW:
                 $('#productFormModal').modal('show');
                 break;
 
-            case VendorProductStore.getStatusList().PRODUCT:
+            case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_PRODUCT:
                 $('#ProductDetailModal').modal('show');
                 break;
 
-            case VendorProductStore.getStatusList().EDIT:
+            case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_EDIT:
                 $('#productFormModal').modal('show');
                 break;
 
-            case VendorProductStore.getStatusList().DELETE:
+            case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_DELETE:
                 $('#ProductDeleteModal').modal('show');
                 break;
 
@@ -40,25 +40,25 @@ var ProductModal = React.createClass({
         var status = this.props.status;
 
         switch (status) {
-            case VendorProductStore.getStatusList().PRODUCT:
+            case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_PRODUCT:
                 return (
                     <ProductDetail product={this.props.product}/>
                 )
                 break;
 
-            case VendorProductStore.getStatusList().EDIT:
+            case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_EDIT:
                 return (
                     <ProductForm product={this.props.product} status={this.props.status}/>
                 )
                 break;
 
-            case VendorProductStore.getStatusList().NEW:
+            case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_NEW:
                 return (
                     <ProductForm status={this.props.status}/>
                 )
                 break;
 
-            case VendorProductStore.getStatusList().DELETE:
+            case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_DELETE:
                 return (
                     <ProductDelete product={this.props.product} status={this.props.status}/>
                 )

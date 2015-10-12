@@ -29,7 +29,7 @@
         "node-jsx": "~0.2.0"
     },
     "scripts": {
-        "start": "watchify -o public/js/productList.js -v -d app/productListApp.js",
+        "start": "watchify -o public/js/vendorProductApp.js -v -d app/VendorProduct/vendorProductApp.js",
         "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js"
     },
     "browserify": {

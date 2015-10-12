@@ -1,6 +1,6 @@
 var db = require('../../db/db');
 var React = require('react'),
-ReactApp = React.createFactory(require('../../app/components/Shop.react'));
+ReactApp = React.createFactory(require('../../app/VendorProduct/components/Shop.react'));
 
 exports.engine = 'ejs';
 

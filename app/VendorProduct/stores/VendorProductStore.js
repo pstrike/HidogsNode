@@ -1,19 +1,10 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var HidogsConstants = require('../constants/HidogsConstants');
 var assign = require('object-assign');
 var keyMirror = require('keymirror');
+var VendorProductConstants = require('../constants/VendorProductConstants');
+var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 
 var CHANGE_EVENT = 'change';
-var STATUS_LIST = keyMirror({
-    LIST: null,
-    LIST_LOADING: null,
-    PRODUCT: null,
-    EDIT: null,
-    NEW: null,
-    DELETE: null,
-    ERROR: null
-});
 /*
 var _products = {
     1:{id:'1',name:'5星剪毛服务',price:'159',category:'美容'},
@@ -24,26 +15,26 @@ var _products = {
 // Store State
 var _products = {};
 var _product = {};
-var _status = STATUS_LIST.LIST;
+var _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST;
 
 
 
 // Get Product List - Start
 function viewProductList(callback) {
-    _status = STATUS_LIST.LIST;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST;
 
     VendorProductStore.emitChange();
 }
 
 function onLoadProductList() {
-    _status = STATUS_LIST.LIST_LOADING;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST_LOADING;
 
     VendorProductStore.emitChange();
 };
 
 function onLoadProductListSuccess(productList) {
     _products = productList;
-    _status = STATUS_LIST.LIST;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST;
 
     VendorProductStore.emitChange();
 };
@@ -51,7 +42,7 @@ function onLoadProductListSuccess(productList) {
 function onLoadProductListFail() {
     _products = {};
     _product = {};
-    _status = STATUS_LIST.ERROR;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_ERROR;
 
     VendorProductStore.emitChange();
 };
@@ -66,7 +57,7 @@ function onGetProduct(id) {
             _product = _products[i];
         }
     }
-    _status = STATUS_LIST.PRODUCT;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_PRODUCT;
 
     VendorProductStore.emitChange();
 };
@@ -80,7 +71,7 @@ function onGetProductSuccess(product) {
 function onGetProductFail() {
     _products = {};
     _product = {};
-    _status = STATUS_LIST.ERROR;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_ERROR;
 
     VendorProductStore.emitChange();
 }
@@ -91,7 +82,7 @@ function onGetProductFail() {
 // Delete Product - Start
 function viewProductDelete(product) {
     _product = product;
-    _status = STATUS_LIST.DELETE;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_DELETE;
 
     VendorProductStore.emitChange();
 };
@@ -105,14 +96,14 @@ function onDeleteProduct(product) {
     }
 
     _product = {};
-    _status = STATUS_LIST.LIST;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST;
 
     VendorProductStore.emitChange();
 }
 
 function onDeleteProductSuccess(product) {
     _product = {};
-    _status = STATUS_LIST.LIST;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST;
 
     VendorProductStore.emitChange();
 }
@@ -120,7 +111,7 @@ function onDeleteProductSuccess(product) {
 function onDeleteProductFail() {
     _products = {};
     _product = {};
-    _status = STATUS_LIST.ERROR;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_ERROR;
 
     VendorProductStore.emitChange();
 }
@@ -131,29 +122,41 @@ function onDeleteProductFail() {
 // New Product - Start
 function viewNewProduct() {
     _product = {};
-    _status = STATUS_LIST.NEW;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_NEW;
 
     VendorProductStore.emitChange();
 };
 
 function onNewProduct(product) {
+    product["_id"] = "new";
     _products.push(product);
     _product = {};
-    _status = STATUS_LIST.LIST;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST;
 
     VendorProductStore.emitChange();
 }
 
 function onNewProductSuccess(product) {
+    for(i in _products) {
+        if(_products[i]._id == "new") {
+            var productKeys = Object.keys(product);
+
+            for(j in productKeys) {
+                _products[i][productKeys[j]] = product[productKeys[j]];
+            }
+
+            break;
+        }
+    }
     _product = {};
-    _status = STATUS_LIST.LIST;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST;
 
     VendorProductStore.emitChange();
 }
 
 function onNewProductFail(product) {
     _product = {};
-    _status = STATUS_LIST.ERROR;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_ERROR;
 
     VendorProductStore.emitChange();
 }
@@ -164,7 +167,7 @@ function onNewProductFail(product) {
 // Edit Product - Start
 function viewProductEdit(product) {
     _product = product;
-    _status = STATUS_LIST.EDIT;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_EDIT;
 
     VendorProductStore.emitChange();
 }
@@ -183,14 +186,14 @@ function onEditProduct(product) {
     }
 
     _product = {};
-    _status = STATUS_LIST.LIST;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST;
 
     VendorProductStore.emitChange();
 }
 
 function onEditProductSuccess(product) {
     _product = {};
-    _status = STATUS_LIST.LIST;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST;
 
     VendorProductStore.emitChange();
 }
@@ -198,7 +201,7 @@ function onEditProductSuccess(product) {
 function onEditProductFail(product) {
     _products = {};
     _product = {};
-    _status = STATUS_LIST.ERROR;
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_ERROR;
 
     VendorProductStore.emitChange();
 }
@@ -207,10 +210,6 @@ function onEditProductFail(product) {
 
 
 var VendorProductStore = assign({}, EventEmitter.prototype, {
-    getStatusList: function() {
-        return STATUS_LIST;
-    },
-
     getAll: function() {
         return _products;
     },
@@ -248,22 +247,22 @@ AppDispatcher.register(function(action) {
 
     switch (action.actionType) {
         // New Product - Start
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_NEW:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_NEW:
 
             viewNewProduct();
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT:
             var product = action.product;
             onNewProduct(product);
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT_SUCCESS:
-            var product = action.product;
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT_SUCCESS:
+            var product = JSON.parse(action.payload.response);
             onNewProductSuccess(product);
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT_FAIL:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT_FAIL:
             onNewProductFail(product);
             break;
         // New Product - End
@@ -271,22 +270,22 @@ AppDispatcher.register(function(action) {
 
 
         // Edit Product - Start
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_EDIT:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_EDIT:
             var product = action.product;
 
             viewProductEdit(product);
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_EDIT_PRODUCT:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_EDIT_PRODUCT:
             var product = action.product;
             onEditProduct(product);
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_EDIT_PRODUCT_SUCCESS:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_EDIT_PRODUCT_SUCCESS:
             onEditProductSuccess();
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_EDIT_PRODUCT_FAIL:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_EDIT_PRODUCT_FAIL:
             onEditProductFail();
             break;
         // Edit Product - End
@@ -294,25 +293,25 @@ AppDispatcher.register(function(action) {
 
 
         // Delete Product - Start
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_DELETE:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_DELETE:
             var product = action.product;
 
             viewProductDelete(product);
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_DELETE_PRODUCT:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_DELETE_PRODUCT:
             var product = action.product;
 
             onDeleteProduct(product);
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_DELETE_PRODUCT_SUCCESS:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_DELETE_PRODUCT_SUCCESS:
             var product = action.product;
 
             onDeleteProductSuccess(product);
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_DELETE_PRODUCT_FAIL:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_DELETE_PRODUCT_FAIL:
             onDeleteProductFail();
             break;
         // Delete Product - End
@@ -320,22 +319,22 @@ AppDispatcher.register(function(action) {
 
 
         // Get Product List - Start
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_LIST:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_LIST:
 
             viewProductList();
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST:
 
             onLoadProductList();
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST_SUCCESS:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST_SUCCESS:
             var productList = JSON.parse(action.payload.response);
             onLoadProductListSuccess(productList);
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST_FAIL:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST_FAIL:
             onLoadProductListFail();
             break;
         // Get Product List - End
@@ -343,17 +342,17 @@ AppDispatcher.register(function(action) {
 
 
         // Get Product - Start
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT:
             var id = action.id;
             onGetProduct(id);
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_SUCCESS:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_SUCCESS:
             var product = JSON.parse(action.payload.response);
             onGetProductSuccess(product);
             break;
 
-        case HidogsConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_FAIL:
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_FAIL:
             onGetProductFail();
             break;
         // Get Product - End

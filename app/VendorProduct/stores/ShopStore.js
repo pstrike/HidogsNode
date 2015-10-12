@@ -1,6 +1,6 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var HidogsConstants = require('../constants/HidogsConstants');
+var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';

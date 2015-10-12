@@ -1,35 +1,30 @@
 /** @jsx React.DOM */
-var ProductItem = require('./VendorProduct.ProductItem.react');
-var HidogsActions = require('../actions/VendorProdutActions');
-var VendorProductStore = require('../stores/VendorProductStore');
-
 var React = require('react');
+
+var ProductItem = require('./VendorOrder.OrderItem.react.js');
+var VendorOrderConstants = require('../constants/VendorOrderConstants');
+var OrderItem = require('../components/VendorOrder.OrderItem.react');
 
 var ProductList = React.createClass({
 
     render: function() {
-        var allProducts = this.props.allProducts;
+        var orderList = this.props.orderList;
         var status = this.props.status;
         var content = [];
 
-        if(status == VendorProductStore.getStatusList().LIST_LOADING) {
+        if(status == VendorOrderConstants.VENDOR_ORDER_STORE_STATE_LIST_LOADING) {
             content = <tr><td className='text-center' colSpan="5">加载中...</td></tr>;
         }
         else {
-            for (var key in allProducts) {
-                content.push(<ProductItem product={allProducts[key]} />);
+            for (var i in orderList) {
+                content.push(<OrderItem order={orderList[i]} />);
             }
         }
 
         return (
             <div className="container-fluid">
                 <div className="page-header">
-                    <h1>达人服务<small>我的服务列表</small></h1>
-                </div>
-
-                <div>
-                    <button type="button" className="btn btn-default" onClick={this._showNewProductModal}>创建新服务</button>
-                    <hr/>
+                    <h1>欢宠达人<small>我的订单列表</small></h1>
                 </div>
 
                 <div>
@@ -37,26 +32,23 @@ var ProductList = React.createClass({
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>名称</th>
-                            <th>类别</th>
+                            <th>服务</th>
+                            <th>用户</th>
                             <th>价格</th>
+                            <th>状态</th>
+                            <th>时间</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                            {content}
+                        {content}
                         </tbody>
                     </table>
                 </div>
             </div>
 
         );
-    },
-
-    _showNewProductModal: function() {
-        HidogsActions.vendorProductViewNewProduct();
     }
-
 });
 
 module.exports = ProductList;

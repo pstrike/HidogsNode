@@ -1,19 +1,17 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var HidogsConstants = require('../constants/HidogsConstants');
-var ShopStore = require('../stores/ShopStore');
-var AppDispatcher = require('../dispatcher/AppDispatcher');
+var HidogsConstants = require('../../Common/constants/HidogsConstants');
+var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var HidogsActions = require('../actions/VendorProdutActions');
 var VendorProductStore = require('../stores/VendorProductStore');
+var VendorProductConstants = require('../constants/VendorProductConstants');
 
-var Header = require('./Header.react');
+var Header = require('./../../Common/components/Header.react.js');
 var ProductModal = require('./VendorProduct.ProductModal.react.js');
-var ProductList = require('./VendorProduct.ProductList.react');
+var ProductList = require('./VendorProduct.ProductList.react.js');
 
-/**
- * Retrieve the current TODO data from the TodoStore
- */
+
 function getVendorProductState() {
     return {
         allProducts: VendorProductStore.getAll(),
@@ -40,10 +38,10 @@ var HidogsApp = React.createClass({
     render: function() {
 
         var content;
-        if(this.state.status == VendorProductStore.getStatusList().ERROR) {
+        if(this.state.status == VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_ERROR) {
             content = <div>
                 <Header/>
-                <div className="container-fluid"><h4><small>似乎除了点问题,</small> 请重新刷新页面</h4></div>
+                <div className="container-fluid"><h4><small>似乎出了点问题,</small> 请重新刷新页面</h4></div>
             </div>;
         }
         else {

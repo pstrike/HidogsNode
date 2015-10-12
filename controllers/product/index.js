@@ -1,5 +1,5 @@
 var React = require('react'),
-    ReactApp = React.createFactory(require('../../app/components/VendorProductApp.react.js')),
+    ReactApp = React.createFactory(require('../../app/VendorProduct/components/VendorProductApp.react.js')),
     db = require('../../db/db');
 
 exports.engine = 'ejs';
@@ -39,18 +39,29 @@ exports.update = function(req, res, next){
     }
 };
 
-exports.insert = function(req, res, next){
-    if(req.body) {
-        db.get().collection('product').insertOne(req.body, function (err, result) {
-            if(err) {
-                console.log("[DB Err]"+err);
-                next(err);
+exports.insert = function (req, res, next) {
+    if (req.body) {
+
+        db.get().collection('counter').findAndModify(
+            { "_id": "productid" }, // query
+            [], // represents a sort order if multiple matches
+            { "$inc": { "seq": 1 } }, // update statement
+            { new: true }, // options - new to return the modified document
+            function(err,doc) {
+                req.body._id = doc.value.seq.toString();
+
+                db.get().collection('product').insertOne(req.body, function (err, result) {
+                    if (err) {
+                        console.log("[DB Err]" + err);
+                        next(err);
+                    }
+                    else {
+                        console.log("Inserted a document " + req.body.name + " into the product collection.");
+                        res.send(result.ops[0]);
+                    }
+                });
             }
-            else {
-                console.log("Inserted a document " + req.body.name + " into the product collection.");
-                res.send("product insert");
-            }
-        });
+        );
     }
 };
 
@@ -60,8 +71,6 @@ exports.index = function(req, res, next){
 
 exports.page = function(req, res, next){
     var page = req.params.product_id;
-
-    console.log(page);
 
     switch (page) {
         case 'list':

@@ -2,7 +2,7 @@
 
 var React = require('react');
 var HidogsActions = require('../actions/VendorProdutActions');
-var VendorProductStore = require('../stores/VendorProductStore');
+var VendorProductConstants = require('../constants/VendorProductConstants');
 
 var ProductForm = React.createClass({
 
@@ -18,7 +18,7 @@ var ProductForm = React.createClass({
 
         var status = this.props.status;
 
-        if(status == VendorProductStore.getStatusList().NEW)
+        if(status == VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_NEW)
             title = "创建新的服务";
         else
             title = "修改服务";
@@ -84,11 +84,11 @@ var ProductForm = React.createClass({
         var product = this._getProductFromForm();
 
         switch (status) {
-            case VendorProductStore.getStatusList().NEW:
+            case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_NEW:
                 HidogsActions.vendorProductNewProduct(product);
                 break;
 
-            case VendorProductStore.getStatusList().EDIT:
+            case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_EDIT:
                 HidogsActions.vendorProductEditProduct(product);
                 break;
 
@@ -104,7 +104,7 @@ var ProductForm = React.createClass({
             description: this.refs.description.getDOMNode().value
         };
 
-        if(this.props.status != VendorProductStore.getStatusList().NEW) {
+        if(this.props.status != VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_NEW) {
             product["_id"] = this.props.product ? this.props.product._id: "";
         }
 

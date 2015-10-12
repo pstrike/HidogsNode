@@ -53,6 +53,10 @@ module.exports = function(parent, options){
                     method = 'get';
                     path = '/' + name + '/view/:' + name + '_id';
                     break;
+                case 'other':
+                    method = 'get';
+                    path = '/' + name + '/check/:' + name + '_id';
+                    break;
                 default:
                     /* istanbul ignore next */
                     throw new Error('unrecognized route: ' + name + '.' + key);

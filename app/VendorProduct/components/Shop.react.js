@@ -1,11 +1,11 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var HidogsConstants = require('../constants/HidogsConstants');
+var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var ShopStore = require('../stores/ShopStore');
-var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var HidogsActions = require('../actions/VendorProdutActions');
-var ShopComment = require('./ShopComment.react');
+var ShopComment = require('./ShopComment.react.js');
 
 function getShopState() {
     return ShopStore.getShop();
