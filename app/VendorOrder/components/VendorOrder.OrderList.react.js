@@ -12,6 +12,8 @@ var ProductList = React.createClass({
         var status = this.props.status;
         var content = [];
 
+        console.log(orderList);
+
         if(status == VendorOrderConstants.VENDOR_ORDER_STORE_STATE_LIST_LOADING) {
             content = <tr><td className='text-center' colSpan="5">加载中...</td></tr>;
         }

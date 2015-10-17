@@ -1,5 +1,6 @@
 var React = require('react'),
-    ReactApp = React.createFactory(require('../../app/VendorProduct/components/VendorProductApp.react.js')),
+    VendorProduct = React.createFactory(require('../../app/VendorProduct/components/VendorProductApp.react.js')),
+    UserProductApp = React.createFactory(require('../../app/UserProduct/components/App.react')),
     db = require('../../db/db');
 
 exports.engine = 'ejs';
@@ -10,6 +11,12 @@ exports.before = function(req, res, next){
 
 exports.show = function(req, res, next){
     db.get().collection('product').find({"_id":req.params.product_id}, req.projection).toArray(function(err, docs) {
+        var availability = [
+            {begin: "201010100900", end: "201010101000"},
+            {begin: "201010101000", end: "201010101100"},
+            {begin: "201010101100", end: "201010101200"},
+        ];
+        docs[0].availability = availability;
         res.send(docs[0]);
     });
 };
@@ -73,15 +80,66 @@ exports.page = function(req, res, next){
     var page = req.params.product_id;
 
     switch (page) {
-        case 'list':
-            var reactHtml = React.renderToString(ReactApp({}));
+        case 'vendorproduct':
+            var reactHtml = React.renderToString(VendorProduct({}));
             // Output html rendered by react
-            res.render('index.ejs', {reactOutput: reactHtml});
+            res.render('vendorproduct.ejs', {reactOutput: reactHtml});
+            //res.render('index.ejs');
+            break;
+        case 'userproduct':
+            var reactHtml = React.renderToString(UserProductApp({}));
+            // Output html rendered by react
+            res.render('userproduct.ejs', {reactOutput: reactHtml});
             //res.render('index.ejs');
             break;
         default:
-            /* istanbul ignore next */
-            throw new Error('unrecognized route: ' + name + '.' + key);
+            var reactHtml = React.renderToString(UserProductApp({productId:req.params.product_id}));
+            // Output html rendered by react
+            res.render('userproduct.ejs', {reactOutput: reactHtml, productId:req.params.product_id});
+        //res.render('index.ejs');
+    }
+};
+
+exports.meta = function(req, res, next){
+    var id = req.params.meta_id;
+
+    var filter = {};
+    if(id == "list") {
+        filter = {};
+    }
+    else {
+        filter = {field: id};
     }
 
+    db.get().collection('productmeta').find(filter).toArray(function(err, docs) {
+        var result={};
+
+        if(docs) {
+            for(var i=0; i<docs.length; i++) {
+                result[docs[i].field] = docs[i].meta_value;
+            }
+        }
+
+        res.send(result);
+    });
+};
+
+exports.otherget = function(req, res, next){
+    var type = req.query.type;
+    var id = req.params.product_id;
+
+    switch (type) {
+        case 'availability':
+            var availability = [
+                {begin: "201010100900", end: "201010101000"},
+                {begin: "201010101000", end: "201010101100"},
+                {begin: "201010101100", end: "201010101200"},
+            ];
+
+            res.send(availability);
+            break;
+
+        default:
+            next();
+    }
 };

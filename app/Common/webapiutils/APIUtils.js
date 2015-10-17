@@ -1,9 +1,9 @@
 var request = require('superagent');
 var HidogsConstants = require('../constants/HidogsConstants');
 
-//var API_URL = 'http://www.hidogs.cn:3000';
+var API_URL = 'http://www.hidogs.cn:3000';
 //var API_URL = 'http://localhost:3000';
-var API_URL = 'http://192.168.0.107:3000';
+//var API_URL = 'http://192.168.0.107:3000';
 var TIMEOUT = 10000;
 var TOKEN = 'token123';
 
@@ -89,8 +89,7 @@ var APIUtils = {
                 callback(payload);
             }
         );
-
-    }
+    },
 
 };
 

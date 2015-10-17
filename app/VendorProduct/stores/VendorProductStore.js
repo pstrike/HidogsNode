@@ -1,6 +1,5 @@
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
-var keyMirror = require('keymirror');
 var VendorProductConstants = require('../constants/VendorProductConstants');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 
@@ -16,6 +15,7 @@ var _products = {
 var _products = {};
 var _product = {};
 var _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_LIST;
+var _meta = {};
 
 
 
@@ -208,6 +208,20 @@ function onEditProductFail(product) {
 // Edit Product - End
 
 
+// Get Product Meta - Begin
+
+function getProductMetaSuccess(metaDataList) {
+    _meta = metaDataList;
+    VendorProductStore.emitChange();
+}
+
+function getProductMetaFail() {
+    _status = VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_ERROR;
+    VendorProductStore.emitChange();
+}
+
+// Get Product Meta - End
+
 
 var VendorProductStore = assign({}, EventEmitter.prototype, {
     getAll: function() {
@@ -220,6 +234,10 @@ var VendorProductStore = assign({}, EventEmitter.prototype, {
 
     getStatus: function() {
         return _status;
+    },
+
+    getMeta: function() {
+        return _meta;
     },
 
     emitChange: function() {
@@ -356,6 +374,18 @@ AppDispatcher.register(function(action) {
             onGetProductFail();
             break;
         // Get Product - End
+
+
+        // Get Product Meta - Begin
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_META_PRODUCT_SUCCESS:
+            var metaDataList = JSON.parse(action.payload.response);
+            getProductMetaSuccess(metaDataList);
+            break;
+
+        case VendorProductConstants.HIDOGS_VENDOR_PRODUCT_META_PRODUCT_FAIL:
+            getProductMetaFail();
+            break;
+        // Get Product Meta - End
 
         default:
         // no op

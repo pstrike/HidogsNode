@@ -128,6 +128,20 @@ app.post('/', function(req, res){
             res.send(responseXML);
         });
     }
+    else if(msgType == "event" && eventType == "CLICK" && eventKey == "find_product")
+    {
+        db.get().collection('product').find().toArray(function(err, docs) {
+            var shopList=new Array();
+            for (i = 0, count = docs.length; i < count; i++) {
+                shopList.push("<item><Title><![CDATA["+docs[i].title+"]]></Title><Url><![CDATA[http://www.hidogs.cn:3000/product/view/"+docs[i]._id+"]]></Url></item>");
+            }
+
+            responseXML="<xml><ToUserName><![CDATA["+toUser+"]]></ToUserName><FromUserName><![CDATA["+fromUser+"]]></FromUserName><CreateTime>"+createTime+"</CreateTime><MsgType><![CDATA[news]]></MsgType><ArticleCount>"+docs.length+"</ArticleCount><Articles>"+shopList+"</Articles></xml>";
+
+            console.log(responseXML);
+            res.send(responseXML);
+        });
+    }
     else if(msgType == "text")
     {
         db.get().collection('shop').find({"tab":content[0]}).toArray(function(err, docs) {

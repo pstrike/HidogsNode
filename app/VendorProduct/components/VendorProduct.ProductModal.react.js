@@ -15,18 +15,23 @@ var ProductModal = React.createClass({
 
         switch (status) {
             case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_NEW:
+                this.applyModalFullScreen();
                 $('#productFormModal').modal('show');
                 break;
 
             case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_PRODUCT:
+                this.applyModalFullScreen();
                 $('#ProductDetailModal').modal('show');
+                $('#ProductDetailModalTitle').focus();
                 break;
 
             case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_EDIT:
+                this.applyModalFullScreen();
                 $('#productFormModal').modal('show');
                 break;
 
             case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_DELETE:
+                this.applyModalFullScreen();
                 $('#ProductDeleteModal').modal('show');
                 break;
 
@@ -38,6 +43,7 @@ var ProductModal = React.createClass({
     render: function () {
 
         var status = this.props.status;
+        var meta = this.props.meta;
 
         switch (status) {
             case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_PRODUCT:
@@ -48,13 +54,13 @@ var ProductModal = React.createClass({
 
             case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_EDIT:
                 return (
-                    <ProductForm product={this.props.product} status={this.props.status}/>
+                    <ProductForm product={this.props.product} status={this.props.status} meta={meta}/>
                 )
                 break;
 
             case VendorProductConstants.VENDOR_PRODUCT_STORE_STATE_NEW:
                 return (
-                    <ProductForm status={this.props.status}/>
+                    <ProductForm status={this.props.status} meta={meta}/>
                 )
                 break;
 
@@ -70,7 +76,18 @@ var ProductModal = React.createClass({
                 )
         }
 
-    }
+    },
+
+    applyModalFullScreen: function() {
+        $(".modal-fullscreen").on('show.bs.modal', function () {
+            setTimeout( function() {
+                $(".modal-backdrop").addClass("modal-backdrop-fullscreen");
+            }, 0);
+        });
+        $(".modal-fullscreen").on('hidden.bs.modal', function () {
+            $(".modal-backdrop").addClass("modal-backdrop-fullscreen");
+        });
+    },
 
 
 });

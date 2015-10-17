@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="../public/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../public/js/bootstrap.min.js"></script>
+    <script>
+
+        function toogleFormReadonly() {
+            $('input').removeAttr("readonly");
+            $('textarea').removeAttr("readonly");
+        }
+
+    </script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">欢宠</a>
+        </div>
+    </div>
+</nav>
+
+<!-- New Product Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">创建新的服务</h4>
+            </div>
+
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="productInputName">服务名称</label>
+                        <input type="text" class="form-control" id="productInputName" placeholder="服务名称" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="productInputCategory">类别</label>
+                        <input type="text" class="form-control" id="productInputCategory" placeholder="服务类别" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="productInputPrice">价格</label>
+                        <input type="text" class="form-control" id="productInputPrice" placeholder="服务价格" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="productInputDescription">描述</label>
+                        <textarea class="form-control" rows="5" id="productInputDescription" placeholder="服务描述" readonly></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="toogleFormReadonly()">修改</button>
+                <button type="button" class="btn btn-primary" onclick="$('#myModal').modal('show');alert('modal show again');">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Product Modal -->
+<div class="modal fade" id="ProductDetailModal" tabindex="-2" role="dialog" aria-labelledby="ProductDetailModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="ProductDetailModalTitle">服务详情</h4>
+            </div>
+
+            <div class="modal-body">
+                <dl>
+                    <h4>服务名称</h4>
+                    <p>1号服务</p>
+                    <h4>服务类别</h4>
+                    <p>美容</p>
+                    <h4>服务价格</h4>
+                    <p>50</p>
+                    <h4>服务描述</h4>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- List -->
+<div class="container-fluid">
+    <div class="page-header">
+        <h1>达人服务 <small>我的服务列表</small></h1>
+    </div>
+
+    <div>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">新建</button>
+        <hr/>
+    </div>
+
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>类别</th>
+                <th>价格</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr><td colspan="5" class="text-center">加载中...</td></tr>
+            <tr>
+                <td>1,001</td>
+                <td>Lorem</td>
+                <td>ipsum</td>
+                <td>dolor</td>
+                <td>
+                    <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default">详情</button>
+                        <button type="button" class="btn btn-default">修改</button>
+                        <button type="button" class="btn btn-default">删除</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>1,002</td>
+                <td>amet</td>
+                <td>consectetur</td>
+                <td>adipiscing</td>
+                <td>
+                    <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default">详情</button>
+                        <button type="button" class="btn btn-default">修改</button>
+                        <button type="button" class="btn btn-default">删除</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>1,003</td>
+                <td>Integer</td>
+                <td>nec</td>
+                <td>odio</td>
+                <td>
+                    <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#ProductDetailModal"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-default" onclick="$('#ProductDetailModal').modal('show');"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <form action="/picture"
+              enctype="multipart/form-data" method="post">
+            <p>
+                Type some text (if you like):<br>
+                <input type="text" name="textline" size="30">
+            </p>
+            <p>
+                Please specify a file, or a set of files:<br>
+                <input type="file" name="datafile" size="40">
+            </p>
+            <div>
+                <input type="submit" value="Send">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+</body>
+</html>

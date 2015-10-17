@@ -39,7 +39,6 @@ var ProductList = React.createClass({
                             <th>ID</th>
                             <th>名称</th>
                             <th>类别</th>
-                            <th>价格</th>
                             <th>操作</th>
                         </tr>
                         </thead>

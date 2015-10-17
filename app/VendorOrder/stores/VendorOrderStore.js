@@ -1,6 +1,5 @@
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
-var keyMirror = require('keymirror');
 
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 

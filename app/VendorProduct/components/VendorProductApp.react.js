@@ -16,7 +16,8 @@ function getVendorProductState() {
     return {
         allProducts: VendorProductStore.getAll(),
         product: VendorProductStore.getProduct(),
-        status: VendorProductStore.getStatus()
+        status: VendorProductStore.getStatus(),
+        meta: VendorProductStore.getMeta(),
     };
 }
 
@@ -47,7 +48,7 @@ var HidogsApp = React.createClass({
         else {
             content = <div>
                 <Header/>
-                <ProductModal product={this.state.product} status={this.state.status}/>
+                <ProductModal product={this.state.product} status={this.state.status} meta={this.state.meta}/>
                 <ProductList allProducts={this.state.allProducts} status={this.state.status}/>
             </div>;
         }

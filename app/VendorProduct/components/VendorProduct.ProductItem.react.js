@@ -37,9 +37,8 @@ var ProductItem = React.createClass({
         return (
             <tr onClick={this._viewProductDetail} onTouchStart={this.handleTouchStart}>
                 <td>{product._id}</td>
-                <td>{product.name}</td>
-                <td>{product.category}</td>
-                <td>{price}</td>
+                <td>{product.title}</td>
+                <td>{product.category?product.category.l1:"无类别"}</td>
                 <td>
                     <div className="btn-group" role="group">
                         <button type="button" className="btn btn-default" onClick={this._modifyProductDetail}><span className="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>

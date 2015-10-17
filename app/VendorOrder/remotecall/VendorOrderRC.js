@@ -2,12 +2,12 @@ var APIUtils = require('../../Common/webapiutils/APIUtils');
 
 var RemoteCall = {
     getOrderList: function (callback) {
-        var url = APIUtils.makeUrl("/orders?projection=product_id,user_id,price,status,time");
+        var url = APIUtils.makeUrl("/orders?projection=product_id,user_id,price,status,booktime");
         APIUtils.get(url, callback);
     },
 
     checkOrder: function (order, callback) {
-        var url = APIUtils.makeUrl("/order/check/"+order._id+"?code="+order.code);
+        var url = APIUtils.makeUrl("/order/other/"+order._id+"?type=check&code="+order.code);
         APIUtils.get(url, callback);
     },
 

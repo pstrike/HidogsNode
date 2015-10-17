@@ -8,7 +8,7 @@ var ProductDelete = React.createClass({
     render: function() {
 
         return (
-            <div className="modal fade" id="ProductDeleteModal" tabindex="-3" role="dialog"
+            <div className="modal modal-fullscreen fade" id="ProductDeleteModal" tabindex="-3" role="dialog"
                  aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">

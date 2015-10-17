@@ -27,7 +27,7 @@ var OrderItem = React.createClass({
                 <td>{order.user_id}</td>
                 <td>{order.price}</td>
                 <td>{order.status}</td>
-                <td>{order.time}</td>
+                <td>{order.booktime}</td>
                 <td>
                     <div className="btn-group" role="group">
                         {btnContent}

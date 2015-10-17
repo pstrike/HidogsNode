@@ -8,21 +8,21 @@ var HidogsActions = {
     /**
      * @param  {string} text
      */
-    getLocation: function(id) {
+    getLocation: function (id) {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_GET_LOCATION,
             id: id
         });
     },
 
-    getInitLocation: function(id) {
+    getInitLocation: function (id) {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_GET_INIT_LOCATION,
             id: id
         });
     },
 
-    createOrder: function(userId, coupon) {
+    createOrder: function (userId, coupon) {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_CREATE_ORDER,
             userId: userId,
@@ -30,7 +30,7 @@ var HidogsActions = {
         });
     },
 
-    getShopById: function(id) {
+    getShopById: function (id) {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_GET_SHOP,
             id: id
@@ -39,133 +39,119 @@ var HidogsActions = {
 
 
     // Product List - Start
-    vendorProductViewProductList: function() {
+    vendorProductViewProductList: function () {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_LIST
         });
     },
 
-    vendorProductGetProductList: function() {
+    vendorProductGetProductList: function () {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST
         });
 
-        VendorProductRC.getProductList(function(payload){
-            if(payload.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
-                || payload.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
-                || payload.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
-
-                AppDispatcher.dispatch({
-                    actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST_FAIL
-                });
-            }
-            else {
-                AppDispatcher.dispatch({
-                    actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST_SUCCESS,
-                    payload: payload
-                });
-            }
+        VendorProductRC.getProductListPromise().then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST_SUCCESS,
+                payload: payload
+            });
+        }, function (err) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST_FAIL
+            });
         });
     },
     // Product List - End
 
 
-
     // Product - Start
-    vendorProductViewProduct: function(id) {
+    vendorProductViewProduct: function (id) {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT,
             id: id
         });
 
-        VendorProductRC.getProductById(id, function(payload){
-            if(payload.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
-                || payload.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
-                || payload.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
-
-                AppDispatcher.dispatch({
-                    actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_FAIL
-                });
-            }
-            else {
-                AppDispatcher.dispatch({
-                    actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_SUCCESS,
-                    payload: payload
-                });
-            }
+        VendorProductRC.getProductByIdPromise(id).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_SUCCESS,
+                payload: payload
+            });
+        }, function (err) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_FAIL,
+                payload: fileName
+            });
         });
     },
     // Product - End
 
 
-
     // New Product - Start
-    vendorProductViewNewProduct: function() {
+    vendorProductViewNewProduct: function () {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_NEW
         });
+
+        VendorProductRC.getProductMetaPromise().then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_META_PRODUCT_SUCCESS,
+                payload: payload
+            });
+        }, function (err) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_META_PRODUCT_FAIL
+            });
+        });
     },
 
-    vendorProductNewProduct: function(product) {
+    vendorProductNewProduct: function (product) {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT,
             product: product
         });
 
-        VendorProductRC.insertProduct(product, function(payload){
-            if(payload.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
-                || payload.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
-                || payload.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
-
-                AppDispatcher.dispatch({
-                    actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT_FAIL
-                });
-            }
-            else {
-                AppDispatcher.dispatch({
-                    actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT_SUCCESS,
-                    payload: payload
-                });
-            }
+        VendorProductRC.insertProductPromise(product).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT_SUCCESS,
+                payload: payload
+            });
+        }, function (err) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_NEW_PRODUCT_FAIL
+            });
         });
     },
     // New Product - End
 
 
-
     // Edit Product - Start
-    vendorProductViewProductEdit: function(product) {
+    vendorProductViewProductEdit: function (product) {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_EDIT,
             product: product
         });
 
-        VendorProductRC.getProductById(product._id, function(payload){
-            if(payload.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
-                || payload.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
-                || payload.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
-
-                AppDispatcher.dispatch({
-                    actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_FAIL
-                });
-            }
-            else {
-                AppDispatcher.dispatch({
-                    actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_SUCCESS,
-                    payload: payload
-                });
-            }
+        VendorProductRC.getProductByIdPromise(product._id).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_SUCCESS,
+                payload: payload
+            });
+        }, function (err) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_FAIL,
+                payload: fileName
+            });
         });
     },
 
-    vendorProductEditProduct: function(product) {
+    vendorProductEditProduct: function (product) {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_EDIT_PRODUCT,
             product: product
         });
 
-        VendorProductRC.updateProduct(product, function(payload){
-            if(payload.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
+        VendorProductRC.updateProduct(product, function (payload) {
+            if (payload.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                 || payload.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
                 || payload.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
 
@@ -184,23 +170,22 @@ var HidogsActions = {
     // Edit Product - End
 
 
-
     // Delete Product - Start
-    vendorProductViewProductDelete: function(product) {
+    vendorProductViewProductDelete: function (product) {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_VIEW_PRODUCT_DELETE,
             product: product
         });
     },
 
-    vendorProductDeleteProduct: function(product) {
+    vendorProductDeleteProduct: function (product) {
         AppDispatcher.dispatch({
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_DELETE_PRODUCT,
             product: product
         });
 
-        VendorProductRC.deleteProduct(product, function(payload){
-            if(payload.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
+        VendorProductRC.deleteProduct(product, function (payload) {
+            if (payload.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                 || payload.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
                 || payload.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
 
@@ -215,9 +200,33 @@ var HidogsActions = {
                 });
             }
         });
-    }
+    },
     // Delete Product - End
 
+
+    // Upload Picture - Begin
+    uploadPicture: function (data, fileName) {
+
+        VendorProductRC.uploadPicturePromise(data).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.UPLOAD_FILE_SUCCESS,
+                payload: payload
+            });
+        }, function (err) {
+            AppDispatcher.dispatch({
+                actionType: VendorProductConstants.UPLOAD_FILE_FAIL,
+                payload: fileName
+            });
+        });
+    },
+
+    removePicture: function (fileName) {
+        AppDispatcher.dispatch({
+            actionType: VendorProductConstants.REMOVE_FILE,
+            payload: fileName
+        });
+    },
+    // Upload Picture - End
 };
 
 module.exports = HidogsActions;

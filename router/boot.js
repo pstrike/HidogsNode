@@ -53,9 +53,17 @@ module.exports = function(parent, options){
                     method = 'get';
                     path = '/' + name + '/view/:' + name + '_id';
                     break;
-                case 'other':
+                case 'otherget':
                     method = 'get';
-                    path = '/' + name + '/check/:' + name + '_id';
+                    path = '/' + name + '/other/:' + name + '_id';
+                    break;
+                case 'otherpost':
+                    method = 'post';
+                    path = '/' + name + '/other/:' + name + '_id';
+                    break;
+                case 'meta':
+                    method = 'get';
+                    path = '/' + name + '/meta/:meta_id';
                     break;
                 default:
                     /* istanbul ignore next */
