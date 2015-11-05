@@ -1,13 +1,12 @@
 var React = require('react'),
-    VendorProduct = React.createFactory(require('../../app/VendorProduct/components/VendorProductApp.react.js')),
+    //VendorProduct = React.createFactory(require('../../app/VendorProduct/components/VendorProductApp.react')),
     UserProductApp = React.createFactory(require('../../app/UserProduct/components/App.react')),
-    db = require('../../db/db');
+    db = require('../../db/db'),
+    error = require('../../util/errorhandler');
 
 exports.engine = 'ejs';
 
-exports.before = function(req, res, next){
-    next();
-};
+var COUNTER_PRODUCT_ID = "product_id";
 
 exports.show = function(req, res, next){
     db.get().collection('product').find({"_id":req.params.product_id}, req.projection).toArray(function(err, docs) {
@@ -40,7 +39,7 @@ exports.update = function(req, res, next){
                     next(err);
                 }
                 else {
-                    res.send("product update");
+                    res.send({result: "success"});
                 }
         });
     }
@@ -48,27 +47,16 @@ exports.update = function(req, res, next){
 
 exports.insert = function (req, res, next) {
     if (req.body) {
-
-        db.get().collection('counter').findAndModify(
-            { "_id": "productid" }, // query
-            [], // represents a sort order if multiple matches
-            { "$inc": { "seq": 1 } }, // update statement
-            { new: true }, // options - new to return the modified document
-            function(err,doc) {
-                req.body._id = doc.value.seq.toString();
-
-                db.get().collection('product').insertOne(req.body, function (err, result) {
-                    if (err) {
-                        console.log("[DB Err]" + err);
-                        next(err);
-                    }
-                    else {
-                        console.log("Inserted a document " + req.body.name + " into the product collection.");
-                        res.send(result.ops[0]);
-                    }
-                });
+        db.get().collection('product').insertOne(req.body, function (err, result) {
+            if (err) {
+                console.log("[DB Err]" + err);
+                next(err);
             }
-        );
+            else {
+                console.log("Inserted a document " + req.body.name + " into the product collection.");
+                res.send(result.ops[0]);
+            }
+        });
     }
 };
 
@@ -81,9 +69,10 @@ exports.page = function(req, res, next){
 
     switch (page) {
         case 'vendorproduct':
-            var reactHtml = React.renderToString(VendorProduct({}));
+            //var reactHtml = React.renderToString(VendorProduct({}));
             // Output html rendered by react
-            res.render('vendorproduct.ejs', {reactOutput: reactHtml});
+            //res.render('vendorproduct.ejs', {reactOutput: reactHtml});
+            res.render('vendorproduct.ejs');
             //res.render('index.ejs');
             break;
         case 'userproduct':
@@ -93,10 +82,7 @@ exports.page = function(req, res, next){
             //res.render('index.ejs');
             break;
         default:
-            var reactHtml = React.renderToString(UserProductApp({productId:req.params.product_id}));
-            // Output html rendered by react
-            res.render('userproduct.ejs', {reactOutput: reactHtml, productId:req.params.product_id});
-        //res.render('index.ejs');
+            next();
     }
 };
 

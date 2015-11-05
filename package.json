@@ -19,7 +19,10 @@
       "mongodb": "latest",
       "request": "latest",
       "superagent": "latest",
-      "multiparty": "latest"
+      "multiparty": "latest",
+      "wechat": "latest",
+      "wechat-oauth": "latest",
+      "express-session": "latest"
   },
     "devDependencies": {
         "browserify": "^6.2.0",
@@ -30,8 +33,8 @@
         "node-jsx": "~0.2.0"
     },
     "scripts": {
-        "start": "watchify -o public/js/vendorOrderApp.js -v -d app/VendorOrder/app.js",
-        "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js"
+        "start": "watchify -o public/js/vendorProductApp.js -v -d app/VendorProduct/app.js",
+        "build": "uglifyjs public/js/vendorProductApp.js -o public/js/vendorProductApp.min.js"
     },
     "browserify": {
         "transform": [

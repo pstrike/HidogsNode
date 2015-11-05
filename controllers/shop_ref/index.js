@@ -1,6 +1,6 @@
 var db = require('../../db/db');
-var React = require('react'),
-ReactApp = React.createFactory(require('../../app/VendorProduct/components/Shop.react'));
+var React = require('react');
+//ReactApp = React.createFactory(require('../../app/VendorProduct/components/Shop.react'));
 
 exports.engine = 'ejs';
 
@@ -25,7 +25,8 @@ exports.show = function(req, res, next){
 };
 
 exports.page = function(req, res, next){
-    var reactHtml = React.renderToString(ReactApp({"initData": req.shop}));
+    //var reactHtml = React.renderToString(ReactApp({"initData": req.shop}));
     // Output html rendered by react
-    res.render('index.ejs', {reactOutput: reactHtml, shopId: req.shop._id});
+    //res.render('index.ejs', {reactOutput: reactHtml, shopId: req.shop._id});
+    res.render('index.ejs', {shopId: req.shop._id});
 };

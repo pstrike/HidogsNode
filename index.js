@@ -2,99 +2,47 @@ var express = require('express');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var db = require("./db/db");
+var error = require("./util/errorhandler");
+var filterprojectionparser = require("./util/filterprojectionparser");
+var tokenverifiction = require("./util/tokenverification");
+var writablestreamintodb = require('./util/writablestreamintodb');
+var session = require('express-session')
+//var wechatvalidation = require('./util/wechatvalidation');
 
 var app = module.exports = express();
-var path = require('path');
-var config = require('./config')();
-
+var config = require('./config')('staging');
 
 // Make sure to include the JSX transpiler
 require("node-jsx").install();
-
-// create an error with .status. we
-// can then use the property in our
-// custom error handler (Connect repects this prop as well)
-function error(status, msg) {
-    var err = new Error(msg);
-    err.status = status;
-    return err;
-}
-
-// parse request query into filter and projection
-function queryParser(req, res, next) {
-    if(req.query.filter) {
-        var rawFilter = req.query.filter.split(",");
-
-        var filter = {};
-        for(var i=0; i<rawFilter.length; i=i+2) {
-                filter[rawFilter[i]] = rawFilter[i+1];
-        }
-        req.filter = filter;
-    }
-
-
-    if(req.query.projection) {
-        var rawProjection = req.query.projection.split(",");
-
-        var projection = {};
-        for(i in rawProjection)
-        {
-            projection[rawProjection[i]] = "1";
-        }
-        req.projection = projection;
-    }
-
-
-    next();
-}
 
 // if we wanted to supply more than JSON, we could
 // use something similar to the content-negotiation
 // example.
 
-// here we validate the API key,
-// by mounting this middleware to /api
-// meaning only paths prefixed with "/api"
-// will cause this middleware to be invoked
-
-/*
-app.use('/api', function(req, res, next){
-    var key = req.query['api-key'];
-
-    // key isn't present
-    if (!key) return next(error(400, 'api key required'));
-
-    // key is invalid
-    if (!~apiKeys.indexOf(key)) return next(error(401, 'invalid api key'));
-
-    // all good, store req.key for route access
-    req.key = key;
-    next();
-});
-
-// map of valid api keys, typically mapped to
-// account info with some sort of database like redis.
-// api keys do _not_ serve as authentication, merely to
-// track API usage or help prevent malicious behavior etc.
-
-var apiKeys = ['foo', 'bar', 'baz'];
-*/
-
 // log
+if (!module.parent) app.use(logger(':date[clf]!:method!:url!:status!:response-time ms!:remote-addr!:referrer!:user-agent', {stream: writablestreamintodb}));
 if (!module.parent) app.use(logger('dev'));
+
+// setup session
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
 
 // serve static files
 app.use(express.static(__dirname + '/public'));
 
 // parse request bodies (req.body)
+//app.use(tokenverifiction.verify);
+app.use(filterprojectionparser.parse);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(queryParser);
-
-
+app.use(express.query());
 
 // load controllers
 require('./router/boot')(app, { verbose: !module.parent });
+
+
+// validate wechat
+//app.use('/wechat', wechatvalidation.validateToken);
+
 
 // middleware with an arity of 4 are considered
 // error handling middleware. When you next(err)
@@ -118,7 +66,6 @@ app.use(function(req, res){
 
 /* istanbul ignore next */
 if (!module.parent) {
-
     db.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/hidogs', function(err) {
         if (err) {
             console.log('Sorry, there is no mongo db server running.');

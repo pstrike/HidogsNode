@@ -5,10 +5,6 @@ var React = require('react'),
 
 exports.engine = 'ejs';
 
-exports.before = function(req, res, next){
-    next();
-};
-
 exports.show = function(req, res, next){
     db.get().collection('order').find({"_id":req.params.order_id}, req.projection).limit(1).toArray(function(err, docs) {
         res.send(docs[0]);
@@ -44,7 +40,7 @@ exports.insert = function(req, res, next){
     if (req.body) {
 
         db.get().collection('counter').findAndModify(
-            { "_id": "orderid" }, // query
+            { "_id": "order_id" }, // query
             [], // represents a sort order if multiple matches
             { "$inc": { "seq": 1 } }, // update statement
             { new: true }, // options - new to return the modified document

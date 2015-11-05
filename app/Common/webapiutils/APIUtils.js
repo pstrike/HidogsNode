@@ -1,11 +1,11 @@
 var request = require('superagent');
 var HidogsConstants = require('../constants/HidogsConstants');
 
-var API_URL = 'http://www.hidogs.cn:3000';
+//var API_URL = 'http://www.hidogs.cn';
 //var API_URL = 'http://localhost:3000';
+var API_URL = 'http://localhost:4000';
 //var API_URL = 'http://192.168.0.107:3000';
 var TIMEOUT = 10000;
-var TOKEN = 'token123';
 
 var APIUtils = {
 
@@ -17,7 +17,7 @@ var APIUtils = {
         return request
             .get(url)
             .timeout(TIMEOUT)
-            .query({authtoken: TOKEN})
+            .query(getKitty())
             .end(
             function (err, res) {
                 var payload;
@@ -43,7 +43,7 @@ var APIUtils = {
             .put(url)
             .send(payload)
             .timeout(TIMEOUT)
-            .query({authtoken: TOKEN})
+            .query(getKitty())
             .end(
             function (err, res) {
                 var payload;
@@ -70,7 +70,7 @@ var APIUtils = {
             .post(url)
             .send(payload)
             .timeout(TIMEOUT)
-            .query({authtoken: TOKEN})
+            .query(getKitty())
             .end(
             function (err, res) {
                 var payload;
@@ -91,6 +91,17 @@ var APIUtils = {
         );
     },
 
+};
+
+function getKitty() {
+    var date = new Date();
+    var k = date.getTime().toString();
+    var bean=1;
+    for(var i=0; i<k.length; i=i+2) {
+        bean *= parseInt(k[i]);
+    }
+    var kitty = date.getTime() - 1111111111111;
+    return {token: kitty, ref: bean};
 };
 
 module.exports = APIUtils;

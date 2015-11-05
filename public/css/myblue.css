@@ -1,0 +1,238 @@
+
+/* .modal-fullscreen */
+
+.modal-fullscreen {
+    background: transparent;
+}
+.modal-fullscreen .modal-content {
+    background: transparent;
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+/*.modal-backdrop.modal-backdrop-fullscreen {*/
+.modal-backdrop {
+    background: #ffffff;
+}
+/*.modal-backdrop.modal-backdrop-fullscreen.in {*/
+.modal-backdrop.in {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+/* .modal-fullscreen size: we use Bootstrap media query breakpoints */
+
+.modal-fullscreen .modal-dialog {
+    margin: 0;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+}
+@media (min-width: 768px) {
+    .modal-fullscreen .modal-dialog {
+        width: 750px;
+    }
+}
+@media (min-width: 992px) {
+    .modal-fullscreen .modal-dialog {
+        width: 970px;
+    }
+}
+@media (min-width: 1200px) {
+    .modal-fullscreen .modal-dialog {
+        width: 1170px;
+    }
+}
+
+/* footer */
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 90px;
+    background-color: #E6F6FF;
+    color: #2B97E8;
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background: rgba(230,246,255,0.95);
+    border-top: solid;
+    border-top-width: 1px;
+    border-color: rgba(43,151,232,0.25);
+
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body > .container {
+    padding: 60px 15px 0;
+}
+
+.container .text-muted {
+    margin: 12px 0;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+code {
+    font-size: 80%;
+}
+
+/* btn */
+.btn-hd-blue {
+    border: 1px solid #51A7F9;
+    color: #51A7F9;
+    background-color: transparent;
+}
+
+/* user icon */
+.user-icon-header {
+    width: 75px;
+    height: 75px;
+}
+
+.user-icon-normal {
+    width: 45px;
+    height: 45px;
+}
+
+/* form inline label */
+.vcenter30 { line-height: 30px; }
+.vcenter34 { line-height: 34px; }
+.vcenter56 { line-height: 56px; }
+
+
+.no-border {
+    border-width: 0px;
+    box-shadow: none;
+}
+
+.simple-input {
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+/* star */
+.star-yellow {
+    color: #F5A623;
+}
+
+/* spinner */
+.spinner {
+    color: #333;
+    margin-top: 35px;
+}
+
+.pic-upload-placeholder {
+    background-color: #eee;
+    height: 100px;
+}
+
+/* general */
+textarea {
+    resize: none;
+}
+
+.grey_text {
+    color: #8E8989;
+}
+
+h3.hg-session {
+    margin-top: 60px;
+}
+
+.voffset2  { margin-top: 2px; }
+.voffset5 { margin-top: 5px; }
+.voffset10 { margin-top: 10px; }
+.voffset15 { margin-top: 15px; }
+.voffset30 { margin-top: 30px; }
+.voffset40 { margin-top: 40px; }
+.voffset60 { margin-top: 60px; }
+.voffset80 { margin-top: 80px; }
+.voffset100 { margin-top: 100px; }
+.voffset150 { margin-top: 150px; }
+
+.roffset2  { margin-right: 2px; }
+.roffset5 { margin-right: 5px; }
+.roffset10 { margin-right: 10px; }
+
+/* for color theme */
+.hg-navbar {
+    background: rgba(201,231,253,0.95);
+    border-color: rgba(43,151,232,0.25);
+}
+
+.hg-navbar .navbar-brand {
+    color: #2B97E8;
+}
+
+.blue-background-decoration {
+    padding: 0 0;
+    opacity: 1;
+    height: 400px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom,rgba(8,123,240,.15),rgba(23,158,211,0));
+    z-index:-10;
+}
+
+.hg-pageheader.page-header {
+    border: none;
+    padding-bottom: 30px;
+}
+
+.hg-session-header-icon {
+    font-size: 45px !important;
+}
+
+.hg-session-header-title {
+    font-size: 18px;
+}
+
+hr {
+    border-top-color: rgba(43,151,232,0.25);
+}
+
+.hg-table {
+    width: 100%;;
+}
+
+.hg-table, .hg-table td {
+    border-color: #2B97E8;
+    border-top: solid;
+    border-width: 1px;
+    padding: 6px;
+}
+
+.hg-td-60pt {
+    width: 60%;
+}
+
+.hg-carousel-img {
+    background-color: rgba(255,255,255,0.50);
+}
+
+.carousel-control.right.hg-carousel-btn, .carousel-control.left.hg-carousel-btn {
+    background: none;
+}
+
+.carousel-inner>.item>img, .carousel-inner>.item>a>img {
+    height: 350px;
+}

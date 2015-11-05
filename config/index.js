@@ -13,7 +13,7 @@ var config = {
         host: 'localhost',
         port: 4000,
         mongo: {
-            host: '127.0.0.1',
+            host: '120.25.105.129',
             port: 27017
         }
     },
@@ -22,7 +22,7 @@ var config = {
         host: 'localhost',
         port: 80,
         mongo: {
-            host: '120.25.105.129',
+            host: '127.0.0.1',
             port: 27017
         }
     }
