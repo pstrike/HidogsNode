@@ -13,7 +13,7 @@ var IconUploader = React.createClass({
             imageContent.push(<i className="fa fa-spinner fa-spin fa-2x spinner"></i>);
         }
         else {
-            imageContent.push(<div>
+            imageContent.push(<div className="text-center">
                 <img src={this.props.imageUrl} className="center-block img-responsive img-circle user-icon-header"/>
                 <button className="btn btn-hd-blue center-block btn-sm voffset5" onClick={this._selectPic}>更换</button>
             </div>)
@@ -24,7 +24,7 @@ var IconUploader = React.createClass({
                 {imageContent}
                 <div className="hidden">
                     <form method="post" encType="multipart/form-data" action="#">
-                        <input id={this.props.name} type="file" name={this.props.name} onChange={this._uploadImg}/>
+                        <input id={this.props.name} accept="image/*" type="file" name={this.props.name} onChange={this._uploadImg}/>
                     </form>
                 </div>
                 <br/>
@@ -40,12 +40,12 @@ var IconUploader = React.createClass({
         var id = this.props.name;
         var file = $('input[id='+id+']')[0].files[0];
 
-        if(!file.type.match(/image.*/)) {
+        if(file.type && !file.type.match(/image.*/)) {
             alert("请选择图片类型的文件");
             return;
         }
 
-        picResize.resize(file, MAX_WIDTH, MAX_HEIGHT, function(imgFile){
+        picResize.resizePicFile(file, MAX_WIDTH, MAX_HEIGHT, function(imgFile){
             var fd = new FormData();
             fd.append("image", imgFile);
             fd.append("type", id);

@@ -1,7 +1,8 @@
 var vendor = [
     {
-        field: "commision_rate",
-        meta_value: 0.85,
+        product_meta_other_id: '1',
+        key: "commision_rate",
+        value: 0.85,
     },
 ]
 

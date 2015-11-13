@@ -8,7 +8,7 @@ var CHANGE_EVENT = 'change';
 var _productList = [];
 var _product = {};
 var _editProduct = {};
-var _status = "";
+var _status = Constants.STATE_VENDOR_PRODUCT_LIST;
 
 // Store actions
 // List Actions
@@ -188,7 +188,7 @@ AppDispatcher.register(function(action) {
             triggerNewSaveDataSuccess(product);
             break;
 
-        case Constants.ACTION_VENDOR_PRODUCT_EDIT_CANCEL_TRIGGER_DETAIL:
+        case Constants.ACTION_VENDOR_PRODUCT_NEW_CANCEL_TRIGGER_LIST:
             triggerNewCancelToList();
             break;
 

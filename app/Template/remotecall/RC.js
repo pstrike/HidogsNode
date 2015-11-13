@@ -1,5 +1,6 @@
 var APIUtils = require('../../Common/webapiutils/APIUtils');
 var HidogsConstants = require('../../Common/constants/HidogsConstants');
+require('es6-shim');
 
 var RemoteCall = {
     getObject: function () {

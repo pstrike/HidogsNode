@@ -36,7 +36,6 @@ exports.parse = function (req, res, next) {
             req.projection[key] = exclusion[key];
         }
     }
-    console.log(req.projection);
 
     next();
 }

@@ -38,7 +38,7 @@ var app = React.createClass({
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span
+                            <button type="button" className="close" onClick={this._triggerCancel}><span
                                 aria-hidden="true">&times;</span></button>
                             <h4 className="modal-title text-center" id="ProductEditModalTitle">{titleContent}</h4>
                         </div>
@@ -130,7 +130,7 @@ var app = React.createClass({
                             </div>
 
                             <div className="form-group">
-                                <label>服务时长</label>
+                                <label>服务项目</label>
                                 <div className="row">
                                     <div className="col-xs-7"><input type="text" className="form-control simple-input" placeholder="项目名称"/></div>
                                     <div className="col-xs-5"><input type="text" className="form-control simple-input" placeholder="项目价格"/></div>
@@ -173,8 +173,8 @@ var app = React.createClass({
                         </div>
 
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
-                            <button type="button" className="btn btn-default btn-hd-blue" onClick={this._triggerNewSave}>保存</button>
+                            <button type="button" className="btn btn-default btn-hd-blue" onClick={this._triggerCancel}>关闭</button>
+                            <button type="button" className="btn btn-default btn-hd-blue" onClick={this._triggerSave}>保存</button>
                         </div>
                     </div>
                 </div>
@@ -183,25 +183,23 @@ var app = React.createClass({
         );
     },
 
-    _triggerEditSave: function() {
-        Actions.triggerEditSaveToDetail();
+    _triggerSave: function() {
+        if(this.props.type == 'new') {
+            Actions.Actions.triggerNewCancelToList();
+        }
+        else {
+            Actions.triggerEditSaveToDetail();
+        }
     },
 
-    _triggerEditCancel: function() {
-        Actions.triggerEditCancelToDetail()
-    },
+    _triggerCancel: function() {
+        if(this.props.type == 'new') {
+            Actions.triggerNewCancelToList();
+        }
+        else {
+            Actions.triggerEditCancelToDetail()
+        }
 
-    _triggerNewSave: function() {
-        var newProduct = this.state.editProduct;
-        newProduct.product_id = Uudi.uuid();
-
-        console.log(newProduct);
-
-        Actions.triggerNewSaveToList(newProduct);
-    },
-
-    _triggerNewCancel: function() {
-        Actions.Actions.triggerNewCancelToList();
     },
 
     handleChange: function(event) {

@@ -8,6 +8,7 @@ var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
 var Constants = require('../constants/Constants');
 var ModalForm = require('../components/ModalForm.react');
+var ModalAgreement = require('../components/ModalAgreement.react');
 var Header = require('./../../Common/components/Header.react.js');
 
 function getAppState() {
@@ -37,6 +38,7 @@ var app = React.createClass({
             case Constants.STATE_VENDOR_APPLICAITON_CREATED:
             case Constants.STATE_VENDOR_APPLICAITON_EDITING:
                 $('#vendorProfileEdit').modal('show');
+                $('#vendorProfileAgreement').modal('hide');
                 break;
 
             case Constants.STATE_VENDOR_APPLICAITON_DRAFT:
@@ -44,10 +46,18 @@ var app = React.createClass({
             case Constants.STATE_VENDOR_APPLICAITON_REJECT:
             case Constants.STATE_VENDOR_APPLICAITON_APPROVED:
                 $('#vendorProfileEdit').modal('hide');
+                $('#vendorProfileAgreement').modal('hide');
+                break;
+
+            case Constants.STATE_VENDOR_APPLICAITON_EDIT_AGREEMENT:
+            case Constants.STATE_VENDOR_APPLICAITON_PROFILE_AGREEMENT:
+                $('#vendorProfileEdit').modal('hide');
+                $('#vendorProfileAgreement').modal('show');
                 break;
 
             default :
                 $('#vendorProfileEdit').modal('hide');
+                $('#vendorProfileAgreement').modal('hide');
         };
 
 
@@ -116,10 +126,42 @@ var app = React.createClass({
                 // nothing
         };
 
+        var workExperienceContent = "";
+        switch (this.state.vendor.work_experience) {
+            case '0':
+                workExperienceContent = '1年以下';
+                break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                var i = parseInt(this.state.vendor.work_experience);
+                var j = parseInt(this.state.vendor.work_experience)+1;
+                workExperienceContent = i+'-'+j+'年';
+                break;
+            case '10':
+                workExperienceContent = '10年以上';
+                break;
+            default:
+                // keep blank word
+        }
+
+        var agreementContent = '请阅读服务协议详情. 如您同意协议内容, 请进入"编辑模式"并选择同意协议.';
+        if(this.state.vendor.agreement) {
+            agreementContent = "已同意协议内容";
+        }
+
         return <div>
             <Header subtitle="服务伙伴 - 申请加入"/>
 
-            <ModalForm vendor={this.state.vendor} status={this.state.status}/>
+            <ModalForm vendor={this.state.vendor} status={this.state.status}></ModalForm>
+
+            <ModalAgreement></ModalAgreement>
 
 
             <div className="container voffset60">
@@ -154,7 +196,7 @@ var app = React.createClass({
                 </div>
                 <div className="form-group">
                     <label>从业年限</label>
-                    <input type="text" className="form-control no-border" placeholder="从业年限" value={this.state.vendor.work_experience} disabled/>
+                    <input type="text" className="form-control no-border" placeholder="从业年限" value={workExperienceContent} disabled/>
                 </div>
                 <div className="form-group">
                     <label>服务地址</label>
@@ -205,7 +247,7 @@ var app = React.createClass({
                     <div className="row">
                         <div className="col-xs-2"><label className="vcenter34">图片</label></div>
                         <div className="col-xs-10">
-                            <img className="img-responsive" src={this.state.vendor.id_card ? this.state.vendor.id_card.front_image_url : ""}/>
+                            <img className="img-responsive" src={this.state.vendor.id_card ? (this.state.vendor.id_card.front_image_url ? this.state.vendor.id_card.front_image_url : "../../../img/image_placeholer.png") : "../../../img/image_placeholer.png"}/>
                         </div>
                     </div>
                     <br/>
@@ -218,7 +260,7 @@ var app = React.createClass({
                     <div className="row">
                         <div className="col-xs-2"><label className="vcenter34">图片</label></div>
                         <div className="col-xs-10">
-                            <img className="img-responsive" src={this.state.vendor.id_card ? this.state.vendor.id_card.back_image_url : ""}/>
+                            <img className="img-responsive" src={this.state.vendor.id_card ? (this.state.vendor.id_card.back_image_url ? this.state.vendor.id_card.back_image_url : "../../../img/image_placeholer.png"): "../../../img/image_placeholer.png"}/>
                         </div>
                     </div>
                 </div>
@@ -227,43 +269,63 @@ var app = React.createClass({
 
                 <div className="form-group">
 
-                    {this.state.vendor.certificate_list ? this.state.vendor.certificate_list.map(function(item){
-                        return <div>
-                            <div className="row">
-                                <div className="col-xs-2"><label className="vcenter34">名称</label></div>
-                                <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                                  placeholder="名称" value={item.name} disabled/></div>
-                            </div>
-                            <div className="row">
-                                <div className="col-xs-2"><label className="vcenter34">图片</label></div>
-                                <div className="col-xs-10">
-                                    <img className="img-responsive" src={item.image_url}/>
+                    {this.state.vendor.role ? this.state.vendor.role[0].certificate_list.map(function(item){
+                        if(item.name == "" && item.image_url == "") {
+                            return "无内容";
+                        }
+                        else {
+                            return <div>
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">名称</label></div>
+                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
+                                                                      placeholder="名称" value={item.name} disabled/></div>
                                 </div>
-                            </div>
-                            <br/>
-                        </div>;
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">图片</label></div>
+                                    <div className="col-xs-10">
+                                        <img className="img-responsive" src={item.image_url ? item.image_url : '../../../img/image_placeholer.png'}/>
+                                    </div>
+                                </div>
+                                <br/>
+                            </div>;
+                        }
+
                     }) : ""}
                 </div>
 
                 <h3 className="hg-session">作品展示</h3>
 
                 <div className="form-group">
-                    {this.state.vendor.image_url_list ? this.state.vendor.image_url_list.map(function(item){
-                        return <div>
-                            <div className="row">
-                                <div className="col-xs-2"><label className="vcenter34">名称</label></div>
-                                <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                                  placeholder="名称" value={item.name} disabled/></div>
-                            </div>
-                            <div className="row">
-                                <div className="col-xs-2"><label className="vcenter34">图片</label></div>
-                                <div className="col-xs-10">
-                                    <img className="img-responsive" src={item.image_url}/>
+                    {this.state.vendor.role ? this.state.vendor.role[0].work_list.map(function(item){
+                        if(item.name == "" && item.image_url == "") {
+                            return "无内容";
+                        }
+                        else {
+                            return <div>
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">名称</label></div>
+                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
+                                                                      placeholder="名称" value={item.name} disabled/>
+                                    </div>
                                 </div>
-                            </div>
-                            <br/>
-                        </div>;
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">图片</label></div>
+                                    <div className="col-xs-10">
+                                        <img className="img-responsive" src={item.image_url ? item.image_url : '../../../img/image_placeholer.png'}/>
+                                    </div>
+                                </div>
+                                <br/>
+                            </div>;
+                        }
                     }) : ""}
+                </div>
+
+                <h3 className="hg-session">服务伙伴协议</h3>
+                {agreementContent}
+                <div className="row">
+                    <div className="col-xs-12 text-right">
+                        <button className="btn btn-hd-blue btn-sm" onClick={this.showAgreement}>查看协议详情</button>
+                    </div>
                 </div>
 
 
@@ -276,6 +338,10 @@ var app = React.createClass({
 
     _onEdit: function() {
         Actions.triggerProfileEdit();
+    },
+
+    showAgreement: function() {
+        Actions.showAgreement();
     },
 
     _onChange: function() {

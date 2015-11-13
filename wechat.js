@@ -43,7 +43,17 @@ app.use(xmlBodyParser);
 
 app.get('/', function(req, res){
     console.log(req.query);
-    var responseContent = "Hello World";
+    //var responseContent = "Hello World";
+    //res.send(responseContent);
+
+    var redirectUrl = encodeURI("http://www.hidogs.cn/auth");
+    var resContent="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxaddd7cf2ed2848ac&redirect_uri="+redirectUrl+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect";
+    res.redirect(resContent);
+
+});
+
+app.get('/auth', function(req, res){
+    console.log(req.query);
 
     if(req.query.code) {
         responseContent = req.query.code;
@@ -61,16 +71,21 @@ app.get('/', function(req, res){
                     if (!error && response.statusCode == 200) {
                         var user = JSON.parse(body);
                         console.log(user)
+
+                        res.redirect('/test');
                     }
                 })
             }
         })
     }
 
-    res.send(responseContent);
 });
 
-app.post('/', function(req, res){
+app.get('/test', function(req, res){
+    res.send('test');
+});
+
+app.post('/wechat', function(req, res){
     console.log(req.body);
 
     var toUser = req.body.xml.FromUserName;
@@ -97,6 +112,7 @@ app.post('/', function(req, res){
 
         console.log(responseXML);
         res.send(responseXML);
+        //res.redirect(resContent);
     }
     else if(msgType == "event" && eventType == "CLICK" && eventKey == "find_food")
     {

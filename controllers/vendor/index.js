@@ -1,7 +1,8 @@
 var React = require('react'),
-    App = React.createFactory(require('../../app/VendorProfile/components/App.react')),
+    //App = React.createFactory(require('../../app/VendorProfile/components/App.react')),
     //db = require('../../db/db');
-    model = require('../../model/vendor');
+    operation = require('../../model/operation'),
+    model = require('../../model/prototype');
 
 exports.engine = 'ejs';
 
@@ -11,7 +12,7 @@ exports.show = function(req, res, next){
         res.send(docs[0]);
     });
     */
-    model.getObject(req.params.vendor_id, req.projection, function(object) {
+    operation.getObject(operation.getCollectionList().vendor, req.params.vendor_id, req.projection, function(object) {
         res.send(object);
     })
 };
@@ -22,7 +23,7 @@ exports.list = function(req, res, next){
         res.send(docs);
     });
     */
-    model.getObjectList(req.filter, req.projection, function(objectList) {
+    operation.getObjectList(operation.getCollectionList().vendor, req.filter, req.projection, function(objectList) {
         res.send(objectList);
     })
 };
@@ -48,7 +49,7 @@ exports.update = function(req, res, next){
     */
 
     if(req.body) {
-        model.updateObject(req.body, function(result) {
+        operation.updateObject(operation.getCollectionList().vendor, req.body, function(result) {
             if(result.status == 'fail') {
                 next(result.err);
             }
@@ -62,7 +63,7 @@ exports.insert = function(req, res, next){
     res.send("user insert");
     */
     if(req.body) {
-        model.insertObject(req.body, function(result) {
+        operation.insertObject(operation.getCollectionList().vendor, req.body, function(result) {
             if(result.status == 'fail') {
                 next(result.err);
             }
@@ -75,7 +76,7 @@ exports.page = function(req, res, next){
     var page = req.params.vendor_id;
 
     // for local testing
-    //req.session.current_user = {openid: "oiDjPvgsHMlb71D9t8hSgBVz4Gzg"};
+    //req.session.current_user = {vendor_id: "64335f2a-d0da-b322-881d-cfef3882b13c", role: "grooming"};
 
     switch (page) {
         case 'vendorprofile':

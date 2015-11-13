@@ -31,6 +31,7 @@ var app = React.createClass({
 
     componentDidMount: function() {
         Store.addChangeListener(this._onChange);
+        Actions.loadProductList();
     },
 
     componentWillUnmount: function() {
@@ -113,7 +114,6 @@ var app = React.createClass({
                         </div>
                     </div>
                 </footer>
-
 
             </div>
         );

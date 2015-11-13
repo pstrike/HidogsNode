@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="宠物 美容 造型 达人">
+    <link rel="icon" href="../favicon.ico">
+
+    <title>欢宠 - 加入欢宠达人</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/my.css" rel="stylesheet">
+    <link href="../css/font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">欢宠</a>
+                <p class="navbar-text">服务伙伴 - 申请加入</p>
+            </div>
+        </div>
+    </nav>
+
+    <div class="modal modal-fullscreen fade" id="vendorProfileAgreement" tabindex="-2" role="dialog"
+         aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center">欢宠服务伙伴协议</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>本《服务伙伴协议》是由广州欢宠信息科技有限公司（简称为欢宠公司）与服务伙伴（是指为最终用户提供宠物服务的合作伙伴称呼）所订立的协议。本《服务伙伴协议》中欢宠公司为甲方，服务伙伴为乙方。</p>
+
+                    <ol>
+                        <li>甲方为乙方提供平台进行服务宣传、推广、运营和管理，乙方应遵守甲方在平台中的所有条款，如有违反将按相应的条款处理。乙方在提交认证过程中需提供真实有效的证件，不可提供虚假、过期信息作为认证，如发现虚假资料，甲方有权在查证后删除乙方在平台中的帐号信息。认证审核通过的帐号只限于乙方本人使用，此帐号不可转让、租借、出售。</li>
+
+                        <li>乙方必须年满18周岁以上，具有完全个人民事处理能力，需在提供服务中有能力做好犬只安全、健康等方面的预防措施。如在服务过程中因乙方个人行为或技术失误而导致犬只在服务过程中造成伤害、走失、死亡或病重的，将由乙方承担全部责任。如因上述事故导致乙方遭受最终用户提起的索赔、诉讼的，甲方将尽力协调乙方与最终用户之间的纠纷。</li>
+
+                        <li>乙方在接收最终用户犬只时应对其犬只进行外表检查，看是否有明显伤痕、伤口或者有生病的迹象，在发现有上述情况时应当面拒接并说明相关情况，由最终用户接回犬只并协商将服务延期或者退款。</li>
+
+                        <li>乙方在提供服务期间需做好消毒环境、工具等设施，降低犬只之间的皮肤病交叉感染机率，如发现犬只患有严重皮肤病、传染性疾病（犬瘟、细小）的必须立即停止服务，避免其他用户犬只感染，应采取相应的隔离措施并通知最终用户接回或协商后送院治疗。</li>
+
+                        <li>甲方将在乙方每张订单完成后收取此订单的百分之十五作为宣传、推广、运营和管理费用。</li>
+
+                        <li>每周日凌晨零点为资金结算点，将结算上周日凌晨零点至本周日凌晨零点的所有订单。如结算金额未超过人民币500元时，将累积到下周的资金结算点，如结算金额超过人民币500元时，将进行转账至乙方帐号。每周二为转账日，将款以微信支付等形式转账到乙方帐号中，如出现退款情况请参照《退款条约》。</li>
+                    </ol>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-fullscreen fade" id="vendorProfileEdit" tabindex="-2" role="dialog"
+         aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="ProductDetailModalTitle">加入欢宠服务伙伴</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="page-header">
+                        <img src="../img/ppl.jpg" class="center-block img-responsive img-circle user-icon-header"/>
+                        <button class="btn btn-hd-blue center-block btn-sm voffset5">更换</button>
+                        <br/>
+                        <blockquote>
+                            <p class="instruction">通过加入成为服务伙伴, 欢宠的宠友用户可以随时发现、预订您所提供的服务. 您只需填写以下的信息即可完成申请, 我将对您的资料进行基本审核以保证服务质量.</p>
+                        </blockquote>
+                    </div>
+
+                    <h3>基本信息</h3>
+                    <div class="form-group">
+                        <label for="vendorNickName">昵称</label>
+                        <input type="text" class="form-control" id="vendorNickName" placeholder="昵称" value="仲秋"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="vendorName">姓名</label>
+                        <input type="text" class="form-control " id="vendorName" placeholder="姓名" value="黄仲秋"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="vendorGender">性别</label>
+                        <select class="form-control " id="vendorGender" >
+                            <option selected>男</option>
+                            <option>女</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vendorEmail">电子邮箱</label>
+                        <input type="text" class="form-control " id="vendorEmail" placeholder="电子邮箱" value="zhongqiu@163.com" />
+                    </div>
+                    <div class="form-group">
+                        <label for="vendorMobile">手机号码</label>
+                        <input type="text" class="form-control " id="vendorMobile" placeholder="手机号码" value="18888881111" />
+                    </div>
+                    <div class="form-group">
+                        <label for="vendorExperience">从业年限</label>
+                        <blockquote>
+                            <p class="instruction">请填写您从事宠物美容行业的年数.</p>
+                        </blockquote>
+                        <select class="form-control " id="vendorExperience" >
+                            <option>1年</option>
+                            <option>1-2年</option>
+                            <option>2-3年</option>
+                            <option>3-4年</option>
+                            <option>4-5年</option>
+                            <option>5-6年</option>
+                            <option selected>6-7年</option>
+                            <option>7-8年</option>
+                            <option>8-9年</option>
+                            <option>9-10年</option>
+                            <option>10年</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>服务地址</label>
+                        <blockquote>
+                            <p class="instruction">请填写您提供服务所在地的具体地址. 该地址将作为默认服务地址展现给用户.</p>
+                        </blockquote>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorAddressProvince">省份</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control " id="vendorAddressProvince" placeholder="省份" value="广东省" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorAddressCity">城市</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control " id="vendorAddressCity" placeholder="城市" value="广州市" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorAddressRegion">区域</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control " id="vendorAddressRegion" placeholder="区域" value="海珠区" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorAddressDetail">地址</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control " id="vendorAddressDetail" placeholder="具体地址" value="滨江东路418号天天小区3栋201" /></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="vendorDescription">个人描述</label>
+                        <textarea id="vendorDescription" class="form-control " rows="5" >今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
+                    </div>
+                    <hr/>
+                    
+                    <h3 class="hg-session">身份证信息</h3>
+                    <div class="form-group">
+                        <label for="vendorIdNo">身份证号码</label>
+                        <input type="text" class="form-control " id="vendorIdNo" placeholder="身份证号码" value="1234567890123" />
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorIdFrontName">名称</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control no-border" id="vendorIdFrontName" placeholder="身份证正面图片" value="身份证正面图片" disabled /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorIdFrontPic">图片</label></div>
+                            <div class="col-xs-10">
+                                <form method="post" encType="multipart/form-data" action="#">
+                                    <input id="vendorIdFrontPic" type="file" name="datafile" />
+                                </form>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorIdBackName">名称</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control no-border" id="vendorIdBackName" placeholder="身份证背面图片" value="身份证背面图片" disabled/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorIdBackPic">图片</label></div>
+                            <div class="col-xs-10">
+                                <form method="post" encType="multipart/form-data" action="#">
+                                    <input id="vendorIdBackPic" type="file" name="datafile" />
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+
+                    <h3 class="hg-session">专业认证</h3>
+                    <blockquote>
+                        <p class="instruction">如果您有相关的专业认证, 请务必填写. 专业认证可以让用户更好的了解您的专业水品.</p>
+                    </blockquote>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorCertificateName1">名称</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control " id="vendorCertificateName1" placeholder="名称" value="CKU A级" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorCertificatePic1">图片</label></div>
+                            <div class="col-xs-10">
+                                <form method="post" encType="multipart/form-data" action="#">
+                                    <input id="vendorCertificatePic1" type="file" name="datafile" />
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-right">
+                                <button class="btn btn-hd-blue btn-sm">删除</button>
+                            </div>
+                        </div>
+
+
+                        <br/>
+
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorCertificateName2">名称</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control " id="vendorCertificateName2" placeholder="名称" value="CKU A级" /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorCertificatePic2">图片</label></div>
+                            <div class="col-xs-10">
+                                <form method="post" encType="multipart/form-data" action="#">
+                                    <input id="vendorCertificatePic2" type="file" name="datafile" />
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-right">
+                                <button class="btn btn-hd-blue btn-sm">删除</button>
+                                <button class="btn btn-hd-blue btn-sm">添加</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+
+                    <h3 class="hg-session">作品展示</h3>
+                    <blockquote>
+                        <p class="instruction">请将您最近的美容作品照片按照以下要求上传. 如果您有更多作品照片, 请精选一些您的代表作并添加到您的资料中.</p>
+                    </blockquote>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorWorkName1">名称</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control no-border" id="vendorWorkName1" placeholder="美容后站立正面图" value="美容后站立正面图" disabled/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorWorkPic1">图片</label></div>
+                            <div class="col-xs-10">
+                                <form method="post" encType="multipart/form-data" action="#">
+                                    <input id="vendorWorkPic1" type="file" name="datafile" />
+                                </form>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorWorkName2">名称</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control no-border" id="vendorWorkName2" placeholder="美容后站立正面图" value="美容后站立正面图" disabled/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorWorkPic2">图片</label></div>
+                            <div class="col-xs-10">
+                                <form method="post" encType="multipart/form-data" action="#">
+                                    <input id="vendorWorkPic2" type="file" name="datafile" />
+                                </form>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorWorkName3">名称</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control no-border" id="vendorWorkName3" placeholder="美容后站立正面图" value="美容后站立正面图" disabled/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorWorkPic3">图片</label></div>
+                            <div class="col-xs-10">
+                                <form method="post" encType="multipart/form-data" action="#">
+                                    <input id="vendorWorkPic3" type="file" name="datafile" />
+                                </form>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorWorkName4">名称</label></div>
+                            <div class="col-xs-10"><input type="text" class="form-control" id="vendorWorkName4" placeholder="写点什么描述下您的作品" value=""/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-2"><label class="vcenter34" for="vendorWorkPic4">图片</label></div>
+                            <div class="col-xs-10">
+                                <form method="post" encType="multipart/form-data" action="#">
+                                    <input id="vendorWorkPic4" type="file" name="datafile" />
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 text-right">
+                                <button class="btn btn-hd-blue btn-sm">删除</button>
+                                <button class="btn btn-hd-blue btn-sm">添加</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="hg-session">服务伙伴协议</h3>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="">
+                            我已阅读并同意欢宠服务伙伴协议内容
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <button class="btn btn-hd-blue btn-sm" onClick="$('#vendorProfileEdit').modal('hide'); $('#vendorProfileAgreement').modal('show');">查看协议详情</button>
+                        </div>
+                    </div>
+
+                    <div class="text-right">
+                        <p class="bg-danger text-danger verification-msg">
+                            <strong>请根据以下提示, 补充、修改您的资料:</strong><br/>
+                            1.身份证信息<br/>
+                            2.作品<br/>
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+
+            <img src="../img/ppl.jpg" class="center-block img-responsive img-circle user-icon-header"/>
+            <h3 class="text-center">仲秋</h3>
+            <div class="row text-right">
+                <div class="col-xs-12">
+                    <span class="label label-default">草稿</span>
+                </div>
+            </div>
+        </div>
+
+        <i class="fa fa-spinner fa-spin fa-2x spinner"></i>
+
+        <h3>基本信息</h3>
+        <div class="form-group">
+            <label>姓名</label>
+            <input type="text" class="form-control no-border" placeholder="姓名" value="黄仲秋" disabled/>
+        </div>
+        <div class="form-group">
+            <label>性别</label>
+            <input type="text" class="form-control no-border" placeholder="性别" value="女" disabled/>
+        </div>
+        <div class="form-group">
+            <label>电子邮箱</label>
+            <input type="text" class="form-control no-border" placeholder="电子邮箱" value="zhongqiu@163.com" disabled/>
+        </div>
+        <div class="form-group">
+            <label>手机号码</label>
+            <input type="text" class="form-control no-border" placeholder="手机号码" value="18888881111" disabled/>
+        </div>
+        <div class="form-group">
+            <label>从业年限</label>
+            <input type="text" class="form-control no-border" placeholder="从业年限" value="6-7年" disabled/>
+        </div>
+        <div class="form-group">
+            <label>服务地址</label>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">省份</label></div>
+                <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="省份" value="广东省" disabled/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">城市</label></div>
+                <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="城市" value="广州市" disabled/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">区域</label></div>
+                <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="区域" value="海珠区" disabled/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">地址</label></div>
+                <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="具体地址" value="滨江东路418号天天小区3栋201" disabled/></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>个人描述</label>
+            <textarea class="form-control no-border" rows="5" disabled>今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
+        </div>
+
+        <h3 class="hg-session">身份证信息</h3>
+        <div class="form-group">
+            <label>身份证号码</label>
+            <input type="text" class="form-control no-border" placeholder="身份证号码" value="1234567890123" disabled/>
+            <br/>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">名称</label></div>
+                <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="身份证正面照片" value="身份证正面照片" disabled/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">图片</label></div>
+                <div class="col-xs-10">
+                    <img class="img-responsive" src="../img/image_placeholer.png"/>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">名称</label></div>
+                <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="身份证背面照片" value="身份证背面照片" disabled/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">图片</label></div>
+                <div class="col-xs-10">
+                    <img class="img-responsive" src="../img/image_placeholer.png"/>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="hg-session">专业认证</h3>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">名称</label></div>
+                <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="名称" value="CKU A级" disabled/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">图片</label></div>
+                <div class="col-xs-10">
+                    <img class="img-responsive" src="../img/image_placeholer.png"/>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="hg-session">作品展示</h3>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">名称</label></div>
+                <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="美容后站立正面图" value="美容后站立正面图" disabled/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">图片</label></div>
+                <div class="col-xs-10">
+                    <img class="img-responsive" src="../img/image_placeholer.png"/>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">名称</label></div>
+                <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="美容后站立正面图" value="美容后站立正面图" disabled/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">图片</label></div>
+                <div class="col-xs-10">
+                    <img class="img-responsive" src="../img/image_placeholer.png"/>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34">名称</label></div>
+                <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="美容后站立正面图" value="美容后站立正面图" disabled/></div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label class="vcenter34" for="vendorWorkPic3">图片</label></div>
+                <div class="col-xs-10">
+                    <img class="img-responsive" src="../img/image_placeholer.png"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row text-right">
+                <div class="col-xs-12">
+                    <button class="btn btn-hd-blue text-muted" data-toggle="modal" data-target="#vendorProfileEdit">编辑</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../lib/jquery-2.1.4.min.js"></script>
+    <script src="../lib/bootstrap.min.js"></script>
+</body>
+</html>

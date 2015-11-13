@@ -7,10 +7,11 @@ var filterprojectionparser = require("./util/filterprojectionparser");
 var tokenverifiction = require("./util/tokenverification");
 var writablestreamintodb = require('./util/writablestreamintodb');
 var session = require('express-session')
+var compress = require('compression');
 //var wechatvalidation = require('./util/wechatvalidation');
 
 var app = module.exports = express();
-var config = require('./config')('staging');
+var config = require('./config')('production');
 
 // Make sure to include the JSX transpiler
 require("node-jsx").install();
@@ -18,6 +19,9 @@ require("node-jsx").install();
 // if we wanted to supply more than JSON, we could
 // use something similar to the content-negotiation
 // example.
+
+// gzip compression
+app.use(compress());
 
 // log
 if (!module.parent) app.use(logger(':date[clf]!:method!:url!:status!:response-time ms!:remote-addr!:referrer!:user-agent', {stream: writablestreamintodb}));
@@ -30,7 +34,7 @@ app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
 app.use(express.static(__dirname + '/public'));
 
 // parse request bodies (req.body)
-//app.use(tokenverifiction.verify);
+app.use(tokenverifiction.verify);
 app.use(filterprojectionparser.parse);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

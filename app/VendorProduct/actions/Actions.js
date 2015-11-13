@@ -5,6 +5,17 @@ var RC = require('../remotecall/RC');
 
 var Actions = {
 
+    // Init
+    loadProductList: function() {
+        RC.getProductFormMeta().then(function (payload) {
+            var result = JSON.parse(payload.response);
+            console.log(result);
+            alert(result);
+        }, function (err) {
+            alert("err");
+        });
+    },
+
     // List Actions
     triggerListToDetail: function() {
         AppDispatcher.dispatch({

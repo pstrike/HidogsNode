@@ -1,14 +1,14 @@
 var React = require('react'),
     //VendorProduct = React.createFactory(require('../../app/VendorProduct/components/VendorProductApp.react')),
-    UserProductApp = React.createFactory(require('../../app/UserProduct/components/App.react')),
-    db = require('../../db/db'),
-    error = require('../../util/errorhandler');
+    //UserProductApp = React.createFactory(require('../../app/UserProduct/components/App.react')),
+    //db = require('../../db/db'),
+    operation = require('../../model/operation'),
+    model = require('../../model/prototype');
 
 exports.engine = 'ejs';
 
-var COUNTER_PRODUCT_ID = "product_id";
-
 exports.show = function(req, res, next){
+    /*
     db.get().collection('product').find({"_id":req.params.product_id}, req.projection).toArray(function(err, docs) {
         var availability = [
             {begin: "201010100900", end: "201010101000"},
@@ -18,15 +18,26 @@ exports.show = function(req, res, next){
         docs[0].availability = availability;
         res.send(docs[0]);
     });
+    */
+    operation.getObject(operation.getCollectionList().product, req.params.product_id, req.projection, function(object) {
+        res.send(object);
+    })
 };
 
 exports.list = function(req, res, next){
+    /*
     db.get().collection('product').find(req.filter, req.projection).toArray(function(err, docs) {
         res.send(docs);
     });
+    */
+
+    operation.getObjectList(operation.getCollectionList().product, req.filter, req.projection, function(objectList) {
+        res.send(objectList);
+    })
 };
 
 exports.update = function(req, res, next){
+    /*
     if(req.body) {
         db.get().collection('product').updateOne(
             {"_id": req.body._id},
@@ -43,9 +54,20 @@ exports.update = function(req, res, next){
                 }
         });
     }
+    */
+
+    if(req.body) {
+        operation.updateObject(operation.getCollectionList().product, req.body, function(result) {
+            if(result.status == 'fail') {
+                next(result.err);
+            }
+            res.send(result);
+        });
+    }
 };
 
 exports.insert = function (req, res, next) {
+    /*
     if (req.body) {
         db.get().collection('product').insertOne(req.body, function (err, result) {
             if (err) {
@@ -58,10 +80,16 @@ exports.insert = function (req, res, next) {
             }
         });
     }
-};
+    */
 
-exports.index = function(req, res, next){
-    res.send("product index");
+    if(req.body) {
+        operation.insertObject(operation.getCollectionList().product, req.body, function(result) {
+            if(result.status == 'fail') {
+                next(result.err);
+            }
+            res.send(result);
+        });
+    }
 };
 
 exports.page = function(req, res, next){
@@ -76,9 +104,10 @@ exports.page = function(req, res, next){
             //res.render('index.ejs');
             break;
         case 'userproduct':
-            var reactHtml = React.renderToString(UserProductApp({}));
+            //var reactHtml = React.renderToString(UserProductApp({}));
             // Output html rendered by react
-            res.render('userproduct.ejs', {reactOutput: reactHtml});
+            //res.render('userproduct.ejs', {reactOutput: reactHtml});
+            res.render('userproduct.ejs');
             //res.render('index.ejs');
             break;
         default:
@@ -88,26 +117,29 @@ exports.page = function(req, res, next){
 
 exports.meta = function(req, res, next){
     var id = req.params.meta_id;
+    var result = {};
 
-    var filter = {};
-    if(id == "list") {
-        filter = {};
+    switch (id) {
+        case "productformmeta":
+
+            console.log("load meta");
+
+            operation.getObjectList(operation.getCollectionList().product_meta_category, {}, {}, function(objectList) {
+                result.category = objectList;
+
+                operation.getObjectList(operation.getCollectionList().product_meta_exit_policy, {}, {}, function(objectList) {
+                    result.exit_policy = objectList;
+
+                    operation.getObject(operation.getCollectionList().product_meta_other, '1', {}, function(object) {
+                        result.commision_rate = object;
+
+                        res.send(result);
+                    })
+                })
+            })
+
+            break;
     }
-    else {
-        filter = {field: id};
-    }
-
-    db.get().collection('productmeta').find(filter).toArray(function(err, docs) {
-        var result={};
-
-        if(docs) {
-            for(var i=0; i<docs.length; i++) {
-                result[docs[i].field] = docs[i].meta_value;
-            }
-        }
-
-        res.send(result);
-    });
 };
 
 exports.otherget = function(req, res, next){

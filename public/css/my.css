@@ -114,6 +114,7 @@ code {
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
+    -webkit-appearance: none !important;
 }
 
 /* star */
@@ -189,4 +190,21 @@ h3.hg-session {
 
 .modal {
     overflow-y: auto;
+}
+
+.instruction {
+    font-size: 80%;
+    color: #777;
+}
+
+.verification-msg {
+    padding: 20px 10px;
+}
+
+.close {
+    font-size: 31px;
+}
+
+.modal-header .close {
+    margin-top: -7px;
 }

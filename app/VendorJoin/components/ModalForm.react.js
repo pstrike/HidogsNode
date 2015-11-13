@@ -8,13 +8,16 @@ var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
 var Constants = require('../constants/Constants');
 var Header = require('./../../Common/components/Header.react.js');
-var PicUploader = require('./../../Common/components/PicUploader');
-var IconUploader = require('./../../Common/components/IconUploader');
+var WXIconUploader = require('./../../Common/components/WXIconUploader');
+var WXPicUploader = require('./../../Common/components/WXPicUploader');
+var WXSign = require('./../../Common/components/WXSign');
 var APVTO = require('../../../util/assignpathvaluetoobject');
 
 function getAppState() {
     return {
         editVendor: Store.getEditVendor(),
+        verifyMsg: Store.getVerifyMsg(),
+        wxSign: Store.getWXSign(),
     };
 };
 
@@ -35,77 +38,101 @@ var app = React.createClass({
     render: function() {
 
         var certificateInput = [];
-        if(this.state.editVendor.certificate_list) {
-            for(var i=0; i<this.state.editVendor.certificate_list.length; i++) {
-                var textName = "certificate_list.["+i+"].name";
-                var imageName = "certificate_list.["+i+"].image_url";
+        if(this.state.editVendor.role) {
+            for(var i=0; i<this.state.editVendor.role[0].certificate_list.length; i++) {
+                var textName = "role.[0].certificate_list.["+i+"].name";
+                var imageName = "role.[0].certificate_list.["+i+"].image_url";
 
                 var addFlag = 'false';
-                if(i == this.state.editVendor.certificate_list.length-1) {
+                if(i == this.state.editVendor.role[0].certificate_list.length-1) {
                     addFlag = 'true';
                 }
 
-                var deleteFlag = 'false';
-                if(i > 0) {
-                    deleteFlag = 'true';
+                var deleteFlag = 'true';
+                if(this.state.editVendor.role[0].certificate_list.length == 1) {
+                    deleteFlag = 'false';
                 }
 
-                certificateInput.push(<PicUploader textName={textName}
-                                                   imageName={imageName}
-                                                   text={this.state.editVendor.certificate_list[i].name}
-                                                   imageUrl={this.state.editVendor.certificate_list[i].image_url}
-                                                   onChange={this.handleChange}
-                                                   delete = {deleteFlag}
-                                                   onDelete = {this._removeCertificate.bind(this, i)}
-                                                   add = {addFlag}
-                                                   onAdd = {this._addNewCertificate}
-                                                   onUpload = {this.handlePicUpload}
-                                                   disabled = 'false'
+                certificateInput.push(<WXPicUploader textName={textName}
+                                                     imageName={imageName}
+                                                     text={this.state.editVendor.role[0].certificate_list[i].name}
+                                                     imageUrl={this.state.editVendor.role[0].certificate_list[i].image_url}
+                                                     onChange={this.handleChange}
+                                                     delete={deleteFlag}
+                                                     onDelete={this._removeCertificate.bind(this, i)}
+                                                     add={addFlag}
+                                                     onAdd={this._addNewCertificate}
+                                                     disabled='false'
+                                                     getMedia={this.getWXPicMedia}
                     />);
 
-                if(i != this.state.editVendor.certificate_list.length-1) {
+                if(i != this.state.editVendor.role[0].certificate_list.length-1) {
                     certificateInput.push(<br/>);
                 }
             }
         };
 
         var idCardImageInput = [];
-        idCardImageInput.push(<PicUploader imageName='id_card.front_image_url'
-                                           textName='id_card.front_image_name'
-                                           text='身份证正面图片(您照片的那面)'
-                                           imageUrl={this.state.editVendor.id_card ? this.state.editVendor.id_card.front_image_url : ""}
-                                           onChange={this.handleChange}
-                                           delete='false'
-                                           //onDelete={this._removeCertificate.bind(this, i)}
-                                           add='false'
-                                           //onAdd={this._addNewCertificate}
-                                           onUpload={this.handlePicUpload}
-                                           disabled='true'
+        //idCardImageInput.push(<PicUploader imageName='id_card.front_image_url'
+        //                                   textName='id_card.front_image_name'
+        //                                   text='身份证正面图片(您照片的那面)'
+        //                                   imageUrl={this.state.editVendor.id_card ? this.state.editVendor.id_card.front_image_url : ""}
+        //                                   onChange={this.handleChange}
+        //                                   delete='false'
+        //                                   //onDelete={this._removeCertificate.bind(this, i)}
+        //                                   add='false'
+        //                                   //onAdd={this._addNewCertificate}
+        //                                   onUpload={this.handlePicUpload}
+        //                                   disabled='true'
+        //    />);
+        idCardImageInput.push(<WXPicUploader textName='id_card.front_image_name'
+                                             imageName='id_card.front_image_url'
+                                             text='身份证正面图片(您照片的那面)'
+                                             imageUrl={this.state.editVendor.id_card ? this.state.editVendor.id_card.front_image_url : ""}
+                                             onChange={this.handleChange}
+                                             delete='false'
+                                             //onDelete={this._removeCertificate.bind(this, i)}
+                                             add='false'
+                                             //onAdd={this._addNewCertificate}
+                                             disabled='true'
+                                             getMedia={this.getWXPicMedia}
             />);
         idCardImageInput.push(<br/>);
-        idCardImageInput.push(<PicUploader imageName='id_card.back_image_url'
-                                           textName='id_card.back_image_name'
-                                           text='身份证背面图片'
-                                           imageUrl={this.state.editVendor.id_card ? this.state.editVendor.id_card.back_image_url : ""}
-                                           onChange={this.handleChange}
-                                           delete='false'
-                                           //onDelete={this._removeCertificate.bind(this, i)}
-                                           add='false'
-                                           //onAdd={this._addNewCertificate}
-                                           onUpload={this.handlePicUpload}
-                                           disabled='true'
+        //idCardImageInput.push(<PicUploader imageName='id_card.back_image_url'
+        //                                   textName='id_card.back_image_name'
+        //                                   text='身份证背面图片'
+        //                                   imageUrl={this.state.editVendor.id_card ? this.state.editVendor.id_card.back_image_url : ""}
+        //                                   onChange={this.handleChange}
+        //                                   delete='false'
+        //                                   //onDelete={this._removeCertificate.bind(this, i)}
+        //                                   add='false'
+        //                                   //onAdd={this._addNewCertificate}
+        //                                   onUpload={this.handlePicUpload}
+        //                                   disabled='true'
+        //    />);
+        idCardImageInput.push(<WXPicUploader textName='id_card.back_image_name'
+                                             imageName='id_card.back_image_url'
+                                             text='身份证背面图片'
+                                             imageUrl={this.state.editVendor.id_card ? this.state.editVendor.id_card.back_image_url : ""}
+                                             onChange={this.handleChange}
+                                             delete='false'
+                                             //onDelete={this._removeCertificate.bind(this, i)}
+                                             add='false'
+                                             //onAdd={this._addNewCertificate}
+                                             disabled='true'
+                                             getMedia={this.getWXPicMedia}
             />);
 
-        var imageInput = [];
-        if(this.state.editVendor.image_url_list) {
-            for(var i=0; i<this.state.editVendor.image_url_list.length; i++) {
-                var textName = "image_url_list.["+i+"].name";
-                var imageName = "image_url_list.["+i+"].image_url";
+        var workInput = [];
+        if(this.state.editVendor.role) {
+            for(var i=0; i<this.state.editVendor.role[0].work_list.length; i++) {
+                var textName = "role.[0].work_list.["+i+"].name";
+                var imageName = "role.[0].work_list.["+i+"].image_url";
                 var addFlag = 'false';
                 var disabledFlag = 'false';
                 var deleteFlag = 'true';
 
-                if(i == this.state.editVendor.image_url_list.length-1) {
+                if(i == this.state.editVendor.role[0].work_list.length-1) {
                     addFlag = 'true';
                 }
 
@@ -114,21 +141,34 @@ var app = React.createClass({
                     deleteFlag = 'false';
                 }
 
-                imageInput.push(<PicUploader textName={textName}
-                                             imageName={imageName}
-                                             text={this.state.editVendor.image_url_list[i].name}
-                                             imageUrl={this.state.editVendor.image_url_list[i].image_url}
-                                             onChange={this.handleChange}
-                                             delete = {deleteFlag}
-                                             onDelete = {this._removeImage.bind(this, i)}
-                                             add = {addFlag}
-                                             onAdd = {this._addNewImage}
-                                             onUpload = {this.handlePicUpload}
-                                             disabled = {disabledFlag}
+                //workInput.push(<PicUploader textName={textName}
+                //                             imageName={imageName}
+                //                             text={this.state.editVendor.role[0].work_list[i].name}
+                //                             imageUrl={this.state.editVendor.role[0].work_list[i].image_url}
+                //                             onChange={this.handleChange}
+                //                             delete = {deleteFlag}
+                //                             onDelete = {this._removeWork.bind(this, i)}
+                //                             add = {addFlag}
+                //                             onAdd = {this._addNewWork}
+                //                             onUpload = {this.handlePicUpload}
+                //                             disabled = {disabledFlag}
+                //    />);
+
+                workInput.push(<WXPicUploader textName={textName}
+                                              imageName={imageName}
+                                              text={this.state.editVendor.role[0].work_list[i].name}
+                                              imageUrl={this.state.editVendor.role[0].work_list[i].image_url}
+                                              onChange={this.handleChange}
+                                              delete={deleteFlag}
+                                              onDelete={this._removeWork.bind(this, i)}
+                                              add={addFlag}
+                                              onAdd={this._addNewWork}
+                                              disabled={disabledFlag}
+                                              getMedia={this.getWXPicMedia}
                     />);
 
-                if(i != this.state.editVendor.image_url_list.length-1) {
-                    imageInput.push(<br/>);
+                if(i != this.state.editVendor.role[0].work_list.length-1) {
+                    workInput.push(<br/>);
                 }
             }
         };
@@ -158,6 +198,18 @@ var app = React.createClass({
             // nothing
         };
 
+        var verifyMsgContent = "";
+        if(this.state.verifyMsg.length > 0) {
+            verifyMsgContent = <div className="text-right">
+                <p className="bg-danger text-danger verification-msg voffset30">
+                    <strong>请根据以下提示, 补充、修改您的资料:</strong><br/>
+                    {this.state.verifyMsg.map(function(item) {
+                        return <span>{item}<br/></span>;
+                    })}
+                </p>
+            </div>;
+        }
+
         return <div className="modal modal-fullscreen fade" id="vendorProfileEdit" tabindex="-2" role="dialog"
                     aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
             <div className="modal-dialog" role="document">
@@ -169,8 +221,20 @@ var app = React.createClass({
 
                     <div className="modal-body">
 
+                        <WXSign signature = {this.state.wxSign}
+                                getSign = {this.getWXSign}
+                                apilist = 'chooseImage,uploadImage'>
+                        </WXSign>
+
                         <div className="page-header">
-                            <IconUploader imageUrl={this.state.editVendor.head_image_url} name="head_image_url" onUpload={this.handlePicUpload}/>
+                            <WXIconUploader
+                                imageUrl={this.state.editVendor.head_image_url}
+                                imageName="head_image_url"
+                                getMedia={this.getWXPicMedia}/>
+                            <br/>
+                            <blockquote>
+                                <p className="instruction">通过加入成为服务伙伴, 欢宠的宠友用户可以随时发现、预订您所提供的服务. 您只需填写以下的信息即可完成申请, 我们将对您的资料进行基本审核以保证服务质量.</p>
+                            </blockquote>
                         </div>
 
                         <h3>基本信息</h3>
@@ -205,6 +269,9 @@ var app = React.createClass({
                         </div>
                         <div className="form-group">
                             <label for="vendorExperience">从业年限</label>
+                            <blockquote>
+                                <p className="instruction">请填写您从事宠物美容行业的年数.</p>
+                            </blockquote>
                             <select className="form-control simple-input" id="vendorExperience" value={this.state.editVendor.work_experience} name="work_experience" onChange={this.handleChange}>
                                 <option value='0'>1年以下</option>
                                 <option value='1'>1-2年</option>
@@ -221,7 +288,9 @@ var app = React.createClass({
                         </div>
                         <div className="form-group">
                             <label>服务地址</label>
-
+                            <blockquote>
+                                <p className="instruction">请填写您提供服务所在地的具体地址. 该地址将作为默认服务地址展现给用户.</p>
+                            </blockquote>
                             <div className="row">
                                 <div className="col-xs-2"><label className="vcenter34"
                                                                  for="vendorAddressProvince">省份</label></div>
@@ -280,17 +349,36 @@ var app = React.createClass({
                         <hr/>
 
                         <h3 className="hg-session">专业认证</h3>
-
+                        <blockquote>
+                            <p className="instruction">如果您有相关的专业认证, 请务必填写. 专业认证可以让用户更好的了解您的专业水品.</p>
+                        </blockquote>
                         <div className="form-group">
                             {certificateInput}
                         </div>
                         <hr/>
 
                         <h3 className="hg-session">作品展示</h3>
-
+                        <blockquote>
+                            <p className="instruction">请将您最近的美容作品照片按照以下要求上传. 如果您有更多作品照片, 请精选一些您的代表作并添加到您的资料中.</p>
+                        </blockquote>
                         <div className="form-group">
-                            {imageInput}
+                            {workInput}
                         </div>
+
+                        <h3 className="hg-session">服务伙伴协议</h3>
+                        <div className="checkbox">
+                            <label>
+                                <input type="checkbox" name="agreement" checked={this.state.editVendor.agreement} onChange={this.handleChange}/>
+                                我已阅读并同意欢宠服务伙伴协议内容
+                            </label>
+                        </div>
+                        <div className="row">
+                            <div className="col-xs-12 text-right">
+                                <button className="btn btn-hd-blue btn-sm" onClick={this.showAgreement}>查看协议详情</button>
+                            </div>
+                        </div>
+
+                        {verifyMsgContent}
 
                     </div>
 
@@ -305,10 +393,18 @@ var app = React.createClass({
     },
 
     _onSubmit: function() {
-        var vendor = this.state.editVendor;
-        vendor["status"] = "reviewing";
+        var verifyMsg = this.verify();
 
-        Actions.updateVendorProfile(vendor, "apply");
+        if(verifyMsg.length == 0) {
+            var vendor = this.state.editVendor;
+            vendor["status"] = "reviewing";
+
+            Actions.updateVendorProfile(vendor, "apply");
+        }
+        else {
+            Actions.verifyProfileForm(verifyMsg);
+        }
+
     },
 
     _onSave: function() {
@@ -324,96 +420,130 @@ var app = React.createClass({
 
     _addNewCertificate: function () {
         var vendor = this.state.editVendor;
-        if(!vendor.certificate_list) {
-            vendor.certificate_list = [{}];
+        if(!vendor.role[0].certificate_list) {
+            vendor.role[0].certificate_list = [{}];
         }
         else {
-            vendor.certificate_list.push({});
+            vendor.role[0].certificate_list.push({});
         }
         this.setState({editVendor: vendor});
     },
 
     _removeCertificate: function (index) {
         var vendor = this.state.editVendor;
-        vendor.certificate_list.splice(index,1);
+        vendor.role[0].certificate_list.splice(index,1);
         this.setState({editVendor: vendor});
     },
 
-    _addNewImage: function () {
+    _addNewWork: function () {
         var vendor = this.state.editVendor;
-        if(!vendor.image_url_list) {
-            vendor.image_url_list = [{}];
+        if(!vendor.role[0].work_list) {
+            vendor.role[0].work_list = [{}];
         }
         else {
-            vendor.image_url_list.push({});
+            vendor.role[0].work_list.push({});
         }
         this.setState({editVendor: vendor});
     },
 
-    _removeImage: function (index) {
+    _removeWork: function (index) {
         var vendor = this.state.editVendor;
-        vendor.image_url_list.splice(index,1);
+        vendor.role[0].work_list.splice(index,1);
         this.setState({editVendor: vendor});
     },
-
 
     handleChange: function(event) {
-        //var updatedPath = this._processPath(event.target.name);
-        //var newVendor = this._setValueToPath(updatedPath, event.target.value);
-        var newVendor = APVTO.assign(this.state.editVendor, event.target.name, event.target.value);
+        var value = event.target.value;
+
+        if(event.target.name == "agreement") {
+            value = event.target.checked;
+        }
+
+        var newVendor = APVTO.assign(this.state.editVendor, event.target.name, value);
 
         this.setState({editVendor: newVendor});
     },
 
-    handlePicUpload: function(name, data) {
-        //var updatedPath = this._processPath(name);
-        var updatedPath = APVTO.path(name);
-        if(data) {
-            Actions.uploadPicture(data, "", updatedPath);
-        }
-        else {
-            alert("请选择图片.");
-        }
+    //handlePicUpload: function(name, data) {
+    //    if(data) {
+    //        Actions.uploadPicture(data, "", name);
+    //    }
+    //    else {
+    //        alert("请选择图片.");
+    //    }
+    //
+    //    var newVendor = APVTO.assign(this.state.editVendor, name, 'loadingspinner');
+    //    this.setState({editVendor: newVendor});
+    //},
 
-        //var newVendor = this._setValueToPath(updatedPath, 'loadingspinner')
-        var newVendor = APVTO.assign(this.state.editVendor, name, 'loadingspinner');
+    getWXPicMedia: function(pic, mediaId, name, type) {
+        Actions.uploadWXPicture(mediaId, name, type);
+
+        var newVendor = APVTO.assign(this.state.editVendor, name, pic);
         this.setState({editVendor: newVendor});
     },
 
-    /*
-    _processPath: function(rawPath) {
-        var path = rawPath.split(".");
+    verify: function() {
+        var verifyMsg = [];
 
-        var updatedPath = path.map(function(item, index) {
-            if(item.indexOf("[")>-1) {
-                return parseInt(item.substring(2, item.length-2));
-            }
-            else {
-                return item;
-            }
-        });
+        if(this.state.editVendor.nick_name == "") {
+            verifyMsg.push("-请填写昵称");
+        }
 
-        return updatedPath;
+        if(this.state.editVendor.name == "") {
+            verifyMsg.push("-请填写姓名");
+        }
+
+        if(this.state.editVendor.gender == "") {
+            verifyMsg.push("-请填写性别");
+        }
+
+        if(this.state.editVendor.mobile == "") {
+            verifyMsg.push("-请填写手机号码");
+        }
+
+        if(this.state.editVendor.address.address == "") {
+            verifyMsg.push("-请填写具体地址");
+        }
+
+        if(this.state.editVendor.id_card.no == "") {
+            verifyMsg.push("-请填写身份证号码");
+        }
+
+        if(this.state.editVendor.id_card.front_image_name == "") {
+            verifyMsg.push("-请上传身份证正面照片");
+        }
+
+        if(this.state.editVendor.id_card.back_image_name == "") {
+            verifyMsg.push("-请上传身份证背面照片");
+        }
+
+        if(this.state.editVendor.role[0].work_list[0].image_url == "") {
+            verifyMsg.push("-请上传您美容作品站立正面图");
+        }
+
+        if(this.state.editVendor.role[0].work_list[1].image_url == "") {
+            verifyMsg.push("-请上传您美容作品站立侧身图");
+        }
+
+        if(this.state.editVendor.role[0].work_list[2].image_url == "") {
+            verifyMsg.push("-请上传您美容作品站立背面图");
+        }
+
+        if(this.state.editVendor.agreement == false) {
+            verifyMsg.push("-只有当您阅读并同意服务协议才可以继续申请流程");
+        }
+
+        return verifyMsg;
     },
 
-    _setValueToPath: function(path, value) {
-        var object = this.state.editVendor;
-        var tmpObject = object;
-        path.forEach(function(item, index){
-            if(index == path.length-1) {
-                tmpObject[item] = value;
-            }
-            else {
-                if(!tmpObject[item]) {
-                    tmpObject[item] = {}
-                }
-                tmpObject = tmpObject[item];
-            }
-        });
-
-        return object;
+    showAgreement: function() {
+        Actions.showAgreement();
     },
-    */
+
+    getWXSign: function() {
+        Actions.getWXSignature(document.location.href);
+    },
 
     _onChange: function() {
         this.setState(getAppState());

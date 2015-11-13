@@ -1,13 +1,22 @@
 var wechat = require('wechat');
 var OAuth = require('wechat-oauth');
-var db = require('../../db/db');
+var WechatAPI = require('wechat-api');
+//var db = require('../../db/db');
+var operation = require('../../model/operation');
+var model = require('../../model/prototype');
+var sign = require('../../util/wxjssign');
+var fs = require('fs');
+var genuuid = require('../../util/genuuid');
 
 var config = {
     token: 'hidogs',
-    appid: 'wxaddd7cf2ed2848ac',
-    encodingAESKey: 'YrJHICF9PcXCYnLocVe1UoNUsOxC5MkPna4vll7IMxl'
+    appid: 'wxb7d0de94e852afd6',
+    encodingAESKey: 'CN7aaTt38ofCv5d4TnlRoh04LnBxhjffwUXc3x3PR01',
+    secret: '8b8a251eaf5fa007ac8d933340a9d19b',
 };
-var client = new OAuth('wxaddd7cf2ed2848ac', '32a1a3ab9838fca79131c42c82fd7017');
+
+var client = new OAuth(config.appid, config.secret);
+var api = new WechatAPI(config.appid, config.secret);
 
 exports.insert = wechat(config).text(function (message, req, res, next) {
     res.reply("text");
@@ -33,9 +42,10 @@ exports.show = function(req, res, next){
     var type = req.params.wechat_id;
     var destination = req.query.destination;
 
+
     switch (type) {
         case "auth":
-            var url = client.getAuthorizeURL('http://www.hidogs.cn/wechat/base',destination,'snsapi_base');
+            var url = client.getAuthorizeURL('http://www.hidogs.cn/wechat/base',destination,'snsapi_userinfo');
             res.redirect(url);
             break;
 
@@ -44,70 +54,99 @@ exports.show = function(req, res, next){
             var param = req.query.state.split("9");
             var destination = param[0].replace(/0/g,".");
             destination = destination.replace(/1/g,"/");
-            var target = param[1];
+            var target = param[1]; // distinguish "vendor" or "user" to handle different type of user
 
             client.getAccessToken(code, function (err, result) {
+                if(err) {
+                    next(new Error("微信认证失败. 请授权并重试."));
+                }
+
                 var accessToken = result.data.access_token;
                 var openid = result.data.openid;
 
-                db.get().collection(target).find({"openid":openid}).limit(1).toArray(function(err, docs) {
-                    if(err || docs.length == 0) {
-                        client.getUser(openid, function (err, result) {
-                            var oauth_user = result;
-                            var newuser = {
-                                openid: oauth_user.openid,
-                                nick_name: oauth_user.nickname,
-                                head_image_url: oauth_user.headimgurl,
-                                gender: oauth_user.sex,
-                                address: {
-                                    country: oauth_user.country,
-                                    province: oauth_user.province,
-                                    city: oauth_user.city,
-                                },
-                                status: "created",
-                                certificate_list: [{name: '', image_url: ''}],
-                                id_card: {
-                                    no: '',
-                                    front_image_url: '',
-                                    back_image_url: '',
-                                },
-                                image_url_list: [
-                                    {name: '美容后,站立正面图', image_url: ''},
-                                    {name: '美容后,站立侧身图', image_url: ''},
-                                    {name: '美容后,站立后视图', image_url: ''},
-                                ],
-                                modified_time: new Date(),
-                            };
-                            db.get().collection(target).insertOne(newuser, function (err, result) {
-                                if (err) {
-                                    console.log("[DB Err]" + err);
-                                    next(err);
-                                }
-                                else {
-                                    console.log("Inserted "+newuser.nickname+" into the user collection.");
+                operation.getObjectList(operation.getCollectionList()[target], {openid: openid}, {}, function(objectList){
+                    if(objectList.length == 0) {
+                        client.getUser({openid: openid, lang: 'zh_CN'}, function (err, result) {
+                            if(err) {
+                                next(new Error("微信认证失败. 请授权并重试."));
+                            }
 
-                                    req.session.current_user = {openid: openid};
+                            // base on result errcode to determine whether this is a double wechat 'code' case
+                            // if so, ignore invalid code and wait for valid code to proceed
+                            if(result.errcode != '40001') {
+                                var oauth_user = result;
+                                var newVendor = model.getVendorPrototype();
 
-                                    res.redirect(destination);
-                                }
-                            });
-                        });
+                                newVendor.openid = oauth_user.openid;
+                                newVendor.nick_name = oauth_user.nickname;
+                                newVendor.head_image_url = oauth_user.headimgurl;
+                                newVendor.gender = oauth_user.sex;
+                                newVendor.address.country = oauth_user.country;
+                                newVendor.address.province = oauth_user.province;
+                                newVendor.address.city = oauth_user.city;
+
+                                operation.insertObject(operation.getCollectionList()[target], newVendor, function (result) {
+                                    if (result.status == "fail") {
+                                        next(result.err);
+                                    }
+                                    else {
+                                        req.session.current_user = {
+                                            vendor_id: result.vendor_id,
+                                            role: newVendor.role[0].slug,
+                                        };
+
+                                        res.redirect(destination);
+                                    }
+                                })
+                            }
+
+                        })
                     }
                     else {
-                        /*
-                        if(user.is_valid == true){
-                            req.session.current_user = user;
-                            res.redirect('/mobile')
-                        }else{
-                            //if phone_number exist,go to user detail page to fill it
-                            req.session.current_user = void 0;
-                            res.redirect('/users/' + user._id + '/verify');
-                        }
-                        */
-                        req.session.current_user = {openid: openid};
-                        res.redirect(destination)
-                    }
+                        req.session.current_user = {
+                            vendor_id: objectList[0].vendor_id,
+                            role: objectList[0].role[0].slug,
+                        };
 
+                        res.redirect(destination);
+                    }
+                })
+            });
+            break;
+
+        case 'wxjssignature':
+            var url = req.query.url;
+
+            api.getTicket(function(err, result) {
+                if(err) {
+                    next(new Error("微信获取JS SDK失败. 请重试."));
+                }
+
+                var signature = sign(result.ticket, url);
+                signature.appId = config.appid;
+
+                res.send(signature);
+            })
+
+            break;
+
+        case 'wxgetmedia':
+            var mediaId = req.query.mediaid;
+            var path = req.query.path;
+
+            api.getMedia(mediaId, function(err, result, wxres) {
+
+                var contents = wxres.headers['content-disposition'].split('"');
+                var fileName = contents[1];
+                var updatedFileName = path + "_" + genuuid.uuid() + '.' + fileName.split('.')[1];
+
+                fs.writeFile('./public/upload/'+updatedFileName, result, function (err) {
+                    if (err) {
+                        next(err);
+                    }
+                    else {
+                        res.send('/upload/' + updatedFileName);
+                    }
                 });
 
             });

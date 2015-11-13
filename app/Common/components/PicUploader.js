@@ -5,6 +5,19 @@ var picResize = require('../../../util/picresize');
 var MAX_WIDTH = 1280;
 var MAX_HEIGHT = 1024;
 
+/*
+ textName - path to assign value to image text
+ imageName - path to assign value to image url
+ text - image text value
+ imageUrl - image url value
+ onChange - on change function
+ delete - to display delete btn or not
+ onDelete - delete function
+ add - to display add btn or not
+ onAdd - add function
+ onUpload - upload function
+ disabled - to disable content or not
+*/
 var PicUploader = React.createClass({
 
     render: function() {
@@ -28,7 +41,7 @@ var PicUploader = React.createClass({
         }
         else {
             imageContent.push(<div className="hidden"><form method="post" encType="multipart/form-data" action="#">
-                <input id={id} type="file" name={this.props.imageName} onChange={this._uploadImg}/>
+                <input id={id} type="file" accept="image/*" name={this.props.imageName} onChange={this._uploadImg}/>
             </form></div>);
             if(this.props.imageUrl) {
                 imageContent.push(<div>
@@ -40,12 +53,12 @@ var PicUploader = React.createClass({
         var inputContent;
         if(this.props.disabled == 'true') {
             inputContent = <input type="text" className="form-control no-border"
-                                  placeholder="写点什么让用户更容易理解图片内容"
+                                  placeholder="写点什么描述图片内容"
                                   value={this.props.text} name={this.props.textName} onChange={this.props.onChange} disabled/>;
         }
         else {
-            inputContent = <input type="text" className="form-control "
-                                  placeholder="写点什么让用户更容易理解图片内容"
+            inputContent = <input type="text" className="form-control simple-input"
+                                  placeholder="写点什么描述图片内容"
                                   value={this.props.text} name={this.props.textName} onChange={this.props.onChange}/>;
         }
 
@@ -93,12 +106,12 @@ var PicUploader = React.createClass({
         var id = this._processId(this.props.imageName);
         var file = $('input[id='+id+']')[0].files[0];
 
-        if(!file.type.match(/image.*/)) {
+        if(file.type && !file.type.match(/image.*/)) {
             alert("请选择图片类型的文件");
             return;
         }
 
-        picResize.resize(file, MAX_WIDTH, MAX_HEIGHT, function(imgFile){
+        picResize.resizePicFile(file, MAX_WIDTH, MAX_HEIGHT, function(imgFile){
             var fd = new FormData();
             fd.append("image", imgFile);
             fd.append("type", id);
