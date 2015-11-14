@@ -24,6 +24,10 @@ var app = React.createClass({
         return getAppState();
     },
 
+    componentWillMount: function(){
+        React.initializeTouchEvents(true);
+    },
+
     componentDidMount: function() {
         Store.addChangeListener(this._onChange);
         Actions.vendorGetVendorList();
@@ -47,22 +51,20 @@ var app = React.createClass({
                     <table className="table table-striped">
                         <thead>
                         <tr>
-                            <th>#</th>
                             <th>昵称</th>
                             <th>姓名</th>
+                            <th>资质</th>
                             <th>电话</th>
-                            <th>电邮</th>
                             <th>状态</th>
                         </tr>
                         </thead>
                         <tbody>
                         {this.state.vendorList.map(function(item){
-                            return <tr onClick={this._viewVendorProfile.bind(this, item.openid)}>
-                                <td>{item.openid}</td>
+                            return <tr onClick={this._viewVendorProfile.bind(this, item.vendor_id)} onTouchStart={this.handleTouchStart}>
                                 <td>{item.nick_name}</td>
                                 <td>{item.name}</td>
+                                <td>{item.role[0].name}</td>
                                 <td>{item.mobile}</td>
-                                <td>{item.email}</td>
                                 <td>{item.status}</td>
                             </tr>;
                         },this)}
@@ -76,6 +78,10 @@ var app = React.createClass({
     _viewVendorProfile: function(id) {
         $('#profileModal').modal('show');
         Actions.vendorGetVendor(id);
+    },
+
+    handleTouchStart: function() {
+
     },
 
     _onChange: function() {

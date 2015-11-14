@@ -11,13 +11,37 @@ var app = React.createClass({
     render: function() {
 
         var approveBtn = "";
-        var rejectBtnGroup = "";
+        var rejectBtnGroup = [];
         if(this.props.vendor.status == "reviewing") {
             approveBtn = <button type="button" className="btn btn-default" onClick={this._approveVendor} data-dismiss="modal">审批通过</button>;
-            rejectBtnGroup = <div>
-                <button type="button" className="btn btn-default" onClick={this._rejectVendor} data-dismiss="modal">拒绝</button>
-                <input type="text" className="form-control" ref="rejectReason"/>
-            </div>;
+
+            rejectBtnGroup.push(<button type="button" className="btn btn-default roffset5" onClick={this._rejectVendor} data-dismiss="modal">拒绝</button>);
+            rejectBtnGroup.push(<input type="text" className="form-control simple-input" ref="rejectReason" placeholder="拒绝原因"/>);
+        }
+
+        var workExperienceContent = "";
+        switch (this.props.vendor.work_experience) {
+            case '0':
+                workExperienceContent = '1年以下';
+                break;
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                var i = parseInt(this.props.vendor.work_experience);
+                var j = parseInt(this.props.vendor.work_experience)+1;
+                workExperienceContent = i+'-'+j+'年';
+                break;
+            case '10':
+                workExperienceContent = '10年以上';
+                break;
+            default:
+            // keep blank word
         }
 
         return (
@@ -33,78 +57,160 @@ var app = React.createClass({
                         </div>
 
                         <div className="modal-body">
-                            <img src={this.props.vendor.head_image_url} className="img-responsive img-circle"/>
-                            <h1>{this.props.vendor.nick_name}</h1>
-                            <h3>评级</h3>
+                            <img src={this.props.vendor.head_image_url}
+                                 className="center-block img-responsive img-circle user-icon-header"/>
 
-                            <ul>
-                                {this.props.vendor.rate_list ? this.props.vendor.rate_list.map(function(item, index) {
-                                    return <li>{item.name}: {item.rate}</li>
+                            <h3 className="text-center">{this.props.vendor.nick_name}</h3>
+
+                            <h3>基本信息</h3>
+
+                            <div className="form-group">
+                                <label>姓名</label>
+                                <input type="text" className="form-control no-border" placeholder="姓名" value={this.props.vendor.name} disabled/>
+                            </div>
+                            <div className="form-group">
+                                <label>性别</label>
+                                <input type="text" className="form-control no-border" placeholder="性别" value={this.props.vendor.gender==1 ? "男" : "女"} disabled/>
+                            </div>
+                            <div className="form-group">
+                                <label>电子邮箱</label>
+                                <input type="text" className="form-control no-border" placeholder="电子邮箱" value={this.props.vendor.email}
+                                       disabled/>
+                            </div>
+                            <div className="form-group">
+                                <label>手机号码</label>
+                                <input type="text" className="form-control no-border" placeholder="手机号码" value={this.props.vendor.mobile}
+                                       disabled/>
+                            </div>
+                            <div className="form-group">
+                                <label>从业年限</label>
+                                <input type="text" className="form-control no-border" placeholder="从业年限" value={workExperienceContent} disabled/>
+                            </div>
+                            <div className="form-group">
+                                <label>服务地址</label>
+
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">省份</label></div>
+                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
+                                                                      placeholder="省份" value={this.props.vendor.address ? this.props.vendor.address.province : ""} disabled/>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">城市</label></div>
+                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
+                                                                      placeholder="城市" value={this.props.vendor.address ? this.props.vendor.address.city : ""} disabled/>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">区域</label></div>
+                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
+                                                                      placeholder="区域" value={this.props.vendor.address ? this.props.vendor.address.region : ""} disabled/>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">地址</label></div>
+                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
+                                                                      placeholder="具体地址" value={this.props.vendor.address ? this.props.vendor.address.address : ""} disabled/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label>个人描述</label>
+                                <textarea className="form-control no-border" rows="5" value={this.props.vendor.description} disabled></textarea>
+                            </div>
+
+                            <h3 className="hg-session">身份证信息</h3>
+
+                            <div className="form-group">
+                                <label>身份证号码</label>
+                                <input type="text" className="form-control no-border" placeholder="身份证号码" value={this.props.vendor.id_card ? this.props.vendor.id_card.no : ""}
+                                       disabled/>
+                                <br/>
+
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">名称</label></div>
+                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
+                                                                      placeholder="身份证正面照片" value="身份证正面照片" disabled/></div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">图片</label></div>
+                                    <div className="col-xs-10">
+                                        <img className="img-responsive" src={this.props.vendor.id_card ? (this.props.vendor.id_card.front_image_url ? this.props.vendor.id_card.front_image_url : "../../../img/image_placeholer.png") : "../../../img/image_placeholer.png"}/>
+                                    </div>
+                                </div>
+                                <br/>
+
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">名称</label></div>
+                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
+                                                                      placeholder="身份证背面照片" value="身份证背面照片" disabled/></div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-xs-2"><label className="vcenter34">图片</label></div>
+                                    <div className="col-xs-10">
+                                        <img className="img-responsive" src={this.props.vendor.id_card ? (this.props.vendor.id_card.back_image_url ? this.props.vendor.id_card.back_image_url : "../../../img/image_placeholer.png"): "../../../img/image_placeholer.png"}/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 className="hg-session">专业认证</h3>
+
+                            <div className="form-group">
+
+                                {this.props.vendor.role ? this.props.vendor.role[0].certificate_list.map(function(item){
+                                    if(item.name == "" && item.image_url == "") {
+                                        return "无内容";
+                                    }
+                                    else {
+                                        return <div>
+                                            <div className="row">
+                                                <div className="col-xs-2"><label className="vcenter34">名称</label></div>
+                                                <div className="col-xs-10"><input type="text" className="form-control no-border"
+                                                                                  placeholder="名称" value={item.name} disabled/></div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-xs-2"><label className="vcenter34">图片</label></div>
+                                                <div className="col-xs-10">
+                                                    <img className="img-responsive" src={item.image_url ? item.image_url : '../../../img/image_placeholer.png'}/>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                        </div>;
+                                    }
+
                                 }) : ""}
-                            </ul>
+                            </div>
 
-                            <h3>状态</h3>
-                            <p>{this.props.vendor.status}</p>
+                            <h3 className="hg-session">作品展示</h3>
 
-                            <h3>真实姓名</h3>
-                            <p>{this.props.vendor.name}</p>
-
-                            <h3>性别</h3>
-                            <p>{this.props.vendor.gender}</p>
-
-                            <h3>电子邮箱</h3>
-                            <p>{this.props.vendor.email}</p>
-
-                            <h3>手机</h3>
-                            <p>{this.props.vendor.mobile}</p>
-
-                            <h3>地址</h3>
-                            <ul>
-                                <li>国家: {this.props.vendor.address ? this.props.vendor.address.country : ""}</li>
-                                <li>省份: {this.props.vendor.address ? this.props.vendor.address.province : ""}</li>
-                                <li>城市: {this.props.vendor.address ? this.props.vendor.address.city : ""}</li>
-                                <li>区域: {this.props.vendor.address ? this.props.vendor.address.region : ""}</li>
-                                <li>具体地址: {this.props.vendor.address ? this.props.vendor.address.address : ""}</li>
-                            </ul>
-
-                            <h3>身份证信息</h3>
-                            <p>{this.props.vendor.id_card ? this.props.vendor.id_card.no : ""}</p>
-                            <img src={this.props.vendor.id_card ? this.props.vendor.id_card.front_image_url : ""} className="img-responsive"/>
-                            <img src={this.props.vendor.id_card ? this.props.vendor.id_card.back_image_url : ""} className="img-responsive"/>
-
-                            <h3>专业认证</h3>
-                            {this.props.vendor.certificate_list ? this.props.vendor.certificate_list.map(function(item, index){
-                                return <p>{item.name}<img src={item.image_url} className="img-responsive"/></p>;
-                            }) : ""}
-
-
-                            <h3>达人介绍</h3>
-                            <p>{this.props.vendor.description}</p>
-
-                            <h3>营业时间</h3>
-                            {this.props.vendor.business_time_list ? this.props.vendor.business_time_list.map(function(item, index){
-                                return <p>{item.start_time}-{item.end_time}</p>
-                            }) : ""}
-
-                            <h3>休息时间</h3>
-                            {this.props.vendor.timeoff_list ? this.props.vendor.timeoff_list.map(function(item, index){
-                                return <p>{item.start_time}-{item.end_time}</p>
-                            }) : ""}
-
-                            <h3>同一时间可提供服务数</h3>
-                            <p>{this.props.vendor.concurrent_no}</p>
-
-                            <h3>支付账号</h3>
-                            <p>{this.props.vendor.payment_account}</p>
-
-                            <h3>图片</h3>
-                            {this.props.vendor.image_url_list ? this.props.vendor.image_url_list.map(function(item, index){
-                                return <img src={item.image_url} className="img-responsive"/>;
-                            }) : ""}
+                            <div className="form-group">
+                                {this.props.vendor.role ? this.props.vendor.role[0].work_list.map(function(item){
+                                    if(item.name == "" && item.image_url == "") {
+                                        return "无内容";
+                                    }
+                                    else {
+                                        return <div>
+                                            <div className="row">
+                                                <div className="col-xs-2"><label className="vcenter34">名称</label></div>
+                                                <div className="col-xs-10"><input type="text" className="form-control no-border"
+                                                                                  placeholder="名称" value={item.name} disabled/>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-xs-2"><label className="vcenter34">图片</label></div>
+                                                <div className="col-xs-10">
+                                                    <img className="img-responsive" src={item.image_url ? item.image_url : '../../../img/image_placeholer.png'}/>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                        </div>;
+                                    }
+                                }) : ""}
+                            </div>
 
                         </div>
 
-                        <div className="modal-footer">
+                        <div className="modal-footer form-inline">
                             <button type="button" className="btn btn-default"
                                     data-dismiss="modal">关闭
                             </button>

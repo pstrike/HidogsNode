@@ -24,7 +24,7 @@ function getVendorSuccess(vendor) {
 
 function getVendorSuccessFake(id) {
     for(var i=0; i<_vendorList.length; i++) {
-        if(_vendorList[i]._id == id) {
+        if(_vendorList[i].vendor_id == id) {
             _vendor = _vendorList[i];
             break;
         }
