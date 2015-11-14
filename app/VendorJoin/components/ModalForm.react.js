@@ -29,10 +29,31 @@ var app = React.createClass({
 
     componentDidMount: function() {
         Store.addChangeListener(this._onChange);
+
+        var pageHeight = $(window).height();
+        var bodyHeight = pageHeight - 121;
+
+        $('#editBody').css({"max-height": bodyHeight + 'px' });
+
     },
 
     componentWillUnmount: function() {
         Store.removeChangeListener(this._onChange);
+    },
+
+    componentDidUpdate: function() {
+        if (this.state.verifyMsg.length > 0 && this.state.isScrollToErrMsg) {
+            var position = $('#editBody').scrollTop() + $('#errMsgAnchor').offset().top;
+
+            $('#editBody').animate({
+                scrollTop: position
+            }, 500);
+
+            // ensure verify msg scroll only response once
+            this.setState(
+                {isScrollToErrMsg: false}
+            );
+        };
     },
 
     render: function() {
@@ -207,6 +228,7 @@ var app = React.createClass({
                         return <span>{item}<br/></span>;
                     })}
                 </p>
+                <div id="errMsgAnchor"></div>
             </div>;
         }
 
@@ -219,7 +241,7 @@ var app = React.createClass({
                         <h4 className="modal-title text-center" id="ProductDetailModalTitle">加入欢宠服务伙伴</h4>
                     </div>
 
-                    <div className="modal-body">
+                    <div className="modal-body" id="editBody">
 
                         <WXSign signature = {this.state.wxSign}
                                 getSign = {this.getWXSign}
@@ -365,19 +387,6 @@ var app = React.createClass({
                             {workInput}
                         </div>
 
-                        <h3 className="hg-session">服务伙伴协议</h3>
-                        <div className="checkbox">
-                            <label>
-                                <input type="checkbox" name="agreement" checked={this.state.editVendor.agreement} onChange={this.handleChange}/>
-                                我已阅读并同意欢宠服务伙伴协议内容
-                            </label>
-                        </div>
-                        <div className="row">
-                            <div className="col-xs-12 text-right">
-                                <button className="btn btn-hd-blue btn-sm" onClick={this.showAgreement}>查看协议详情</button>
-                            </div>
-                        </div>
-
                         {verifyMsgContent}
 
                     </div>
@@ -402,6 +411,10 @@ var app = React.createClass({
             Actions.updateVendorProfile(vendor, "apply");
         }
         else {
+            // scroll to err msg
+            this.setState(
+                {isScrollToErrMsg: true}
+            );
             Actions.verifyProfileForm(verifyMsg);
         }
 
@@ -454,10 +467,6 @@ var app = React.createClass({
 
     handleChange: function(event) {
         var value = event.target.value;
-
-        if(event.target.name == "agreement") {
-            value = event.target.checked;
-        }
 
         var newVendor = APVTO.assign(this.state.editVendor, event.target.name, value);
 
@@ -530,15 +539,7 @@ var app = React.createClass({
             verifyMsg.push("-请上传您美容作品站立背面图");
         }
 
-        if(this.state.editVendor.agreement == false) {
-            verifyMsg.push("-只有当您阅读并同意服务协议才可以继续申请流程");
-        }
-
         return verifyMsg;
-    },
-
-    showAgreement: function() {
-        Actions.showAgreement();
     },
 
     getWXSign: function() {

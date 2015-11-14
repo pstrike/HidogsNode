@@ -34,7 +34,7 @@ app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
 app.use(express.static(__dirname + '/public'));
 
 // parse request bodies (req.body)
-app.use(tokenverifiction.verify);
+//app.use(tokenverifiction.verify);
 app.use(filterprojectionparser.parse);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

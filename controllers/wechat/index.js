@@ -31,7 +31,7 @@ exports.insert = wechat(config).text(function (message, req, res, next) {
 }).link(function (message, req, res, next) {
     res.reply("link");
 }).event(function (message, req, res, next) {
-    res.reply("event");
+    res.reply("欢迎关注欢宠. 一起来加入我们, 成为欢宠美容服务伙伴.");
 }).device_text(function (message, req, res, next) {
     res.reply("device_text");
 }).device_event(function (message, req, res, next) {
@@ -58,6 +58,16 @@ exports.show = function(req, res, next){
 
             client.getAccessToken(code, function (err, result) {
                 if(err) {
+                    next(new Error("微信认证失败. 请授权并重试."));
+                }
+
+                console.log(result);
+
+                if(!result) {
+                    next(new Error("微信认证失败. 请授权并重试."));
+                }
+
+                if(!result.data) {
                     next(new Error("微信认证失败. 请授权并重试."));
                 }
 
@@ -119,6 +129,12 @@ exports.show = function(req, res, next){
 
             api.getTicket(function(err, result) {
                 if(err) {
+                    next(new Error("微信获取JS SDK失败. 请重试."));
+                }
+
+                console.log(result);
+
+                if(!result) {
                     next(new Error("微信获取JS SDK失败. 请重试."));
                 }
 

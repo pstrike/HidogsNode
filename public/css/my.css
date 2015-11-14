@@ -20,6 +20,13 @@
     filter: alpha(opacity=100);
 }
 
+.modal-body {
+    max-height: calc(100vh - 121px);
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+
 /* .modal-fullscreen size: we use Bootstrap media query breakpoints */
 
 .modal-fullscreen .modal-dialog {
@@ -188,9 +195,9 @@ h3.hg-session {
     margin-right: auto;
 }
 
-.modal {
-    overflow-y: auto;
-}
+/*.modal {*/
+    /*overflow-y: auto;*/
+/*}*/
 
 .instruction {
     font-size: 80%;

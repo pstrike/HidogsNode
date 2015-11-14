@@ -76,7 +76,7 @@ exports.page = function(req, res, next){
     var page = req.params.vendor_id;
 
     // for local testing
-    //req.session.current_user = {vendor_id: "64335f2a-d0da-b322-881d-cfef3882b13c", role: "grooming"};
+    //req.session.current_user = {vendor_id: "29cf64e3-3aab-c3ec-c0c7-7307bc671419", role: "grooming"};
 
     switch (page) {
         case 'vendorprofile':

@@ -16,7 +16,7 @@ var app = React.createClass({
 
 
     render: function() {
-        return <div className="modal modal-fullscreen fade" id="vendorProfileAgreement" tabindex="-2" role="dialog"
+        return <div className="modal modal-fullscreen fade" id="vendorProfileAgreement" tabindex="-1" role="dialog"
                     aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
