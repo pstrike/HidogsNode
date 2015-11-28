@@ -7,29 +7,35 @@ var app = React.createClass({
 
     render: function () {
 
+        var starContent = [];
+        var starCount = parseInt(this.props.star);
+        for(var i = 0; i<5; i++) {
+            if(i<starCount) {
+                starContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
+            }
+            else {
+                starContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
+            }
+        }
+
         return (
             <div>
                 <div className="row">
                     <div className="col-xs-3 text-center">
-                        <img src="../../img/ppl_icon.png"/>
+                        <img src={this.props.authorImage}/>
 
-                        <p>大白</p>
+                        <p>{this.props.author}</p>
                     </div>
                     <div className="col-xs-9">
                         <div className="row">
                             <div className="col-xs-6 text-left">
-                                                    <span className="glyphicon glyphicon-star star-yellow"></span>
-                                                    <span className="glyphicon glyphicon-star star-yellow"></span>
-                                                    <span className="glyphicon glyphicon-star star-yellow"></span>
-                                                    <span className="glyphicon glyphicon-star-empty star-yellow"></span>
-                                                    <span className="glyphicon glyphicon-star-empty star-yellow"></span>
+                                {starContent}
                             </div>
-                            <div className="col-xs-6 text-right grey_text">2015/10/31</div>
+                            <div className="col-xs-6 text-right grey_text">{this.props.createdTime}</div>
                         </div>
                         <div className="row">
                             <div className="col-xs-12 text-left">
-                                <p>我家波波有幸被抽中免费体验洗白白y∩__∩y
-                                    当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
+                                <p>{this.props.content}</p>
                             </div>
                         </div>
                     </div>

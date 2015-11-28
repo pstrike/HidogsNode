@@ -1,0 +1,63 @@
+.hg-modal {
+    visibility: hidden;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    text-align:center;
+    z-index: 1000;
+    background: rgba(255,255,255,1);
+    opacity:0;
+    z-index: 1999;
+    overflow-y: hidden;
+}
+
+.hg-modal-body {
+    max-height: calc(100vh - 121px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.hg-modal-footer {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-top: 1px solid #e5e5e5;
+}
+
+.hg-modal-header {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.hg-modal-title {
+    padding-left: 0px;
+}
+
+.hg-modal-header-close {
+    padding-right: 25px;
+}
+
+.hg-modal.fade-in {
+    -webkit-transition: opacity 100ms ease-in;
+    -moz-transition: opacity 100ms ease-in;
+    transition: opacity 100ms ease-in;
+    opacity:1;
+}
+
+.hg-modal.fade-out {
+    -webkit-transition: opacity 100ms ease-in;
+    -moz-transition: opacity 100ms ease-in;
+    transition: opacity 100ms ease-in;
+    opacity:0;
+}
+
+body.hg-modal-open {
+    overflow: hidden;
+    visibility: hidden;
+    position: fixed;
+    width: 100%;
+}

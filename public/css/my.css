@@ -26,7 +26,6 @@
     -webkit-overflow-scrolling: touch;
 }
 
-
 /* .modal-fullscreen size: we use Bootstrap media query breakpoints */
 
 .modal-fullscreen .modal-dialog {
@@ -96,6 +95,12 @@ code {
 
 /* btn */
 .btn-hd-blue {
+    border: 1px solid #51A7F9;
+    color: #51A7F9;
+    background-color: transparent;
+}
+
+.btn-hd-blue:focus, .btn-hd-blue:hover, .btn-hd-blue:active:focus, .btn-hd-blue.active:focus {
     border: 1px solid #51A7F9;
     color: #51A7F9;
     background-color: transparent;
@@ -195,6 +200,11 @@ h3.hg-session {
     margin-right: auto;
 }
 
+#hg-datepicker-readonly .datepicker {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /*.modal {*/
     /*overflow-y: auto;*/
 /*}*/
@@ -202,6 +212,10 @@ h3.hg-session {
 .instruction {
     font-size: 80%;
     color: #777;
+}
+
+.tint-color-font {
+    color: #51A7F9;
 }
 
 .verification-msg {

@@ -94,12 +94,40 @@ exports.insert = function (req, res, next) {
 
 exports.page = function(req, res, next){
     var page = req.params.product_id;
+    var productId = req.query.product;
 
     switch (page) {
         case 'vendorproduct':
             //var reactHtml = React.renderToString(VendorProduct({}));
             // Output html rendered by react
             //res.render('vendorproduct.ejs', {reactOutput: reactHtml});
+
+            // for local testing
+            //req.session.current_user = {
+            //    vendor_id: "bf98f593-071e-48d7-3c73-e0e2f47c45af",
+            //    role: "grooming",
+            //    head_image_url: "http://wx.qlogo.cn/mmopen/ajNVdqHZLLAKwztbcTspbibFnCLP5D5eToEsia8SZXvjHu0swsd455HIcl5hxzK3jREKYhEqykVFYYhZZI7FZOgg/0",
+            //    nick_name: "one_pan",
+            //    status: "approved"
+            //};
+
+            res.render('vendorproduct.ejs');
+            //res.render('index.ejs');
+            break;
+        case 'vendorproducthg1':
+            //var reactHtml = React.renderToString(VendorProduct({}));
+            // Output html rendered by react
+            //res.render('vendorproduct.ejs', {reactOutput: reactHtml});
+
+            // for local testing
+            req.session.current_user = {
+                vendor_id: "hg1",
+                role: "grooming",
+                head_image_url: "/upload/head_image_url_0210590b-cabe-9cd1-9ab8-d3719ff48268.jpg",
+                nick_name: "欢宠小Q",
+                status: "approved"
+            };
+
             res.render('vendorproduct.ejs');
             //res.render('index.ejs');
             break;
@@ -107,7 +135,37 @@ exports.page = function(req, res, next){
             //var reactHtml = React.renderToString(UserProductApp({}));
             // Output html rendered by react
             //res.render('userproduct.ejs', {reactOutput: reactHtml});
-            res.render('userproduct.ejs');
+
+            operation.getObject(operation.getCollectionList().product, productId, {category:1}, function(object) {
+
+                if(object) {
+                    var hgstyle = "";
+
+                    switch (object.category.product_meta_category_id) {
+                        case "1-1-1":
+                            hgstyle = "../../css/hggreen.css";
+                            break;
+
+                        case "1-1-2":
+                            hgstyle = "../../css/hgred.css";
+                            break;
+
+                        case "1-1-3":
+                            hgstyle = "../../css/hgblue.css";
+                            break;
+
+                        case "1-1-4":
+                            hgstyle = "../../css/hgyellow.css";
+                            break;
+
+                    }
+
+                    res.render('userproduct.ejs',{productId: productId, hgstyle: hgstyle});
+                }
+                else {
+                    next();
+                }
+            })
             //res.render('index.ejs');
             break;
         default:
@@ -122,20 +180,31 @@ exports.meta = function(req, res, next){
     switch (id) {
         case "productformmeta":
 
-            console.log("load meta");
+            var role = req.query.role;
+            var filter = {};
+            filter.path_slug = new RegExp(","+role+",");
+            filter.leaf = true;
 
-            operation.getObjectList(operation.getCollectionList().product_meta_category, {}, {}, function(objectList) {
+            operation.getObjectList(operation.getCollectionList().product_meta_category, filter, {}, function(objectList) {
                 result.category = objectList;
 
                 operation.getObjectList(operation.getCollectionList().product_meta_exit_policy, {}, {}, function(objectList) {
                     result.exit_policy = objectList;
 
-                    operation.getObject(operation.getCollectionList().product_meta_other, '1', {}, function(object) {
-                        result.commision_rate = object;
+                    operation.getObjectList(operation.getCollectionList().product_meta_other, {}, {}, function(object) {
+                        result.other = object;
 
                         res.send(result);
                     })
                 })
+            })
+
+            break;
+
+        case "productothermeta":
+            operation.getObjectList(operation.getCollectionList().product_meta_other, {}, {}, function(objectList) {
+
+                res.send(objectList);
             })
 
             break;

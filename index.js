@@ -11,7 +11,7 @@ var compress = require('compression');
 //var wechatvalidation = require('./util/wechatvalidation');
 
 var app = module.exports = express();
-var config = require('./config')('production');
+var config = require('./config')('staging');
 
 // Make sure to include the JSX transpiler
 require("node-jsx").install();
@@ -27,8 +27,8 @@ app.use(compress());
 if (!module.parent) app.use(logger(':date[clf]!:method!:url!:status!:response-time ms!:remote-addr!:referrer!:user-agent', {stream: writablestreamintodb}));
 if (!module.parent) app.use(logger('dev'));
 
-// setup session
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
+// setup session with expiration is 600s
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 600000 }}))
 
 // serve static files
 app.use(express.static(__dirname + '/public'));

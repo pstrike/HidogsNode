@@ -18,7 +18,7 @@ var WXPicUploader = React.createClass({
 
         var addBtn = "";
         if(this.props.add == 'true') {
-            addBtn = <button className="btn btn-hd-blue btn-sm" onClick={this.props.onAdd}>添加</button>;
+            addBtn = <button className="btn btn-hd-blue btn-sm" onClick={this.props.onAdd}>继续添加</button>;
         }
 
         var imageContent = [];

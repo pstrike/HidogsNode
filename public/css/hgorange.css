@@ -1,0 +1,40 @@
+body {
+    background-color: #fff4ef;
+    color: #f95e1a;
+}
+
+.footer {
+    background: rgba(255,244,239,0.95);
+    border-color: rgba(249,94,26,0.25);
+}
+
+.btn-hd-blue {
+    border: 1px solid #f95e1a;
+    color: #f95e1a;
+}
+
+.btn-hd-blue:focus, .btn-hd-blue:hover, .btn-hd-blue:active:focus, .btn-hd-blue.active:focus {
+    border: 1px solid #f95e1a;
+    color: #f95e1a;
+}
+
+.hg-navbar {
+    background: rgba(254,231,221,0.95);
+    border-color: rgba(249,94,26,0.25);
+}
+
+.hg-navbar .navbar-brand {
+    color: #f95e1a;
+}
+
+.blue-background-decoration {
+    background: linear-gradient(to bottom,rgba(249,94,26,.15),rgba(255,244,239,0));
+}
+
+hr {
+    border-top-color: rgba(249,94,26,0.25);
+}
+
+.hg-table, .hg-table td {
+    border-color: #f95e1a;
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+wx back test
+<p><a href="http://www.baidu.com">baidu</a></p>
+<p><a href="#abc">internal link</a></p>
+</body>
+<script>
+    window.onpopstate = function(event) {
+    var state = {
+        title: "123",
+        url: "#123"
+    };
+        window.history.pushState(state, "title", "#123");
+        alert("location: " + document.location + ", state: " + JSON.stringify(event.state));
+    };
+
+</script>
+</html>

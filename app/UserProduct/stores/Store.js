@@ -7,6 +7,8 @@ var CHANGE_EVENT = 'change';
 // Store State
 var _product = {};
 var _availability = {};
+var _vendor = {};
+var _productMeta = [];
 var _status = "";
 
 // Store actions
@@ -22,18 +24,55 @@ function payOrderSuccess(charge) {
     });
 };
 
-function payOrderFail() {
-    alert("payment fail");
-};
 
-function getProductSuccess(payload) {
-    _product = payload;
+
+// Product
+function getProductSuccess(product) {
+    _product = product;
+
+    //console.log("get product");
+    //console.log(_product);
 
     Store.emitChange();
 };
 
-function getProductFail() {
-    alert("get product fail");
+function getVendorSuccess(vendor) {
+    _vendor = vendor;
+
+    //console.log("get vendor");
+    //console.log(_vendor);
+
+    Store.emitChange();
+};
+
+function getMetaSuccess(meta) {
+    _productMeta = meta;
+
+    //console.log("get meta");
+    //console.log(_productMeta);
+
+    Store.emitChange();
+};
+
+function triggerProductToExitPolicy() {
+    _status = Constants.STATE_EXIT_POLICY;
+
+    Store.emitChange();
+};
+
+
+// Exit Policy
+function triggerExitPolicyToProduct() {
+    _status = Constants.STATE_PRODUCT;
+
+    Store.emitChange();
+};
+
+
+// Err Handling
+function err(msg) {
+    console.log(msg);
+    alert("好像出了点问题,请刷新页面重试一下.抱歉.");
 };
 
 // Store definition
@@ -49,6 +88,14 @@ var Store = assign({}, EventEmitter.prototype, {
 
     getAvailability: function() {
         return _availability;
+    },
+
+    getVendor: function() {
+        return _vendor;
+    },
+
+    getProductMeta: function() {
+        return _productMeta;
     },
 
     emitChange: function() {
@@ -74,26 +121,82 @@ var Store = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
 
     switch (action.actionType) {
-        case Constants.PAY_ORDER_SUCCESS:
+        case Constants.ACTION_ORDER_CREATION_PAY_SUCCESSFUL:
             var payload = action.payload.response;
             payOrderSuccess(payload);
             break;
 
-        case Constants.PAY_ORDER_FAIL:
-            payOrderFail();
+        // Product
+        case Constants.ACTION_PRODUCT_LOAD_PRODUCT_SUCCESSFUL:
+            var product = action.product;
+            getProductSuccess(product);
+            break;
+        case Constants.ACTION_PRODUCT_LOAD_VENDOR_SUCCESSFUL:
+            var vendor = JSON.parse(action.payload.response);
+            getVendorSuccess(vendor);
+            break;
+        case Constants.ACTION_PRODUCT_LOAD_META_SUCCESSFUL:
+            var meta = JSON.parse(action.payload.response);
+            getMetaSuccess(meta);
+            break;
+        case Constants.ACTION_PRODUCT_TO_COMMENT:
+
+            break;
+        case Constants.ACTION_PRODUCT_TO_AVAILABILITY:
+
+            break;
+        case Constants.ACTION_PRODUCT_TO_ORDER_CREATION:
+
+            break;
+        case Constants.ACTION_PRODUCT_TO_VENDOR:
+
+            break;
+        case Constants.ACTION_PRODUCT_TO_EXIT_POLICY:
+            triggerProductToExitPolicy();
             break;
 
-        case Constants.GET_PRODUCT_SUCCESS:
-            var payload = JSON.parse(action.payload.response);
-            getProductSuccess(payload);
+        // Comment
+        case Constants.ACTION_COMMENT_TO_PRODUCT:
+
             break;
 
-        case Constants.GET_PRODUCT_FAIL:
-            getProductFail();
+        // Availability
+        case Constants.ACTION_AVAILABILITY_TO_PRODUCT:
+
+            break;
+
+        // Order Creation
+        case Constants.ACTION_ORDER_CREATION_TO_ORDER_CONFIRMATION:
+
+            break;
+        case Constants.ACTION_ORDER_CREATION_TO_PRODUCT:
+
+            break;
+
+        // Order Confirmation
+        case Constants.ACTION_ORDER_CONFIRMATION_TO_PRODUCT:
+
+            break;
+
+        // Exit Policy
+        case Constants.ACTION_EXIT_POLICY_TO_PRODUCT:
+            triggerExitPolicyToProduct();
+            break;
+
+        // Err Handlig
+        case Constants.ACTION_PRODUCT_LOAD_PRODUCT_FAIL:
+        case Constants.ACTION_PRODUCT_LOAD_VENDOR_FAIL:
+        case Constants.ACTION_PRODUCT_LOAD_META_FAIL:
+        case Constants.ACTION_COMMENT_LOAD_COMMENT_FAIL:
+        case Constants.ACTION_AVAILABILITY_LOAD_FAIL:
+        case Constants.ACTION_ORDER_CREATION_LOAD_USER_FAIL:
+        case Constants.ACTION_ORDER_CREATION_PAY_FAIL:
+        case Constants.ACTION_ORDER_CREATION_CREATE_FAIL:
+            err(action.actionType);
             break;
 
         default:
-        // no op
+            err("no action catch");
     }
 });
 

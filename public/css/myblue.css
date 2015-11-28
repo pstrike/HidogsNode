@@ -75,12 +75,16 @@ body {
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
+#react_body > .container {
+    padding: 60px 15px 0;
+}
+
 body > .container {
     padding: 60px 15px 0;
 }
 
 .container .text-muted {
-    margin: 12px 0;
+    margin-top: 12px;
 }
 
 .footer > .container {
@@ -94,6 +98,12 @@ code {
 
 /* btn */
 .btn-hd-blue {
+    border: 1px solid #51A7F9;
+    color: #51A7F9;
+    background-color: transparent;
+}
+
+.btn-hd-blue:focus, .btn-hd-blue:hover, .btn-hd-blue:active:focus, .btn-hd-blue.active:focus {
     border: 1px solid #51A7F9;
     color: #51A7F9;
     background-color: transparent;
@@ -195,7 +205,7 @@ h3.hg-session {
 
 .hg-pageheader.page-header {
     border: none;
-    padding-bottom: 30px;
+    padding-bottom: 15px;
 }
 
 .hg-session-header-icon {
@@ -225,14 +235,34 @@ hr {
     width: 60%;
 }
 
+.hg-td-65pt {
+    width: 65%;
+}
+
+.hg-td-75pt {
+    width: 75%;
+}
+
 .hg-carousel-img {
     background-color: rgba(255,255,255,0.50);
+    height: 300px;
 }
 
 .carousel-control.right.hg-carousel-btn, .carousel-control.left.hg-carousel-btn {
     background: none;
 }
 
-.carousel-inner>.item>img, .carousel-inner>.item>a>img {
-    height: 350px;
+.carousel-inner .item img {
+    position:relative;
+    /*top:50%;*/
+    /*transform: translateY(-50%);*/
+}
+
+.close {
+    font-size: 31px;
+}
+
+/* font */
+.modal_grey_font {
+    color: #333;
 }

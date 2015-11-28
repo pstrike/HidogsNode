@@ -17,7 +17,7 @@ exports.verify = function (req, res, next) {
     next();
     */
 
-    if(req.path.indexOf("view")>0 || req.path.indexOf("wechat")>0) {
+    if(req.path.indexOf("view")>0 || req.path.indexOf("wechat")>0 || req.path.indexOf("homepage")>0) {
         next();
     }
     else {

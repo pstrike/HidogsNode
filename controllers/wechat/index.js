@@ -8,18 +8,51 @@ var sign = require('../../util/wxjssign');
 var fs = require('fs');
 var genuuid = require('../../util/genuuid');
 
+//var config = {
+//    token: 'hidogs',
+//    appid: 'wxb7d0de94e852afd6',
+//    encodingAESKey: 'CN7aaTt38ofCv5d4TnlRoh04LnBxhjffwUXc3x3PR01',
+//    secret: '8b8a251eaf5fa007ac8d933340a9d19b',
+//};
+
+
+// for testing
 var config = {
     token: 'hidogs',
-    appid: 'wxb7d0de94e852afd6',
-    encodingAESKey: 'CN7aaTt38ofCv5d4TnlRoh04LnBxhjffwUXc3x3PR01',
-    secret: '8b8a251eaf5fa007ac8d933340a9d19b',
+    appid: 'wxaddd7cf2ed2848ac',
+    encodingAESKey: 'YrJHICF9PcXCYnLocVe1UoNUsOxC5MkPna4vll7IMxl',
+    secret: '32a1a3ab9838fca79131c42c82fd7017',
 };
+
 
 var client = new OAuth(config.appid, config.secret);
 var api = new WechatAPI(config.appid, config.secret);
 
 exports.insert = wechat(config).text(function (message, req, res, next) {
-    res.reply("text");
+    var msg;
+
+    switch (message.Content) {
+        case "hgsecret":
+            msg = "内部列表\n" +
+                "1.达人申请: hgvj\n" +
+                "2.达人服务管理: hgvp\n" +
+                "3.欢宠小Q服务管理: hgvpq\n"
+            break;
+        case "hgvj":
+            msg = "http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorjoin9vendor";
+            break;
+        case "hgvp":
+            msg = "http://www.hidogs.cn/wechat/auth?destination=001product1view1vendorproduct9vendor";
+            break;
+        case "hgvpq":
+            msg = "http://www.hidogs.cn/product/view/vendorproducthg1";
+            break;
+        default :
+            msg = "text";
+
+    }
+
+    res.reply(msg);
 }).image(function (message, req, res, next) {
     res.reply("image");
 }).voice(function (message, req, res, next) {
@@ -63,11 +96,11 @@ exports.show = function(req, res, next){
 
                 console.log(result);
 
-                if(!result) {
+                if(typeof(result) === "undefined") {
                     next(new Error("微信认证失败. 请授权并重试."));
                 }
 
-                if(!result.data) {
+                if(typeof(result.data) === "undefined") {
                     next(new Error("微信认证失败. 请授权并重试."));
                 }
 
@@ -103,6 +136,9 @@ exports.show = function(req, res, next){
                                         req.session.current_user = {
                                             vendor_id: result.vendor_id,
                                             role: newVendor.role[0].slug,
+                                            head_image_url: newVendor.head_image_url,
+                                            nick_name: newVendor.nick_name,
+                                            status: newVendor.status,
                                         };
 
                                         res.redirect(destination);
@@ -116,6 +152,9 @@ exports.show = function(req, res, next){
                         req.session.current_user = {
                             vendor_id: objectList[0].vendor_id,
                             role: objectList[0].role[0].slug,
+                            head_image_url: objectList[0].head_image_url,
+                            nick_name: objectList[0].nick_name,
+                            status: objectList[0].status,
                         };
 
                         res.redirect(destination);
@@ -134,7 +173,7 @@ exports.show = function(req, res, next){
 
                 console.log(result);
 
-                if(!result) {
+                if(typeof result === "undefined") {
                     next(new Error("微信获取JS SDK失败. 请重试."));
                 }
 
@@ -156,7 +195,7 @@ exports.show = function(req, res, next){
                 var fileName = contents[1];
                 var updatedFileName = path + "_" + genuuid.uuid() + '.' + fileName.split('.')[1];
 
-                fs.writeFile('./public/upload/'+updatedFileName, result, function (err) {
+                fs.writeFile('/home/ftp/public/upload/'+updatedFileName, result, function (err) {
                     if (err) {
                         next(err);
                     }

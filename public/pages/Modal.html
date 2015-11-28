@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/my.css" rel="stylesheet">
+    <link href="../css/hgmodal.css" rel="stylesheet">
+
+</head>
+<body>
+
+<a href='#' onclick="showHgModal('overlay')">Click here to show the overlay</a>
+
+    <div id="overlay" class="hg-modal container-fluid">
+        <div class="hg-modal-header row">
+            <div class="col-xs-2 text-left hg-modal-header-close">
+                <button type="button" class="close"><span
+                        aria-hidden="true" onclick="hideHgModal('overlay')">&times;</span></button>
+            </div>
+            <div class="col-xs-8 text-center hg-modal-title"><h4>title</h4></div>
+            <div class="col-xs-2 text-center hg-modal-title"></div>
+        </div>
+
+        <div class="hg-modal-body text-left">
+            content
+        </div>
+
+        <div class="hg-modal-footer text-right row">
+            <div class="col-xs-12">
+                footer
+            </div>
+        </div>
+    </div>
+
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+v
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+
+<p>fdsajklfjslkfjalf</p>
+v
+<p>fdsajklfjslkfjalf</p>
+
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+<p>fdsajklfjslkfjalf</p>
+
+
+
+
+
+
+
+
+
+
+<script src="../lib/jquery-2.1.4.min.js"></script>
+<script src="../lib/jquery-2.1.4.min.js"></script>
+<script src="../lib/bootstrap.min.js"></script>
+
+    <script>
+        function showHgModal(itemId) {
+            var el = document.getElementById(itemId);
+            el.style.visibility = "visible";
+            $('#'+itemId).removeClass('fade-out');
+            $('#'+itemId).addClass('fade-in');
+            $("body").addClass("hg-modal-open");
+            $('body').animate({
+                scrollTop: 0
+            }, 0);
+
+        }
+
+
+        function hideHgModal(itemId) {
+            var el = document.getElementById(itemId);
+            $('#'+itemId).removeClass('fade-in');
+            $('#'+itemId).addClass('fade-out');
+            $("body").removeClass("hg-modal-open");
+            setTimeout(function(){
+                el.style.visibility = "hidden";
+            }, 500);
+        }
+
+    </script>
+
+</body>
+
+</html>

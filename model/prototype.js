@@ -1,9 +1,3 @@
-var db = require('../db/db');
-var objectName = 'vendor';
-var successMsg = {status: 'success'};
-var failMsg = {status: 'fail', err: ''};
-var deletedStatus = 'deleted';
-
 var Model = {
     getVendorPrototype: function () {
         var object = {
@@ -40,10 +34,10 @@ var Model = {
             ],
             status: "created",
             setting: {
-                concurrent_no: "",
-                business_time_list: [],
+                concurrent_no: "1",
+                business_time_list: [{start_time: "", end_time: ""}],
                 timeoff_list: [],
-                reject_today_flag: "",
+                reject_today_flag: false,
             },
             is_active: true,
             payment_account: "",
@@ -60,7 +54,7 @@ var Model = {
                     work_list: [
                         {name: '美容后,站立正面图', image_url: ''},
                         {name: '美容后,站立侧身图', image_url: ''},
-                        {name: '美容后,站立后视图', image_url: ''},
+                        //{name: '美容后,站立后视图', image_url: ''},
                     ],
                     reject_reason: "",
                     rate: "",
@@ -81,14 +75,15 @@ var Model = {
             category: {},
             price: {
                 basic: [
-                    {name: "体重在4公斤以内", price: ""},
-                    {name: "体重在4公斤-5公斤以内", price: ""},
-                    {name: "体重在5公斤-6公斤以内", price: ""},
-                    {name: "体重在6公斤-7公斤以内", price: ""},
+                    //{name: "体重在4公斤以内", price: ""},
+                    //{name: "体重在4公斤-5公斤以内", price: ""},
+                    //{name: "体重在5公斤-6公斤以内", price: ""},
+                    //{name: "体重在6公斤-7公斤以内", price: ""},
                 ],
                 additional: [
                     {name: "", price: ""},
                 ],
+                type: "",
             },
             tag_list: [],
             duration: "",

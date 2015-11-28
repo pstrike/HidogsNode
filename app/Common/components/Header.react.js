@@ -6,8 +6,10 @@ var Header = React.createClass({
 
     render: function() {
 
+        var style = "navbar navbar-default navbar-fixed-top " + this.props.hgstyle;
+
         return (
-            <nav className="navbar navbar-default navbar-fixed-top">
+            <nav className={style}>
                 <div className="container-fluid">
                     <div className="navbar-header">
                         <a className="navbar-brand" href="#">欢宠</a>

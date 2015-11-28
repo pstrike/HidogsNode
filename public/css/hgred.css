@@ -1,0 +1,41 @@
+body {
+    background-color: #fff2f4;
+    color: #e82c4b;
+}
+
+.footer {
+    background: rgba(255,242,244,0.95);
+    border-color: rgba(232,44,75,0.25);
+}
+
+.btn-hd-blue {
+    border: 1px solid #e82c4b;
+    color: #e82c4b;
+}
+
+.btn-hd-blue:focus, .btn-hd-blue:hover, .btn-hd-blue:active:focus, .btn-hd-blue.active:focus {
+    border: 1px solid #e82c4b;
+    color: #e82c4b;
+}
+
+.hg-navbar {
+    background: rgba(252,224,228,0.95);
+    border-color: rgba(232,44,75,0.25);
+}
+
+.hg-navbar .navbar-brand {
+    color: #e82c4b;
+}
+
+
+.blue-background-decoration {
+    background: linear-gradient(to bottom,rgba(232,44,75,.15),rgba(255,242,244,0));
+}
+
+hr {
+    border-top-color: rgba(232,44,75,0.25);
+}
+
+.hg-table, .hg-table td {
+    border-color: #e82c4b;
+}

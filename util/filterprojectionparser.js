@@ -4,7 +4,16 @@ exports.parse = function (req, res, next) {
         var rawFilter = req.query.filter.split(",");
         var filter = {};
         for(var i=0; i<rawFilter.length; i=i+2) {
-            filter[rawFilter[i]] = rawFilter[i+1];
+            if(rawFilter[i+1].indexOf('{')>-1 && rawFilter[i+1].indexOf('}')>-1) {
+                filter[rawFilter[i]] = JSON.parse(rawFilter[i+1]);
+            }
+            else if (rawFilter[i+1].indexOf('[')>-1 && rawFilter[i+1].indexOf(']')>-1) {
+                filter[rawFilter[i]] = JSON.parse(rawFilter[i+1]);
+            }
+            else {
+                filter[rawFilter[i]] = rawFilter[i+1];
+            }
+
         }
         req.filter = filter;
     }

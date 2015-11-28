@@ -9,11 +9,13 @@ var Actions = require('../actions/Actions');
 var Constants = require('../constants/Constants');
 var ModalForm = require('../components/ModalForm.react');
 var Header = require('./../../Common/components/Header.react.js');
+var WXSign = require('./../../Common/components/WXSign');
 
 function getAppState() {
     return {
         vendor: Store.getVendor(),
         status: Store.getStatus(),
+        wxSign: Store.getWXSign(),
     };
 };
 
@@ -26,40 +28,61 @@ var app = React.createClass({
     componentDidMount: function() {
         Store.addChangeListener(this._onChange);
         Actions.getSessionOpenidThenLoadVendorProfile();
+
+        // handle browser back event
+        window.onbeforeunload = function() { return "确定要关闭服务管理页面吗?"; };
     },
 
     componentWillUnmount: function() {
         Store.removeChangeListener(this._onChange);
     },
 
-    componentDidUpdate: function() {
-        switch (this.state.status) {
-            case Constants.STATE_VENDOR_APPLICAITON_CREATED:
-            case Constants.STATE_VENDOR_APPLICAITON_EDITING:
-                $('#vendorProfileEdit').modal('show');
-                break;
+    //componentDidUpdate: function() {
+    //    switch (this.state.status) {
+    //        case Constants.STATE_VENDOR_APPLICAITON_CREATED:
+    //        case Constants.STATE_VENDOR_APPLICAITON_EDITING:
+    //            $('#vendorProfileEdit').modal('show');
+    //            break;
+    //
+    //        case Constants.STATE_VENDOR_APPLICAITON_DRAFT:
+    //        case Constants.STATE_VENDOR_APPLICAITON_REVIEWING:
+    //        case Constants.STATE_VENDOR_APPLICAITON_REJECT:
+    //        case Constants.STATE_VENDOR_APPLICAITON_APPROVED:
+    //            $('#vendorProfileEdit').modal('hide');
+    //            break;
+    //
+    //        default :
+    //            $('#vendorProfileEdit').modal('hide');
+    //    };
+    //
+    //},
 
+    componentDidUpdate: function() {
+        // handle back event
+        switch (this.state.status) {
             case Constants.STATE_VENDOR_APPLICAITON_DRAFT:
             case Constants.STATE_VENDOR_APPLICAITON_REVIEWING:
             case Constants.STATE_VENDOR_APPLICAITON_REJECT:
             case Constants.STATE_VENDOR_APPLICAITON_APPROVED:
-                $('#vendorProfileEdit').modal('hide');
+                window.onpopstate = function() {
+                    if(wx) {
+                        wx.closeWindow();
+                    }
+                };
                 break;
-
-            default :
-                $('#vendorProfileEdit').modal('hide');
-        };
-
+        }
     },
 
     render: function() {
 
         var editBtn = "";
         var statusMsg = "";
+        var modalContent = "";
 
         switch (this.state.status) {
             case Constants.STATE_VENDOR_APPLICAITON_CREATED:
-
+            case Constants.STATE_VENDOR_APPLICAITON_EDITING:
+                modalContent = <ModalForm vendor={this.state.vendor} status={this.state.status}></ModalForm>;
                 break;
 
             case Constants.STATE_VENDOR_APPLICAITON_DRAFT:
@@ -143,7 +166,12 @@ var app = React.createClass({
         return <div>
             <Header subtitle="服务伙伴 - 申请加入"/>
 
-            <ModalForm vendor={this.state.vendor} status={this.state.status}></ModalForm>
+            {modalContent}
+
+            <WXSign signature = {this.state.wxSign}
+                    getSign = {this.getWXSign}
+                    apilist = 'chooseImage,uploadImage'>
+            </WXSign>
 
             <div className="container voffset60">
                 <div className="page-header">
@@ -231,19 +259,7 @@ var app = React.createClass({
                             <img className="img-responsive" src={this.state.vendor.id_card ? (this.state.vendor.id_card.front_image_url ? this.state.vendor.id_card.front_image_url : "../../../img/image_placeholer.png") : "../../../img/image_placeholer.png"}/>
                         </div>
                     </div>
-                    <br/>
 
-                    <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34">名称</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                          placeholder="身份证背面照片" value="身份证背面照片" disabled/></div>
-                    </div>
-                    <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34">图片</label></div>
-                        <div className="col-xs-10">
-                            <img className="img-responsive" src={this.state.vendor.id_card ? (this.state.vendor.id_card.back_image_url ? this.state.vendor.id_card.back_image_url : "../../../img/image_placeholer.png"): "../../../img/image_placeholer.png"}/>
-                        </div>
-                    </div>
                 </div>
 
                 <h3 className="hg-session">专业认证</h3>
@@ -306,6 +322,21 @@ var app = React.createClass({
             {editBtn}
 
         </div>;
+
+        // id card back image cancel
+        //<br/>
+        //
+        //<div className="row">
+        //    <div className="col-xs-2"><label className="vcenter34">名称</label></div>
+        //    <div className="col-xs-10"><input type="text" className="form-control no-border"
+        //                                      placeholder="身份证背面照片" value="身份证背面照片" disabled/></div>
+        //    </div>
+        //        <div className="row">
+        //            <div className="col-xs-2"><label className="vcenter34">图片</label></div>
+        //            <div className="col-xs-10">
+        //                <img className="img-responsive" src={this.state.vendor.id_card ? (this.state.vendor.id_card.back_image_url ? this.state.vendor.id_card.back_image_url : "../../../img/image_placeholer.png"): "../../../img/image_placeholer.png"}/>
+        //            </div>
+        //        </div>
     },
 
     _onEdit: function() {
@@ -314,6 +345,10 @@ var app = React.createClass({
 
     _onChange: function() {
         this.setState(getAppState());
+    },
+
+    getWXSign: function() {
+        Actions.getWXSignature(document.location.href);
     },
 
 });

@@ -10,14 +10,12 @@ var Constants = require('../constants/Constants');
 var Header = require('./../../Common/components/Header.react.js');
 var WXIconUploader = require('./../../Common/components/WXIconUploader');
 var WXPicUploader = require('./../../Common/components/WXPicUploader');
-var WXSign = require('./../../Common/components/WXSign');
 var APVTO = require('../../../util/assignpathvaluetoobject');
 
 function getAppState() {
     return {
         editVendor: Store.getEditVendor(),
         verifyMsg: Store.getVerifyMsg(),
-        wxSign: Store.getWXSign(),
     };
 };
 
@@ -30,15 +28,25 @@ var app = React.createClass({
     componentDidMount: function() {
         Store.addChangeListener(this._onChange);
 
+        // handle modal body height
         var pageHeight = $(window).height();
         var bodyHeight = pageHeight - 121;
-
         $('#editBody').css({"max-height": bodyHeight + 'px' });
+
+        // modal show
+        showHgModal('vendorProfileEdit')
+
+        // handle back event
+        window.history.pushState({title: "preventback", url: "#"}, "preventback", "#");
+        window.onpopstate = this._onCancel;
 
     },
 
     componentWillUnmount: function() {
         Store.removeChangeListener(this._onChange);
+
+        // modal show
+        hideHgModal('vendorProfileEdit')
     },
 
     componentDidUpdate: function() {
@@ -118,7 +126,7 @@ var app = React.createClass({
                                              disabled='true'
                                              getMedia={this.getWXPicMedia}
             />);
-        idCardImageInput.push(<br/>);
+        //idCardImageInput.push(<br/>);
         //idCardImageInput.push(<PicUploader imageName='id_card.back_image_url'
         //                                   textName='id_card.back_image_name'
         //                                   text='身份证背面图片'
@@ -131,18 +139,18 @@ var app = React.createClass({
         //                                   onUpload={this.handlePicUpload}
         //                                   disabled='true'
         //    />);
-        idCardImageInput.push(<WXPicUploader textName='id_card.back_image_name'
-                                             imageName='id_card.back_image_url'
-                                             text='身份证背面图片'
-                                             imageUrl={this.state.editVendor.id_card ? this.state.editVendor.id_card.back_image_url : ""}
-                                             onChange={this.handleChange}
-                                             delete='false'
-                                             //onDelete={this._removeCertificate.bind(this, i)}
-                                             add='false'
-                                             //onAdd={this._addNewCertificate}
-                                             disabled='true'
-                                             getMedia={this.getWXPicMedia}
-            />);
+        //idCardImageInput.push(<WXPicUploader textName='id_card.back_image_name'
+        //                                     imageName='id_card.back_image_url'
+        //                                     text='身份证背面图片'
+        //                                     imageUrl={this.state.editVendor.id_card ? this.state.editVendor.id_card.back_image_url : ""}
+        //                                     onChange={this.handleChange}
+        //                                     delete='false'
+        //                                     //onDelete={this._removeCertificate.bind(this, i)}
+        //                                     add='false'
+        //                                     //onAdd={this._addNewCertificate}
+        //                                     disabled='true'
+        //                                     getMedia={this.getWXPicMedia}
+        //    />);
 
         var workInput = [];
         if(this.state.editVendor.role) {
@@ -211,7 +219,7 @@ var app = React.createClass({
                 crossModalBtn = <button type="button" className="close" onClick={this._onCancel}><span
                     aria-hidden="true">&times;</span></button>;
 
-                cancelModalBtn = <button type="button" className="btn btn-default btn-hd-blue" onClick={this._onCancel}>取消</button>;
+                cancelModalBtn = <button type="button" className="btn btn-default btn-hd-blue roffset5" onClick={this._onCancel}>取消</button>;
 
                 break;
 
@@ -232,173 +240,349 @@ var app = React.createClass({
             </div>;
         }
 
-        return <div className="modal modal-fullscreen fade" id="vendorProfileEdit" tabindex="-2" role="dialog"
-                    aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
-            <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        {crossModalBtn}
-                        <h4 className="modal-title text-center" id="ProductDetailModalTitle">加入欢宠服务伙伴</h4>
+        //return <div className="modal modal-fullscreen fade" id="vendorProfileEdit" tabindex="-2" role="dialog"
+        //            aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
+        //    <div className="modal-dialog" role="document">
+        //        <div className="modal-content">
+        //            <div className="modal-header">
+        //                {crossModalBtn}
+        //                <h4 className="modal-title text-center" id="ProductDetailModalTitle">加入欢宠服务伙伴</h4>
+        //            </div>
+        //
+        //            <div className="modal-body" id="editBody">
+        //
+        //                <WXSign signature = {this.state.wxSign}
+        //                        getSign = {this.getWXSign}
+        //                        apilist = 'chooseImage,uploadImage'>
+        //                </WXSign>
+        //
+        //                <div className="page-header">
+        //                    <WXIconUploader
+        //                        imageUrl={this.state.editVendor.head_image_url}
+        //                        imageName="head_image_url"
+        //                        getMedia={this.getWXPicMedia}/>
+        //                    <br/>
+        //                    <blockquote>
+        //                        <p className="instruction tint-color-font"><span className="glyphicon glyphicon-lock"></span> 安全的</p>
+        //                        <p className="instruction">
+        //                            <ul className="instruction">
+        //                                <li>我们相信人与人之间的互信是一切活动的基础,因此我们建立“验证身份”帮助用户在社区内建立信任,确保社区的安全可靠.</li>
+        //                                <li>我们严肃对待隐私问题.您在“验证身份”中提供的信息都将受到我们隐私政策的管辖.未经您的许可,我们绝不会将这些信息提供给任何第三方.</li>
+        //                                <li>关于电话号码,请放心.你的电话号码只会与已经成功预订您服务的欢宠用户共享.</li>
+        //                            </ul>
+        //                        </p>
+        //                    </blockquote>
+        //                </div>
+        //
+        //                <h3>基本信息</h3>
+        //
+        //                <div className="form-group">
+        //                    <label for="vendorNickName">昵称</label>
+        //                    <input type="text" className="form-control simple-input" id="vendorNickName" placeholder="昵称"
+        //                           name="nick_name" value={this.state.editVendor.nick_name}
+        //                           onChange={this.handleChange}/>
+        //                </div>
+        //                <div className="form-group">
+        //                    <label for="vendorName">姓名</label>
+        //                    <input type="text" className="form-control simple-input" id="vendorName" placeholder="姓名" name="name"
+        //                           value={this.state.editVendor.name} onChange={this.handleChange}/>
+        //                </div>
+        //                <div className="form-group">
+        //                    <label for="vendorGender">性别</label>
+        //                    <select className="form-control simple-input" id="vendorGender" value={this.state.editVendor.gender} name="gender" onChange={this.handleChange}>
+        //                        <option value='1'>男</option>
+        //                        <option value='2'>女</option>
+        //                    </select>
+        //                </div>
+        //                <div className="form-group">
+        //                    <label for="vendorEmail">电子邮箱</label>
+        //                    <input type="text" className="form-control simple-input" id="vendorEmail" placeholder="电子邮箱"
+        //                           name="email" value={this.state.editVendor.email} onChange={this.handleChange}/>
+        //                </div>
+        //                <div className="form-group">
+        //                    <label for="vendorMobile">手机号码</label>
+        //                    <input type="text" className="form-control simple-input" id="vendorMobile" placeholder="手机号码"
+        //                           name="mobile" value={this.state.editVendor.mobile} onChange={this.handleChange}/>
+        //                </div>
+        //                <div className="form-group">
+        //                    <label for="vendorExperience">从业年限</label>
+        //                    <blockquote>
+        //                        <p className="instruction">请填写您从事宠物美容行业的年数.</p>
+        //                    </blockquote>
+        //                    <select className="form-control simple-input" id="vendorExperience" value={this.state.editVendor.work_experience} name="work_experience" onChange={this.handleChange}>
+        //                        <option value='0'>1年以下</option>
+        //                        <option value='1'>1-2年</option>
+        //                        <option value='2'>2-3年</option>
+        //                        <option value='3'>3-4年</option>
+        //                        <option value='4'>4-5年</option>
+        //                        <option value='5'>5-6年</option>
+        //                        <option value='6'>6-7年</option>
+        //                        <option value='7'>7-8年</option>
+        //                        <option value='8'>8-9年</option>
+        //                        <option value='9'>9-10年</option>
+        //                        <option value='10'>10年以上</option>
+        //                    </select>
+        //                </div>
+        //                <div className="form-group">
+        //                    <label>服务地址</label>
+        //                    <blockquote>
+        //                        <p className="instruction">请填写您提供服务所在地的具体地址. 该地址将作为默认服务地址展现给用户.</p>
+        //                    </blockquote>
+        //                    <div className="row">
+        //                        <div className="col-xs-2"><label className="vcenter34"
+        //                                                         for="vendorAddressProvince">省份</label></div>
+        //                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
+        //                                                          id="vendorAddressProvince" placeholder="省份"
+        //                                                          name="address.province"
+        //                                                          value={this.state.editVendor.address ? this.state.editVendor.address.province : ""}
+        //                                                          onChange={this.handleChange}/></div>
+        //                    </div>
+        //                    <div className="row">
+        //                        <div className="col-xs-2"><label className="vcenter34" for="vendorAddressCity">城市</label>
+        //                        </div>
+        //                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
+        //                                                          id="vendorAddressCity" placeholder="城市"
+        //                                                          name="address.city"
+        //                                                          value={this.state.editVendor.address ? this.state.editVendor.address.city : ""}
+        //                                                          onChange={this.handleChange}/></div>
+        //                    </div>
+        //                    <div className="row">
+        //                        <div className="col-xs-2"><label className="vcenter34"
+        //                                                         for="vendorAddressRegion">区域</label></div>
+        //                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
+        //                                                          id="vendorAddressRegion" placeholder="区域"
+        //                                                          name="address.region"
+        //                                                          value={this.state.editVendor.address ? this.state.editVendor.address.region : ""}
+        //                                                          onChange={this.handleChange}/></div>
+        //                    </div>
+        //                    <div className="row">
+        //                        <div className="col-xs-2"><label className="vcenter34"
+        //                                                         for="vendorAddressDetail">地址</label></div>
+        //                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
+        //                                                          id="vendorAddressDetail" placeholder="具体地址"
+        //                                                          name="address.address"
+        //                                                          value={this.state.editVendor.address ? this.state.editVendor.address.address : ""}
+        //                                                          onChange={this.handleChange}/></div>
+        //                    </div>
+        //                </div>
+        //                <div className="form-group">
+        //                    <label for="vendorDescription">个人描述</label>
+        //                    <textarea id="vendorDescription" className="form-control simple-input" rows="5" name="description"
+        //                              value={this.state.editVendor.description} onChange={this.handleChange}></textarea>
+        //                </div>
+        //                <hr/>
+        //
+        //                <h3 className="hg-session">身份证信息</h3>
+        //
+        //                <div className="form-group">
+        //                    <label for="vendorIdNo">身份证号码</label>
+        //                    <input type="text" className="form-control simple-input" id="vendorIdNo" placeholder="身份证号码"
+        //                           name="id_card.no"
+        //                           value={this.state.editVendor.id_card ? this.state.editVendor.id_card.no : ""}
+        //                           onChange={this.handleChange}/>
+        //                    <br/>
+        //                    {idCardImageInput}
+        //                </div>
+        //                <hr/>
+        //
+        //                <h3 className="hg-session">专业认证</h3>
+        //                <blockquote>
+        //                    <p className="instruction">如果您有相关的专业认证, 请务必填写. 专业认证可以让用户更好的了解您的专业水品.</p>
+        //                </blockquote>
+        //                <div className="form-group">
+        //                    {certificateInput}
+        //                </div>
+        //                <hr/>
+        //
+        //                <h3 className="hg-session">作品展示</h3>
+        //                <blockquote>
+        //                    <p className="instruction">请将您最近的美容作品照片按照以下要求上传. 如果您有更多作品照片, 请精选一些您的代表作并添加到您的资料中.这将帮助我们进行审核工作.</p>
+        //                </blockquote>
+        //                <div className="form-group">
+        //                    {workInput}
+        //                </div>
+        //
+        //                {verifyMsgContent}
+        //
+        //            </div>
+        //
+        //            <div className="modal-footer">
+        //                {cancelModalBtn}
+        //                <button type="button" className="btn btn-default btn-hd-blue" onClick={this._onSave}>保存</button>
+        //                <button type="button" className="btn btn-default btn-hd-blue" onClick={this._onSubmit}>提交审核</button>
+        //            </div>
+        //        </div>
+        //    </div>
+        //</div>;
+
+        return <div id="vendorProfileEdit" className="hg-modal container-fluid">
+            <div className="hg-modal-header row">
+                <div className="col-xs-2 text-left hg-modal-header-close">
+                    {crossModalBtn}
+                </div>
+                <div className="col-xs-8 text-center hg-modal-title"><h4>加入欢宠服务伙伴</h4></div>
+                <div className="col-xs-2 text-center hg-modal-title"></div>
+            </div>
+
+            <div className="hg-modal-body text-left" id="editBody">
+
+                <div className="page-header">
+                    <WXIconUploader
+                        imageUrl={this.state.editVendor.head_image_url}
+                        imageName="head_image_url"
+                        getMedia={this.getWXPicMedia}/>
+                    <br/>
+                    <blockquote>
+                        <p className="instruction tint-color-font"><span className="glyphicon glyphicon-lock"></span> 安全的</p>
+                        <p className="instruction">
+                            <ul className="instruction">
+                                <li>我们相信人与人之间的互信是一切活动的基础,因此我们建立“验证身份”帮助用户在社区内建立信任,确保社区的安全可靠.</li>
+                                <li>我们严肃对待隐私问题.您在“验证身份”中提供的信息都将受到我们隐私政策的管辖.未经您的许可,我们绝不会将这些信息提供给任何第三方.</li>
+                                <li>关于电话号码,请放心.你的电话号码只会与已经成功预订您服务的欢宠用户共享.</li>
+                            </ul>
+                        </p>
+                    </blockquote>
+                </div>
+
+                <h3>基本信息</h3>
+
+                <div className="form-group">
+                    <label for="vendorNickName">昵称</label>
+                    <input type="text" className="form-control simple-input" id="vendorNickName" placeholder="昵称"
+                           name="nick_name" value={this.state.editVendor.nick_name}
+                           onChange={this.handleChange}/>
+                </div>
+                <div className="form-group">
+                    <label for="vendorName">姓名</label>
+                    <input type="text" className="form-control simple-input" id="vendorName" placeholder="姓名" name="name"
+                           value={this.state.editVendor.name} onChange={this.handleChange}/>
+                </div>
+                <div className="form-group">
+                    <label for="vendorGender">性别</label>
+                    <select className="form-control simple-input" id="vendorGender" value={this.state.editVendor.gender} name="gender" onChange={this.handleChange}>
+                        <option value='1'>男</option>
+                        <option value='2'>女</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label for="vendorEmail">电子邮箱</label>
+                    <input type="email" className="form-control simple-input" id="vendorEmail" placeholder="电子邮箱"
+                           name="email" value={this.state.editVendor.email} onChange={this.handleChange}/>
+                </div>
+                <div className="form-group">
+                    <label for="vendorMobile">手机号码</label>
+                    <input type="number" pattern="[0-9]*" className="form-control simple-input" id="vendorMobile" placeholder="手机号码"
+                           name="mobile" value={this.state.editVendor.mobile} onChange={this.handleChange}/>
+                </div>
+                <div className="form-group">
+                    <label for="vendorExperience">从业年限</label>
+                    <blockquote>
+                        <p className="instruction">请填写您从事宠物美容行业的年数.</p>
+                    </blockquote>
+                    <select className="form-control simple-input" id="vendorExperience" value={this.state.editVendor.work_experience} name="work_experience" onChange={this.handleChange}>
+                        <option value='0'>1年以下</option>
+                        <option value='1'>1-2年</option>
+                        <option value='2'>2-3年</option>
+                        <option value='3'>3-4年</option>
+                        <option value='4'>4-5年</option>
+                        <option value='5'>5-6年</option>
+                        <option value='6'>6-7年</option>
+                        <option value='7'>7-8年</option>
+                        <option value='8'>8-9年</option>
+                        <option value='9'>9-10年</option>
+                        <option value='10'>10年以上</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label>服务地址</label>
+                    <blockquote>
+                        <p className="instruction">请填写您提供服务所在地的具体地址. 该地址将作为默认服务地址展现给用户.</p>
+                    </blockquote>
+                    <div className="row">
+                        <div className="col-xs-2"><label className="vcenter34"
+                                                         for="vendorAddressProvince">省份</label></div>
+                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
+                                                          id="vendorAddressProvince" placeholder="省份"
+                                                          name="address.province"
+                                                          value={this.state.editVendor.address ? this.state.editVendor.address.province : ""}
+                                                          onChange={this.handleChange}/></div>
                     </div>
-
-                    <div className="modal-body" id="editBody">
-
-                        <WXSign signature = {this.state.wxSign}
-                                getSign = {this.getWXSign}
-                                apilist = 'chooseImage,uploadImage'>
-                        </WXSign>
-
-                        <div className="page-header">
-                            <WXIconUploader
-                                imageUrl={this.state.editVendor.head_image_url}
-                                imageName="head_image_url"
-                                getMedia={this.getWXPicMedia}/>
-                            <br/>
-                            <blockquote>
-                                <p className="instruction">通过加入成为服务伙伴, 欢宠的宠友用户可以随时发现、预订您所提供的服务. 您只需填写以下的信息即可完成申请, 我们将对您的资料进行基本审核以保证服务质量.</p>
-                            </blockquote>
+                    <div className="row">
+                        <div className="col-xs-2"><label className="vcenter34" for="vendorAddressCity">城市</label>
                         </div>
-
-                        <h3>基本信息</h3>
-
-                        <div className="form-group">
-                            <label for="vendorNickName">昵称</label>
-                            <input type="text" className="form-control simple-input" id="vendorNickName" placeholder="昵称"
-                                   name="nick_name" value={this.state.editVendor.nick_name}
-                                   onChange={this.handleChange}/>
-                        </div>
-                        <div className="form-group">
-                            <label for="vendorName">姓名</label>
-                            <input type="text" className="form-control simple-input" id="vendorName" placeholder="姓名" name="name"
-                                   value={this.state.editVendor.name} onChange={this.handleChange}/>
-                        </div>
-                        <div className="form-group">
-                            <label for="vendorGender">性别</label>
-                            <select className="form-control simple-input" id="vendorGender" value={this.state.editVendor.gender} name="gender" onChange={this.handleChange}>
-                                <option value='1'>男</option>
-                                <option value='2'>女</option>
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label for="vendorEmail">电子邮箱</label>
-                            <input type="text" className="form-control simple-input" id="vendorEmail" placeholder="电子邮箱"
-                                   name="email" value={this.state.editVendor.email} onChange={this.handleChange}/>
-                        </div>
-                        <div className="form-group">
-                            <label for="vendorMobile">手机号码</label>
-                            <input type="text" className="form-control simple-input" id="vendorMobile" placeholder="手机号码"
-                                   name="mobile" value={this.state.editVendor.mobile} onChange={this.handleChange}/>
-                        </div>
-                        <div className="form-group">
-                            <label for="vendorExperience">从业年限</label>
-                            <blockquote>
-                                <p className="instruction">请填写您从事宠物美容行业的年数.</p>
-                            </blockquote>
-                            <select className="form-control simple-input" id="vendorExperience" value={this.state.editVendor.work_experience} name="work_experience" onChange={this.handleChange}>
-                                <option value='0'>1年以下</option>
-                                <option value='1'>1-2年</option>
-                                <option value='2'>2-3年</option>
-                                <option value='3'>3-4年</option>
-                                <option value='4'>4-5年</option>
-                                <option value='5'>5-6年</option>
-                                <option value='6'>6-7年</option>
-                                <option value='7'>7-8年</option>
-                                <option value='8'>8-9年</option>
-                                <option value='9'>9-10年</option>
-                                <option value='10'>10年以上</option>
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label>服务地址</label>
-                            <blockquote>
-                                <p className="instruction">请填写您提供服务所在地的具体地址. 该地址将作为默认服务地址展现给用户.</p>
-                            </blockquote>
-                            <div className="row">
-                                <div className="col-xs-2"><label className="vcenter34"
-                                                                 for="vendorAddressProvince">省份</label></div>
-                                <div className="col-xs-10"><input type="text" className="form-control simple-input"
-                                                                  id="vendorAddressProvince" placeholder="省份"
-                                                                  name="address.province"
-                                                                  value={this.state.editVendor.address ? this.state.editVendor.address.province : ""}
-                                                                  onChange={this.handleChange}/></div>
-                            </div>
-                            <div className="row">
-                                <div className="col-xs-2"><label className="vcenter34" for="vendorAddressCity">城市</label>
-                                </div>
-                                <div className="col-xs-10"><input type="text" className="form-control simple-input"
-                                                                  id="vendorAddressCity" placeholder="城市"
-                                                                  name="address.city"
-                                                                  value={this.state.editVendor.address ? this.state.editVendor.address.city : ""}
-                                                                  onChange={this.handleChange}/></div>
-                            </div>
-                            <div className="row">
-                                <div className="col-xs-2"><label className="vcenter34"
-                                                                 for="vendorAddressRegion">区域</label></div>
-                                <div className="col-xs-10"><input type="text" className="form-control simple-input"
-                                                                  id="vendorAddressRegion" placeholder="区域"
-                                                                  name="address.region"
-                                                                  value={this.state.editVendor.address ? this.state.editVendor.address.region : ""}
-                                                                  onChange={this.handleChange}/></div>
-                            </div>
-                            <div className="row">
-                                <div className="col-xs-2"><label className="vcenter34"
-                                                                 for="vendorAddressDetail">地址</label></div>
-                                <div className="col-xs-10"><input type="text" className="form-control simple-input"
-                                                                  id="vendorAddressDetail" placeholder="具体地址"
-                                                                  name="address.address"
-                                                                  value={this.state.editVendor.address ? this.state.editVendor.address.address : ""}
-                                                                  onChange={this.handleChange}/></div>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label for="vendorDescription">个人描述</label>
-                            <textarea id="vendorDescription" className="form-control simple-input" rows="5" name="description"
-                                      value={this.state.editVendor.description} onChange={this.handleChange}></textarea>
-                        </div>
-                        <hr/>
-
-                        <h3 className="hg-session">身份证信息</h3>
-
-                        <div className="form-group">
-                            <label for="vendorIdNo">身份证号码</label>
-                            <input type="text" className="form-control simple-input" id="vendorIdNo" placeholder="身份证号码"
-                                   name="id_card.no"
-                                   value={this.state.editVendor.id_card ? this.state.editVendor.id_card.no : ""}
-                                   onChange={this.handleChange}/>
-                            <br/>
-                            {idCardImageInput}
-                        </div>
-                        <hr/>
-
-                        <h3 className="hg-session">专业认证</h3>
-                        <blockquote>
-                            <p className="instruction">如果您有相关的专业认证, 请务必填写. 专业认证可以让用户更好的了解您的专业水品.</p>
-                        </blockquote>
-                        <div className="form-group">
-                            {certificateInput}
-                        </div>
-                        <hr/>
-
-                        <h3 className="hg-session">作品展示</h3>
-                        <blockquote>
-                            <p className="instruction">请将您最近的美容作品照片按照以下要求上传. 如果您有更多作品照片, 请精选一些您的代表作并添加到您的资料中.</p>
-                        </blockquote>
-                        <div className="form-group">
-                            {workInput}
-                        </div>
-
-                        {verifyMsgContent}
-
+                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
+                                                          id="vendorAddressCity" placeholder="城市"
+                                                          name="address.city"
+                                                          value={this.state.editVendor.address ? this.state.editVendor.address.city : ""}
+                                                          onChange={this.handleChange}/></div>
                     </div>
-
-                    <div className="modal-footer">
-                        {cancelModalBtn}
-                        <button type="button" className="btn btn-default btn-hd-blue" onClick={this._onSave}>保存</button>
-                        <button type="button" className="btn btn-default btn-hd-blue" onClick={this._onSubmit}>提交审核</button>
+                    <div className="row">
+                        <div className="col-xs-2"><label className="vcenter34"
+                                                         for="vendorAddressRegion">区域</label></div>
+                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
+                                                          id="vendorAddressRegion" placeholder="区域"
+                                                          name="address.region"
+                                                          value={this.state.editVendor.address ? this.state.editVendor.address.region : ""}
+                                                          onChange={this.handleChange}/></div>
+                    </div>
+                    <div className="row">
+                        <div className="col-xs-2"><label className="vcenter34"
+                                                         for="vendorAddressDetail">地址</label></div>
+                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
+                                                          id="vendorAddressDetail" placeholder="具体地址"
+                                                          name="address.address"
+                                                          value={this.state.editVendor.address ? this.state.editVendor.address.address : ""}
+                                                          onChange={this.handleChange}/></div>
                     </div>
                 </div>
+                <div className="form-group">
+                    <label for="vendorDescription">个人描述</label>
+                    <textarea id="vendorDescription" className="form-control simple-input" rows="5" name="description"
+                              value={this.state.editVendor.description} onChange={this.handleChange}></textarea>
+                </div>
+                <hr/>
+
+                <h3 className="hg-session">身份证信息</h3>
+
+                <div className="form-group">
+                    <label for="vendorIdNo">身份证号码</label>
+                    <input type="text" className="form-control simple-input" id="vendorIdNo" placeholder="身份证号码"
+                           name="id_card.no"
+                           value={this.state.editVendor.id_card ? this.state.editVendor.id_card.no : ""}
+                           onChange={this.handleChange}/>
+                    <br/>
+                    {idCardImageInput}
+                </div>
+                <hr/>
+
+                <h3 className="hg-session">专业认证</h3>
+                <blockquote>
+                    <p className="instruction">如果您有相关的专业认证, 请务必填写. 专业认证可以让用户更好的了解您的专业水品.</p>
+                </blockquote>
+                <div className="form-group">
+                    {certificateInput}
+                </div>
+                <hr/>
+
+                <h3 className="hg-session">作品展示</h3>
+                <blockquote>
+                    <p className="instruction">请将您最近的美容作品照片按照以下要求上传. 如果您有更多作品照片, 请精选一些您的代表作并添加到您的资料中.这将帮助我们进行审核工作.</p>
+                </blockquote>
+                <div className="form-group">
+                    {workInput}
+                </div>
+
+                {verifyMsgContent}
             </div>
-        </div>;
+
+            <div className="hg-modal-footer text-right row">
+                <div className="col-xs-12">
+                    {cancelModalBtn}
+                    <button type="button" className="btn btn-default btn-hd-blue roffset5" onClick={this._onSave}>保存</button>
+                    <button type="button" className="btn btn-default btn-hd-blue" onClick={this._onSubmit}>提交审核</button>
+                </div>
+            </div>
+        </div>;;
     },
 
     _onSubmit: function() {
@@ -519,13 +703,13 @@ var app = React.createClass({
             verifyMsg.push("-请填写身份证号码");
         }
 
-        if(this.state.editVendor.id_card.front_image_name == "") {
+        if(this.state.editVendor.id_card.front_image_url == "") {
             verifyMsg.push("-请上传身份证正面照片");
         }
 
-        if(this.state.editVendor.id_card.back_image_name == "") {
-            verifyMsg.push("-请上传身份证背面照片");
-        }
+        //if(this.state.editVendor.id_card.back_image_url == "") {
+        //    verifyMsg.push("-请上传身份证背面照片");
+        //}
 
         if(this.state.editVendor.role[0].work_list[0].image_url == "") {
             verifyMsg.push("-请上传您美容作品站立正面图");
@@ -535,15 +719,11 @@ var app = React.createClass({
             verifyMsg.push("-请上传您美容作品站立侧身图");
         }
 
-        if(this.state.editVendor.role[0].work_list[2].image_url == "") {
-            verifyMsg.push("-请上传您美容作品站立背面图");
-        }
+        //if(this.state.editVendor.role[0].work_list[2].image_url == "") {
+        //    verifyMsg.push("-请上传您美容作品站立背面图");
+        //}
 
         return verifyMsg;
-    },
-
-    getWXSign: function() {
-        Actions.getWXSignature(document.location.href);
     },
 
     _onChange: function() {

@@ -13,6 +13,8 @@ var DAO = {
             product_meta_category: "product_meta_category",
             product_meta_exit_policy: "product_meta_exit_policy",
             product_meta_other: "product_meta_other",
+
+            vendor_potential: "vendor_potential",
         };
     },
 
