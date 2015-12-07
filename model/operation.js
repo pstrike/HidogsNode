@@ -9,10 +9,12 @@ var DAO = {
     getCollectionList: function () {
         return {
             vendor: "vendor",
+            user: "user",
             product: "product",
             product_meta_category: "product_meta_category",
             product_meta_exit_policy: "product_meta_exit_policy",
             product_meta_other: "product_meta_other",
+            order: "order",
 
             vendor_potential: "vendor_potential",
         };

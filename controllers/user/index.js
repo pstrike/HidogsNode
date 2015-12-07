@@ -1,42 +1,42 @@
-var db = require('../../db/db');
+var db = require('../../db/db'),
+    operation = require('../../model/operation');
 
 exports.engine = 'ejs';
 
 exports.show = function(req, res, next){
-    db.get().collection('user').find({"openid":req.params.user_id}, req.projection).limit(1).toArray(function(err, docs) {
-        res.send(docs[0]);
-    });
+    operation.getObject(operation.getCollectionList().user, req.params.user_id, req.projection, function(object) {
+        res.send(object);
+    })
 };
 
 exports.list = function(req, res, next){
-    db.get().collection('user').find(req.filter, req.projection).toArray(function(err, docs) {
-        res.send(docs);
-    });
+    operation.getObjectList(operation.getCollectionList().user, req.filter, req.projection, function(objectList) {
+        res.send(objectList);
+    })
 };
 
 exports.update = function(req, res, next){
     if(req.body) {
-        db.get().collection('user').updateOne(
-            {"openid": req.body.openid},
-            {
-                $set: req.body,
-                $currentDate: { "modified_time": true }
-            }, function (err, result) {
-                if(err) {
-                    console.log("[DB Err]"+err);
-                    next(err);
-                }
-                else {
-                    res.send(req.body);
-                }
-            });
+        operation.updateObject(operation.getCollectionList().user, req.body, function(result) {
+            if(result.status == 'fail') {
+                next(result.err);
+            }
+            res.send(result);
+        });
     }
 };
 
 exports.insert = function(req, res, next){
-    res.send("user insert");
+    if(req.body) {
+        operation.insertObject(operation.getCollectionList().user, req.body, function(result) {
+            if(result.status == 'fail') {
+                next(result.err);
+            }
+            res.send(result);
+        });
+    }
 };
 
 exports.page = function(req, res, next){
-    res.send("user page");
+
 };

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="宠物 美容 造型 达人">
+    <link rel="icon" href="../favicon.ico">
+
+    <title></title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/hgbasic.css" rel="stylesheet">
+    <link href="../css/hgmodal.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="container blue-background-decoration"></div>
+<nav class="navbar navbar-default navbar-fixed-top hg-navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">欢宠</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container blue-background">
+    <div class="page-header text-center hg-pageheader">
+        <h4>Comment</h4>
+        <h2 class="voffset10"><strong>评论服务</strong></h2>
+    </div>
+
+    <hr/>
+
+    <div class="form-group">
+        <label>您会给服务几颗星?(越多星代表越满意)</label>
+        <div class="row voffset15">
+            <div class="col-xs-offset-1 col-xs-2"><span id="star1" class="glyphicon glyphicon-star star-yellow star-comment text-center" aria-hidden="true"></span></div>
+            <div class="col-xs-2"><span id="star2" class="glyphicon glyphicon-star star-yellow star-comment text-center" aria-hidden="true"></span></div>
+            <div class="col-xs-2"><span id="star3" class="glyphicon glyphicon-star-empty star-yellow star-comment text-center" aria-hidden="true"></span></div>
+            <div class="col-xs-2"><span id="star4" class="glyphicon glyphicon-star-empty star-yellow star-comment text-center" aria-hidden="true"></span></div>
+            <div class="col-xs-2"><span id="star5" class="glyphicon glyphicon-star-empty star-yellow star-comment text-center" aria-hidden="true"></span></div>
+        </div>
+    </div>
+
+    <div class="form-group voffset30">
+        <label>描述您的服务体验可以帮助其它用户更好的选择服务?</label>
+        <textarea class="form-control simple-input" rows="5">今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
+    </div>
+
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row text-right">
+            <div class="col-xs-12">
+                <button class="btn btn-hd-blue text-muted">取消</button>
+                <button class="btn btn-hd-blue text-muted">完成</button>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+</body>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<script src="../lib/jquery-2.1.4.min.js"></script>
+<script src="../lib/bootstrap.min.js"></script>
+<script src="../js/hgmodal.js"></script>
+<script>
+    function showOrderDetail() {
+        showHgModal('orderDetail')
+    }
+
+    function hideOrderDetail() {
+        hideHgModal('orderDetail')
+    }
+
+    var tabs = $('.star-comment');
+
+    tabs.click(function() {
+        tabs.removeClass('glyphicon-star');
+        tabs.removeClass('glyphicon-star-empty');
+        var el = $(this);
+
+
+        var starNo = parseInt(el.attr('id').substring(4,5));
+
+        for(var i=0; i<5; i++) {
+            var starId = "#star" + (i+1);
+
+            if(i > starNo-1) {
+                $(starId).addClass('glyphicon-star-empty');
+            }
+            else {
+                $(starId).addClass('glyphicon-star');
+            }
+
+        }
+    })
+
+
+</script>
+</body>
+</html>

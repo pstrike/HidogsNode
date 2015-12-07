@@ -1,57 +1,62 @@
 /** @jsx React.DOM */
+
 var React = require('react');
+var HidogsConstants = require('../../Common/constants/HidogsConstants');
+var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 
-var ProductItem = require('./OrderItem.react.js');
-var VendorOrderConstants = require('../constants/Constants');
-var OrderItem = require('../components/OrderItem.react');
+var Store = require('../stores/Store');
+var Actions = require('../actions/Actions');
+var OrderListItem = require('./OrderListItem.react');
 
-var ProductList = React.createClass({
+
+var app = React.createClass({
+
+    componentDidMount: function() {
+
+        // init tab
+        var tabs = $('#hgTab div');
+        tabs.click(function() {
+            tabs.removeClass('hg-tab-item-active')
+            var el = $(this);
+            el.addClass('hg-tab-item-active');
+        })
+    },
+
 
     render: function() {
-        var orderList = this.props.orderList;
-        var status = this.props.status;
-        var content = [];
 
-        console.log(orderList);
-
-        if(status == VendorOrderConstants.VENDOR_ORDER_STORE_STATE_LIST_LOADING) {
-            content = <tr><td className='text-center' colSpan="5">加载中...</td></tr>;
-        }
-        else {
-            for (var i in orderList) {
-                content.push(<OrderItem order={orderList[i]} />);
-            }
-        }
+        var orderListItemContent = [];
+        this.props.orderList.forEach(function(item) {
+            orderListItemContent.push(<OrderListItem order={item}></OrderListItem>);
+        })
 
         return (
-            <div className="container-fluid">
-                <div className="page-header">
-                    <h1>欢宠用户<small>我的订单列表</small></h1>
+            <div className="container">
+                <div className="page-header text-center hg-pageheader">
+                    <h4>My Orders</h4>
+                    <h2 className="voffset10"><strong>我的订单</strong></h2>
                 </div>
 
-                <div>
-                    <table className="table table-striped table-condensed">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>服务</th>
-                            <th>用户</th>
-                            <th>价格</th>
-                            <th>状态</th>
-                            <th>时间</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {content}
-                        </tbody>
-                    </table>
+                <div id="hgTab" className="text-center">
+                    <div className="col-xs-3 hg-tab-item hg-tab-item-active" onClick={this._filter.bind(this, ["all"])}><a href="#">全部</a></div>
+                    <div className="col-xs-3 hg-tab-item" onClick={this._filter.bind(this, ["tbserviced","tbconfirmed"])}><a href="#">待使用</a></div>
+                    <div className="col-xs-3 hg-tab-item" onClick={this._filter.bind(this, ["tbpaid"])}><a href="#">待支付</a></div>
+                    <div className="col-xs-3 hg-tab-item" onClick={this._filter.bind(this, ["tbcommented"])}><a href="#">待评价</a></div>
                 </div>
+
+                <hr/>
+
+                {orderListItemContent}
+
             </div>
-
         );
-    }
+    },
+
+    _filter: function(filter) {
+        Actions.filterList(filter);
+    },
+
 });
 
-module.exports = ProductList;
+module.exports = app;
 

@@ -17,21 +17,15 @@ var Actions = {
             actionType: Constants.HIDOGS_VENDOR_ORDER_GET_ORDER_LIST
         });
 
-        RC.getOrderList(function(payload){
-            if(payload.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
-                || payload.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
-                || payload.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
-
-                AppDispatcher.dispatch({
-                    actionType: Constants.HIDOGS_VENDOR_ORDER_GET_ORDER_LIST_FAIL
-                });
-            }
-            else {
-                AppDispatcher.dispatch({
-                    actionType: Constants.HIDOGS_VENDOR_ORDER_GET_ORDER_LIST_SUCCESS,
-                    payload: payload
-                });
-            }
+        RC.getObject().then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_VENDOR_PRODUCT_DETAIL_LOAD_DETAIL_SUCCESSFUL,
+                payload: payload,
+            });
+        }, function (err) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_VENDOR_PRODUCT_DETAIL_LOAD_DETAIL_FAIL,
+            });
         });
     },
     // Order List - End

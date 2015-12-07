@@ -16,624 +16,923 @@
     <link href="../css/bootstrap-datepicker3.min.css" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">欢宠</a>
-                <p class="navbar-text">服务伙伴 - 服务管理</p>
-            </div>
-        </div>
-    </nav>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">欢宠</a>
 
-    <div class="modal modal-fullscreen fade" id="productEdit" tabindex="-2" role="dialog"
-         aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title text-center" id="ProductEditModalTitle">创建服务</h4>
+            <p class="navbar-text">服务伙伴 - 服务管理</p>
+        </div>
+    </div>
+</nav>
+
+<div class="modal modal-fullscreen fade" id="productEdit" tabindex="-2" role="dialog"
+     aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center" id="ProductEditModalTitle">创建服务</h4>
+            </div>
+
+            <div class="modal-body">
+                <h3>基本信息</h3>
+
+                <div class="form-group">
+                    <label>服务标题</label>
+                    <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                       data-toggle="popover" data-trigger="focus" data-content="好的服务标题可以有效的帮用户了解您的服务并吸引用户的关注.">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                    </a>
+                    <input type="text" class="form-control simple-input" placeholder="昵称" value="仲秋"/>
+                </div>
+                <div class="form-group">
+                    <label>服务类别</label>
+                    <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                       data-toggle="popover" data-trigger="focus" data-content="根据您可提供的服务选择服务类别. 服务类别将用于方便用户搜索.">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                    </a>
+                    <select class="form-control simple-input">
+                        <option>美容护理</option>
+                        <option>美容造型</option>
+                        <option>全身剃光</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>服务范围</label>
+                    <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                       data-toggle="popover" data-trigger="focus" data-content="服务范围由您选择的服务类型确定.">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                    </a>
+                    <textarea class="form-control no-border simple-input" rows="5" disabled>今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
                 </div>
 
-                <div class="modal-body">
-                    <h3>基本信息</h3>
-                    <div class="form-group">
-                        <label>服务标题</label>
-                        <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="好的服务标题可以有效的帮用户了解您的服务并吸引用户的关注.">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                        </a>
-                        <input type="text" class="form-control simple-input" placeholder="昵称" value="仲秋"/>
-                    </div>
-                    <div class="form-group">
-                        <label>服务类别</label>
-                        <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="根据您可提供的服务选择服务类别. 服务类别将用于方便用户搜索.">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                        </a>
-                        <select class="form-control simple-input">
-                            <option>美容护理</option>
-                            <option>美容造型</option>
-                            <option>全身剃光</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>服务范围</label>
-                        <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="服务范围由您选择的服务类型确定.">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                        </a>
-                        <textarea class="form-control no-border simple-input" rows="5" disabled>今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
-                    </div>
+                <h3 class="hg-session">详细信息</h3>
 
-                    <h3 class="hg-session">详细信息</h3>
-                    <div class="form-group">
-                        <label>服务地址</label>
-                        <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="如果您的服务地址和您个人的地址不同,请修改以下地址.">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                        </a>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">省份</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control simple-input" placeholder="省份" value="广东省" /></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">城市</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control simple-input"  placeholder="城市" value="广州市" /></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">区域</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control simple-input" placeholder="区域" value="海珠区" /></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">地址</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control simple-input" placeholder="具体地址" value="滨江东路418号天天小区3栋201" /></div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>服务特色</label>
-                        <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="描述您的服务特色可以更好的帮助用户做出选择.">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                        </a>
-                        <textarea class="form-control simple-input" rows="5">今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>服务注意事项</label>
-                        <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="如果您的服务有用户需要特别注意的地方,请填写注意事项.">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                        </a>
-                        <textarea class="form-control simple-input" rows="5">今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
-                    </div>
+                <div class="form-group">
+                    <label>服务地址</label>
+                    <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                       data-toggle="popover" data-trigger="focus" data-content="如果您的服务地址和您个人的地址不同,请修改以下地址.">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                    </a>
 
-                    <h3 class="hg-session">服务图片
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">省份</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control simple-input" placeholder="省份"
+                                                      value="广东省"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">城市</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control simple-input" placeholder="城市"
+                                                      value="广州市"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">区域</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control simple-input" placeholder="区域"
+                                                      value="海珠区"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">地址</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control simple-input" placeholder="具体地址"
+                                                      value="滨江东路418号天天小区3栋201"/></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>服务特色</label>
+                    <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                       data-toggle="popover" data-trigger="focus" data-content="描述您的服务特色可以更好的帮助用户做出选择.">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                    </a>
+                    <textarea class="form-control simple-input" rows="5">今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
+                </div>
+                <div class="form-group">
+                    <label>服务注意事项</label>
+                    <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                       data-toggle="popover" data-trigger="focus" data-content="如果您的服务有用户需要特别注意的地方,请填写注意事项.">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                    </a>
+                    <textarea class="form-control simple-input" rows="5">今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
+                </div>
+
+                <h3 class="hg-session">服务图片
                         <span>
-                            <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="添加可以展现您服务的特色图片可以让用户更好的了解您的服务. 例如: 美容造型前后的图片, 特别的配饰等. 将您最有特色的图片排放在前三张, 它们会得到最好的展示.">
+                            <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                               data-toggle="popover" data-trigger="focus"
+                               data-content="添加可以展现您服务的特色图片可以让用户更好的了解您的服务. 例如: 美容造型前后的图片, 特别的配饰等. 将您最有特色的图片排放在前三张, 它们会得到最好的展示.">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </a>
                         </span>
-                    </h3>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">名称</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control no-border simple-input" placeholder="美容后站立正面图" value="美容后站立正面图"/></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">图片</label></div>
-                            <div class="col-xs-10">
-                                <form method="post" encType="multipart/form-data" action="#">
-                                    <input type="file" name="datafile" />
-                                </form>
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34" for="vendorWorkName2">名称</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control no-border simple-input" id="vendorWorkName2" placeholder="美容后站立正面图" value="美容后站立正面图"/></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">图片</label></div>
-                            <div class="col-xs-10">
-                                <form method="post" encType="multipart/form-data" action="#">
-                                    <input type="file" name="datafile" />
-                                </form>
-                            </div>
+                </h3>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">名称</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control no-border simple-input"
+                                                      placeholder="美容后站立正面图" value="美容后站立正面图"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">图片</label></div>
+                        <div class="col-xs-10">
+                            <form method="post" encType="multipart/form-data" action="#">
+                                <input type="file" name="datafile"/>
+                            </form>
                         </div>
                     </div>
+                    <br/>
 
-                    <h3 class="hg-session">服务设置</h3>
-                    <div class="form-group">
-                        <label>服务时长</label>
-                        <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="请您估算服务的平均时长方便用户选择时间.">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                        </a>
-                        <input type="text" class="form-control simple-input" placeholder="服务时长"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label>服务时长</label>
-                        <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="请您设置服务的基础价格.用户可以在设置的价格中选择其中一个方案.">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                        </a>
-                        <div class="row">
-                            <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/></div>
-                        </div>
-                        <div class="row voffset10">
-                            <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/></div>
-                        </div>
-                        <div class="row voffset10">
-                            <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/></div>
-                        </div>
-                        <div class="row voffset10">
-                            <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/></div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34" for="vendorWorkName2">名称</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control no-border simple-input"
+                                                      id="vendorWorkName2" placeholder="美容后站立正面图" value="美容后站立正面图"/>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label>额外服务项目</label>
-                        <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="如果您在基础服务外还由额外的服务供用户选择,您可在此设置.">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                        </a>
-                        <div class="row">
-                            <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/></div>
-                        </div>
-                        <div class="row voffset10">
-                            <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/></div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">图片</label></div>
+                        <div class="col-xs-10">
+                            <form method="post" encType="multipart/form-data" action="#">
+                                <input type="file" name="datafile"/>
+                            </form>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label>退款政策</label>
-                        <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button" data-toggle="popover" data-trigger="focus" data-content="请设置您的退款安排.">
-                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-                        </a>
-                        <select class="form-control simple-input">
-                            <option>全额退款</option>
-                            <option>部分退款</option>
-                            <option>无退款安排</option>
-                        </select>
-                    </div>
-
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">保存</button>
+                <h3 class="hg-session">服务设置</h3>
+
+                <div class="form-group">
+                    <label>服务时长</label>
+                    <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                       data-toggle="popover" data-trigger="focus" data-content="请您估算服务的平均时长方便用户选择时间.">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                    </a>
+                    <input type="text" class="form-control simple-input" placeholder="服务时长"/>
                 </div>
+
+                <div class="form-group">
+                    <label>服务时长</label>
+                    <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                       data-toggle="popover" data-trigger="focus" data-content="请您设置服务的基础价格.用户可以在设置的价格中选择其中一个方案.">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                    </a>
+
+                    <div class="row">
+                        <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/>
+                        </div>
+                        <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/>
+                        </div>
+                    </div>
+                    <div class="row voffset10">
+                        <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/>
+                        </div>
+                        <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/>
+                        </div>
+                    </div>
+                    <div class="row voffset10">
+                        <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/>
+                        </div>
+                        <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/>
+                        </div>
+                    </div>
+                    <div class="row voffset10">
+                        <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/>
+                        </div>
+                        <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>额外服务项目</label>
+                    <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                       data-toggle="popover" data-trigger="focus" data-content="如果您在基础服务外还由额外的服务供用户选择,您可在此设置.">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                    </a>
+
+                    <div class="row">
+                        <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/>
+                        </div>
+                        <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/>
+                        </div>
+                    </div>
+                    <div class="row voffset10">
+                        <div class="col-xs-7"><input type="text" class="form-control simple-input" placeholder="项目名称"/>
+                        </div>
+                        <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>退款政策</label>
+                    <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
+                       data-toggle="popover" data-trigger="focus" data-content="请设置您的退款安排.">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                    </a>
+                    <select class="form-control simple-input">
+                        <option>全额退款</option>
+                        <option>部分退款</option>
+                        <option>无退款安排</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">保存</button>
             </div>
         </div>
     </div>
+</div>
 
 
-    <div class="modal modal-fullscreen fade" id="productDetail" tabindex="-2" role="dialog"
-         aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title text-center" id="ProductDetailModalTitle">服务详情</h4>
+<div class="modal modal-fullscreen fade" id="productDetail" tabindex="-2" role="dialog"
+     aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center" id="ProductDetailModalTitle">服务详情</h4>
+            </div>
+
+            <div class="modal-body">
+                <h3>基本信息</h3>
+
+                <div class="form-group">
+                    <label>标题</label>
+                    <input type="text" class="form-control no-border" placeholder="标题" value="5星级洗澡服务" disabled/>
+                </div>
+                <div class="form-group">
+                    <label>类别</label>
+                    <input type="text" class="form-control no-border" placeholder="类别" value="美容 > 美容护理" disabled/>
+                </div>
+                <div class="form-group">
+                    <label>服务范围</label>
+                    <textarea class="form-control no-border" rows="5" disabled>今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
+                </div>
+                <div class="form-group">
+                    <label>服务订购数量</label>
+                    <input type="text" class="form-control no-border" placeholder="服务订购数量" value="3" disabled/>
                 </div>
 
-                <div class="modal-body">
-                    <h3>基本信息</h3>
-                    <div class="form-group">
-                        <label>标题</label>
-                        <input type="text" class="form-control no-border" placeholder="标题" value="5星级洗澡服务" disabled/>
-                    </div>
-                    <div class="form-group">
-                        <label>类别</label>
-                        <input type="text" class="form-control no-border" placeholder="类别" value="美容 > 美容护理" disabled/>
-                    </div>
-                    <div class="form-group">
-                        <label>服务范围</label>
-                        <textarea class="form-control no-border" rows="5" disabled>今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>服务订购数量</label>
-                        <input type="text" class="form-control no-border" placeholder="服务订购数量" value="3" disabled/>
-                    </div>
+                <h3 class="hg-session">详细信息</h3>
 
-                    <h3 class="hg-session">详细信息</h3>
-                    <div class="form-group">
-                        <label>服务地址</label>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">省份</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="省份" value="广东省" disabled/></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">城市</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="城市" value="广州市" disabled/></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">区域</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="区域" value="海珠区" disabled/></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">地址</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="具体地址" value="滨江东路418号天天小区3栋201" disabled/></div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>服务特色</label>
-                        <textarea class="form-control no-border" rows="5" disabled>今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>注意事项</label>
-                        <textarea class="form-control no-border" rows="5" disabled>今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>服务图片</label>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">名称</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="写点什么描述您的图片" value="洗澡前" disabled/></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">图片</label></div>
-                            <div class="col-xs-10">
-                                <img class="img-responsive" src="../img/image_placeholer.png"/>
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">名称</label></div>
-                            <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="写点什么描述您的图片" value="洗澡后" disabled/></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-2"><label class="vcenter34">图片</label></div>
-                            <div class="col-xs-10">
-                                <img class="img-responsive" src="../img/image_placeholer.png"/>
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label>服务地址</label>
 
-                    <h3 class="hg-session">服务设置</h3>
-                    <div class="form-group">
-                        <label>服务时长</label>
-                        <input type="text" class="form-control no-border" placeholder="服务时长" value="65分钟" disabled/>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">省份</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="省份"
+                                                      value="广东省" disabled/></div>
                     </div>
-                    <div class="form-group">
-                        <label>服务价格</label>
-                        <div class="row">
-                            <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="价格名称" value="4公斤以内" disabled/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格" value="60元" disabled/></div>
-                        </div>
-                        <div class="row voffset5">
-                            <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="价格名称" value="4公斤起-5公斤" disabled/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格" value="60元" disabled/></div>
-                        </div>
-                        <div class="row voffset5">
-                            <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="价格名称" value="5公斤起-6公斤" disabled/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格" value="60元" disabled/></div>
-                        </div>
-                        <div class="row voffset5">
-                            <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="价格名称" value="6公斤起-10公斤" disabled/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格" value="60元" disabled/></div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">城市</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="城市"
+                                                      value="广州市" disabled/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">区域</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="区域"
+                                                      value="海珠区" disabled/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">地址</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control no-border" placeholder="具体地址"
+                                                      value="滨江东路418号天天小区3栋201" disabled/></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>服务特色</label>
+                    <textarea class="form-control no-border" rows="5" disabled>今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
+                </div>
+                <div class="form-group">
+                    <label>注意事项</label>
+                    <textarea class="form-control no-border" rows="5" disabled>今年是二战胜利和联合国成立70周年，国际秩序也是今年国际社会讨论热点。从此次习主席访英取得的成功看，关注国际秩序并推动其向更加公正、合理的方向发展，不仅是对历史的纪念，更是当今时代发展的呼唤。</textarea>
+                </div>
+                <div class="form-group">
+                    <label>服务图片</label>
+
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">名称</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control no-border"
+                                                      placeholder="写点什么描述您的图片" value="洗澡前" disabled/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">图片</label></div>
+                        <div class="col-xs-10">
+                            <img class="img-responsive" src="../img/image_placeholer.png"/>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label>额外服务价格</label>
-                        <div class="row">
-                            <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="额外价格名称" value="接送服务" disabled/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格" value="60元" disabled/></div>
-                        </div>
-                        <div class="row voffset5">
-                            <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="额外价格名称" value="高级沐浴露" disabled/></div>
-                            <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格" value="60元" disabled/></div>
+                    <br/>
+
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">名称</label></div>
+                        <div class="col-xs-10"><input type="text" class="form-control no-border"
+                                                      placeholder="写点什么描述您的图片" value="洗澡后" disabled/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">图片</label></div>
+                        <div class="col-xs-10">
+                            <img class="img-responsive" src="../img/image_placeholer.png"/>
                         </div>
                     </div>
-
-                    <h3 class="hg-session">服务评价</h3>
-                    <ul class="list-unstyled">
-                        <li>
-                            <div class="row">
-                                <div class="col-xs-3 text-center">
-                                    <img src="../img/ppl_icon.png"><p>大白</p>
-                                </div>
-                                <div class="col-xs-9">
-                                    <div class="row">
-                                        <div class="col-xs-6 text-left">
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
-                                        </div>
-                                        <div class="col-xs-6 text-right grey_text">2015/10/31</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12 text-left">
-                                            <p>我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr/>
-                        </li>
-
-                        <li>
-                            <div class="row">
-                                <div class="col-xs-3 text-center">
-                                    <img src="../img/ppl_icon.png"><p>大白</p>
-                                </div>
-                                <div class="col-xs-9">
-                                    <div class="row">
-                                        <div class="col-xs-6 text-left">
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
-                                        </div>
-                                        <div class="col-xs-6 text-right grey_text">2015/10/31</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12 text-left">
-                                            <p>我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                    </ul>
-                    <div class="text-center"><button class="btn btn-hd-blue btn-sm" onClick="$('#productDetail').modal('hide'); $('#productComment').modal('show');">查看其他11条评论</button></div>
-
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">编辑</button>
-                    <button type="button" class="btn btn-default btn-hd-blue" data-toggle="modal" href="#test">预览</button>
+                <h3 class="hg-session">服务设置</h3>
+
+                <div class="form-group">
+                    <label>服务时长</label>
+                    <input type="text" class="form-control no-border" placeholder="服务时长" value="65分钟" disabled/>
                 </div>
+                <div class="form-group">
+                    <label>服务价格</label>
+
+                    <div class="row">
+                        <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="价格名称"
+                                                     value="4公斤以内" disabled/></div>
+                        <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格"
+                                                     value="60元" disabled/></div>
+                    </div>
+                    <div class="row voffset5">
+                        <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="价格名称"
+                                                     value="4公斤起-5公斤" disabled/></div>
+                        <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格"
+                                                     value="60元" disabled/></div>
+                    </div>
+                    <div class="row voffset5">
+                        <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="价格名称"
+                                                     value="5公斤起-6公斤" disabled/></div>
+                        <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格"
+                                                     value="60元" disabled/></div>
+                    </div>
+                    <div class="row voffset5">
+                        <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="价格名称"
+                                                     value="6公斤起-10公斤" disabled/></div>
+                        <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格"
+                                                     value="60元" disabled/></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>额外服务价格</label>
+
+                    <div class="row">
+                        <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="额外价格名称"
+                                                     value="接送服务" disabled/></div>
+                        <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格"
+                                                     value="60元" disabled/></div>
+                    </div>
+                    <div class="row voffset5">
+                        <div class="col-xs-7"><input type="text" class="form-control no-border" placeholder="额外价格名称"
+                                                     value="高级沐浴露" disabled/></div>
+                        <div class="col-xs-5"><input type="text" class="form-control no-border" placeholder="价格"
+                                                     value="60元" disabled/></div>
+                    </div>
+                </div>
+
+                <h3 class="hg-session">服务评价</h3>
+                <ul class="list-unstyled">
+                    <li>
+                        <div class="row">
+                            <div class="col-xs-3 text-center">
+                                <img src="../img/ppl_icon.png">
+
+                                <p>大白</p>
+                            </div>
+                            <div class="col-xs-9">
+                                <div class="row">
+                                    <div class="col-xs-6 text-left">
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star-empty star-yellow"
+                                              aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star-empty star-yellow"
+                                              aria-hidden="true"></span>
+                                    </div>
+                                    <div class="col-xs-6 text-right grey_text">2015/10/31</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+                                        <p>我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                    </li>
+
+                    <li>
+                        <div class="row">
+                            <div class="col-xs-3 text-center">
+                                <img src="../img/ppl_icon.png">
+
+                                <p>大白</p>
+                            </div>
+                            <div class="col-xs-9">
+                                <div class="row">
+                                    <div class="col-xs-6 text-left">
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star-empty star-yellow"
+                                              aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star-empty star-yellow"
+                                              aria-hidden="true"></span>
+                                    </div>
+                                    <div class="col-xs-6 text-right grey_text">2015/10/31</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+                                        <p>我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+                <div class="text-center">
+                    <button class="btn btn-hd-blue btn-sm"
+                            onClick="$('#productDetail').modal('hide'); $('#productComment').modal('show');">查看其他11条评论
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">编辑</button>
+                <button type="button" class="btn btn-default btn-hd-blue" data-toggle="modal" href="#test">预览</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal modal-fullscreen fade" id="productComment" tabindex="-2" role="dialog"
-         aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title text-center">服务评论</h4>
-                </div>
+<div class="modal modal-fullscreen fade" id="productComment" tabindex="-2" role="dialog"
+     aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center">服务评论</h4>
+            </div>
 
-                <div class="modal-body">
-                    <ul class="list-unstyled">
-                        <li>
-                            <div class="row">
-                                <div class="col-xs-3 text-center">
-                                    <img src="../img/ppl_icon.png"><p>大白</p>
-                                </div>
-                                <div class="col-xs-9">
-                                    <div class="row">
-                                        <div class="col-xs-6 text-left">
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
-                                        </div>
-                                        <div class="col-xs-6 text-right grey_text">2015/10/31</div>
+            <div class="modal-body">
+                <ul class="list-unstyled">
+                    <li>
+                        <div class="row">
+                            <div class="col-xs-3 text-center">
+                                <img src="../img/ppl_icon.png">
+
+                                <p>大白</p>
+                            </div>
+                            <div class="col-xs-9">
+                                <div class="row">
+                                    <div class="col-xs-6 text-left">
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star-empty star-yellow"
+                                              aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star-empty star-yellow"
+                                              aria-hidden="true"></span>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-xs-12 text-left">
-                                            <p>我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
-                                        </div>
+                                    <div class="col-xs-6 text-right grey_text">2015/10/31</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+                                        <p>我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
                                     </div>
                                 </div>
                             </div>
-                            <hr/>
-                        </li>
+                        </div>
+                        <hr/>
+                    </li>
 
-                        <li>
-                            <div class="row">
-                                <div class="col-xs-3 text-center">
-                                    <img src="../img/ppl_icon.png"><p>大白</p>
-                                </div>
-                                <div class="col-xs-9">
-                                    <div class="row">
-                                        <div class="col-xs-6 text-left">
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
-                                            <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
-                                        </div>
-                                        <div class="col-xs-6 text-right grey_text">2015/10/31</div>
+                    <li>
+                        <div class="row">
+                            <div class="col-xs-3 text-center">
+                                <img src="../img/ppl_icon.png">
+
+                                <p>大白</p>
+                            </div>
+                            <div class="col-xs-9">
+                                <div class="row">
+                                    <div class="col-xs-6 text-left">
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star-empty star-yellow"
+                                              aria-hidden="true"></span>
+                                        <span class="glyphicon glyphicon-star-empty star-yellow"
+                                              aria-hidden="true"></span>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-xs-12 text-left">
-                                            <p>我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
-                                        </div>
+                                    <div class="col-xs-6 text-right grey_text">2015/10/31</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+                                        <p>我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
                                     </div>
                                 </div>
                             </div>
-                        </li>
+                        </div>
+                    </li>
 
-                    </ul>
+                </ul>
 
-                </div>
+            </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">编辑</button>
-                    <button type="button" class="btn btn-default btn-hd-blue" data-toggle="modal" href="#test">预览</button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">编辑</button>
+                <button type="button" class="btn btn-default btn-hd-blue" data-toggle="modal" href="#test">预览</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal modal-fullscreen fade" id="productSetting" tabindex="-2" role="dialog"
-         aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title text-center">服务设置</h4>
-                </div>
+<div class="modal modal-fullscreen fade" id="productSetting" tabindex="-2" role="dialog"
+     aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center">服务设置</h4>
+            </div>
 
-                <div class="modal-body">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-xs-8"><label class="vcenter34">今天不再接额外订单</label></div>
-                            <div class="switch col-xs-4 text-right">
-                                <input type="checkbox" name="my-checkbox" checked>
-                            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-8"><label class="vcenter34">今天不再接额外订单</label></div>
+                        <div class="switch col-xs-4 text-right">
+                            <input type="checkbox" name="my-checkbox" checked>
                         </div>
-                    </div>
-
-                    <div class="form-group voffset30">
-                        <label>每天服务时间</label>
-                        <div class="row">
-                            <div class="col-xs-3"><label class="vcenter34">开始时间</label></div>
-                            <div class="col-xs-9"><input type="text" class="form-control no-border" placeholder="开始时间" value="10:00" disabled/></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-3"><label class="vcenter34">结束时间</label></div>
-                            <div class="col-xs-9"><input type="text" class="form-control no-border" placeholder="结束时间" value="19:00" disabled/></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group voffset30">
-                        <label>休息时间设置</label>
-                        <div class="row">
-                            <div class="col-xs-12"><input type="text" class="form-control no-border" placeholder="开始时间" value="20150902" disabled/></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group voffset30">
-                        <label>您同时可以服务多少用户?</label>
-                        <input type="text" class="form-control no-border" placeholder="服务用户数目" value="3" disabled/>
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-default btn-hd-blue" onClick="$('#productSetting').modal('hide'); $('#productSettingEdit').modal('show');">编辑</button>
+                <div class="form-group voffset30">
+                    <label>每天服务时间</label>
+
+                    <div class="row">
+                        <div class="col-xs-3"><label class="vcenter34">开始时间</label></div>
+                        <div class="col-xs-9"><input type="text" class="form-control no-border" placeholder="开始时间"
+                                                     value="10:00" disabled/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3"><label class="vcenter34">结束时间</label></div>
+                        <div class="col-xs-9"><input type="text" class="form-control no-border" placeholder="结束时间"
+                                                     value="19:00" disabled/></div>
+                    </div>
                 </div>
+
+                <div class="form-group voffset30">
+                    <label>休息时间设置</label>
+
+                    <div class="row">
+                        <div class="col-xs-12"><input type="text" class="form-control no-border" placeholder="开始时间"
+                                                      value="20150902" disabled/></div>
+                    </div>
+                </div>
+
+                <div class="form-group voffset30">
+                    <label>您同时可以服务多少用户?</label>
+                    <input type="text" class="form-control no-border" placeholder="服务用户数目" value="3" disabled/>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-default btn-hd-blue"
+                        onClick="$('#productSetting').modal('hide'); $('#productSettingEdit').modal('show');">编辑
+                </button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal modal-fullscreen fade" id="productSettingEdit" tabindex="-2" role="dialog"
-         aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title text-center">服务设置编辑</h4>
-                </div>
+<div class="modal modal-fullscreen fade" id="productSettingEdit" tabindex="-2" role="dialog"
+     aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center">服务设置编辑</h4>
+            </div>
 
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>每天服务时间</label>
-                        <div class="row">
-                            <div class="col-xs-3"><label class="vcenter34">开始时间</label></div>
-                            <div class="col-xs-9"><input type="text" class="form-control" placeholder="开始时间" value="10:00"/></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-3"><label class="vcenter34">结束时间</label></div>
-                            <div class="col-xs-9"><input type="text" class="form-control" placeholder="结束时间" value="19:00"/></div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>每天服务时间</label>
+
+                    <div class="row">
+                        <div class="col-xs-3"><label class="vcenter34">开始时间</label></div>
+                        <div class="col-xs-9"><input type="text" class="form-control" placeholder="开始时间" value="10:00"/>
                         </div>
                     </div>
-
-                    <div class="form-group voffset30">
-                        <label>休息时间设置</label>
-                        <div class="row">
-                            <div id="hg-datepicker" data-provide="datepicker-inline" class="center-block"></div>
+                    <div class="row">
+                        <div class="col-xs-3"><label class="vcenter34">结束时间</label></div>
+                        <div class="col-xs-9"><input type="text" class="form-control" placeholder="结束时间" value="19:00"/>
                         </div>
-                    </div>
-
-                    <div class="form-group voffset30">
-                        <label>您同时可以服务多少用户?</label>
-                        <input type="text" class="form-control" placeholder="服务用户数目" value="3"/>
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">保存</button>
+                <div class="form-group voffset30">
+                    <label>休息时间设置</label>
+
+                    <div class="row">
+                        <div id="hg-datepicker" data-provide="datepicker-inline" class="center-block"></div>
+                    </div>
                 </div>
+
+                <div class="form-group voffset30">
+                    <label>您同时可以服务多少用户?</label>
+                    <input type="text" class="form-control" placeholder="服务用户数目" value="3"/>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">保存</button>
             </div>
         </div>
     </div>
+</div>
 
+<div class="modal modal-fullscreen fade" id="productGuide" tabindex="-2" role="dialog"
+     aria-labelledby="ProductDetailModalLabel" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-center">教程</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>感谢您成为欢宠服务伙伴, 为了帮助您建立您的服务展现给用户, 您可以根据以下教程开始您的服务创建:</p>
+
+                <h4>一、创建服务</h4>
+
+                <p>（1）、点击【服务协议】按钮，仔细阅读全文确认无误后，点击【同意】确认。</p>
+                <img src="../img/guide/1.jpg" class="img-responsive"/>
+                <img src="../img/guide/2.jpg" class="img-responsive"/>
+                <img src="../img/guide/3.jpg" class="img-responsive"/>
+
+                <p>（2）、返回“服务管理”页面，点击【新建】，开始创建服务。</p>
+
+
+                <p>（3）、在“创建服务”页面，设置服务的基本信息：
+
+                <p>1、【服务标题】：取一个可以打动用户的名字，以便在众多的服务展示中能迅速被客户认出，留下印象，如“”。</p>
+
+                <p>2、点击【服务类别】框，在弹出的下拉列表中选择创建的服务类型，每次只能创建一种服务，“洗澡护理”、“美容造型”、“全身剃光”三种服务都有的需要创建3次。</p>
+
+                <p>3、选定服务类别，【服务范围】会默认自动生成，无须手动填写。美容师应提供相应全套服务，不可减少或更改，有特殊情况（狗狗身体情况不允许）的应跟用户沟通协商。</p>
+                <img src="../img/guide/4.jpg" class="img-responsive"/>
+                </p>
+
+                <p>
+                    4、【工作室地址】是指用户带狗上门、及进行服务的场所，在预览时会生成地图显示，为确保信息的准确性，请完整、详细地填写实际地址。
+                    <img src="../img/guide/5.jpg" class="img-responsive"/>
+                </p>
+
+                <p>5、在【服务特色】一栏，对你的服务进行描述，如介绍自己擅长的风格、服务的特色、工作经验资历等，语言尽量优美真挚、言简意赅，帮助用户能更好地了解你、信任你、选择你。</p>
+                <img src="../img/guide/6.jpg" class="img-responsive"/>
+
+
+                <p>怎么介绍自己的服务特色呢？有几个角度供参考：</p>
+
+                <p>•突出美容师的服务宗旨、个人理念</p>
+
+                <p>•介绍美容师的个人经历</p>
+
+                <p>•介绍工作室的服务细节、服务流程</p>
+
+                <p>•介绍使用的清洁、沐浴、美容用品品牌等</p>
+
+                <p>•介绍工作室的作业环境</p>
+
+                <p>【以下范例仅供参考，请不要完全引用】</p>
+
+                <p>举例（一）</p>
+
+                <p>•周边5公里免费接送</p>
+
+                <p>•藉由对狗狗的爱延伸至每一项服务內容——沐浴露、精心筛选的宠物用品</p>
+
+                <p>•减少狗狗精神和身体上的负担，让主人平时容易打理为准则</p>
+
+                <p>•综合主人的喜好，方便在家简单修整，以及狗狗的体态、毛发特点、生长周期这几点，做出最合适的造型。</p>
+
+                <p>•秉持著宠物即是家人的理念 只选择"天然丶有机"來對待我的家人</p>
+
+                <p>举例（二）</p>
+
+                <p>•以精致为走向,不超收，给予每只宠物宝贝最从容的服务</p>
+
+                <p>•全程独立作业，不假手助理，美容品质稳定</p>
+
+                <p>•美容前与主人充分沟通，避免想像落差</p>
+
+                <p>•我所使用的清洁护理用品,都经过严谨的挑选</p>
+
+                <p>•顾及宝贝们的身心状况,不强做处理，必要时主人可陪伴安抚</p>
+
+                <p>•非店面式环境，仅供单纯剪毛洗澡，无异味且无病狗传感之虞，工具设备彻底消毒</p>
+
+                <p>举例（三）</p>
+
+                <p>
+                    对宠物服务技术专业度的追求一直以來是我所追求的，不断的自我提升和技艺精进是我的自我要求，努力提供狗宝贝们安心、尊重和自由，藉由对他们的爱延伸至每一项服务內容——沐浴露、精心筛选的狗粮、用品、寄养，提升主人与狗狗的生活品质。让主人安心托付无担忧，让狗狗快乐、幸福，满足您及狗狗的需求。</p>
+
+                <p>举例（四）</p>
+
+                <p>专业:由专业美容师洗、剪、吹、整； 純手工吹整，</p>
+
+                <p>仔細观察您家宝贝皮肤是否有异样。</p>
+
+                <p>安全:设备、工具严格消毒，洗澡用毛巾不重复使用，美容器具均消毒杀菌后再使用</p>
+
+                <p>用心: 针对每位狗狗的皮肤狀況挑选适合的沐浴露；</p>
+
+                <p>另外会依据特殊毛质和毛色使用不同的护毛/护色洗剂</p>
+
+                <p>洁净: 使用日本进口超微細气泡莲蓬头–能深入毛孔，彻底清洁，跟狗狗体味说bye bye！</p>
+
+                <p>吸睛: 洗澡后头部修剪, 让宝贝亮丽有型；更有敷泥、泡泡浴、增色染、染色等特殊项目，能让您的宝贝独一无二！</p>
+
+                <p>舒适: 您的狗狗可在这明亮干净的地方，享受美容的愉悅时光</p>
+
+                <p>举例（五）</p>
+
+                <p>Dog
+                    Salon是间迷你的个人工作室，我原本是位普通的上班族，辞掉工作決定创业又希望可以陪着爱狗，于是一头钻入宠物美容行列，除了特地拜师学艺外，也在动物医院內担任美的A.P.D.C有容师长达三年，拥有认证执照。成立工作室后，依然保持严谨挑剔的作风，从宠物的饮食到用品皆十分讲究，因此用具也都是精挑细选，最基本的洗剂等都只用日本进口机系列，我非常爱狗，因此每只上门的狗狗都以这样的心情对待，让每只狗狗都能享受自己的洗香香時光</p>
+
+                <p>举例（六）</p>
+
+                <p>step 1：首先会与狗狗做朋友，让狗狗信任我、熟悉环境，并与您沟通狗狗的个性、习惯及身体状况，让狗狗不紧张。</p>
+
+                <p>step 2：缓狗狗紧张情绪后，会先帮狗狗清耳朵、剪指教与修剪底毛，并贴心地帮狗狗把指甲磨圆。</p>
+
+                <p>step 3：接下来是最重要也是我的坚持，两道洗澡流程及一道润肤，帮狗狗洗净毛孔污垢及深层护毛，让狗狗的毛发更加柔顺蓬松有光泽，让您回家更好整理。</p>
+
+                <p>step 4：再帮狗狗的脚掌擦伤一层保养霜，滋润狗狗脚掌。</p>
+
+                <p>step 5：当狗狗毛发吹整完毕后，会再修剪脸部及脚围毛发，让狗狗更清爽有型哦！</p>
+
+                <p>step 6：最后帮狗狗的毛发擦上XXXX蛋白精华，使毛发柔顺有光泽。</p>
+
+
+                <p>7、对于不接受服务的情况，在【注意事项】里说明，系统已经默认设置了一些通用的条件，其他情况可另行补充。
+                    比如：提醒用户准时不要迟到、如果身上有毛结，要另外收取费用……等等
+                    <img src="../img/guide/7.jpg" class="img-responsive"/>
+                </p>
+
+                <p>8、【图片展示】：上传狗狗各种各样的发型图、工作室的环境图、美容产品用具图等等，将工作室的环境和美容师的技术、给用户提供的附加服务等，进行直观的展示，用户所见即所得，更加安心、放心，促成下单。
+
+                    对焦清晰、分辨率高、画面干净的照片，更受人欢迎哦，可以多花谢心思在照片的拍摄、后期加工和挑选上。
+                    <img src="../img/guide/8.jpg" class="img-responsive"/>
+                </p>
+
+                <p>
+                    举例示范：
+                </p>
+
+                <p>名称：不使用合成的界面活性剂和化学香料的沐浴露，
+                    使用日本进口的XXXXXX。</p>
+                <img src="../img/guide/9.jpg" class="img-responsive"/>
+
+
+                <p>名称：草药有的很好的抗菌消炎效果</p>
+                <img src="../img/guide/10.jpg" class="img-responsive"/>
+
+
+                <p>名称：清洁明亮的美容室，没有任何令人讨厌的异味。</p>
+                <img src="../img/guide/11.jpg" class="img-responsive"/>
+
+                <p>名称：除臭器和空气清新器的双重效果，彻底有效清除空气中的霉菌和细菌、病毒。</p>
+                <img src="../img/guide/12.jpg" class="img-responsive"/>
+
+                <p>名称：宽敞的自由空间，狗狗可以随意玩耍活动</p>
+                <img src="../img/guide/13.jpg" class="img-responsive"/>
+
+                <p>名称：提供全套沐浴、皮肤护理服务</p>
+                <img src="../img/guide/14.jpg" class="img-responsive"/>
+
+
+                <p>9、服务时长：完成该项服务所需要的平均时间。</p>
+                <img src="../img/guide/15.jpg" class="img-responsive"/>
+
+
+                <p>10、价格设置：点击下拉框，可以按“肩高”或者按“体重”，分别进行设置。</p>
+                <img src="../img/guide/16.jpg" class="img-responsive"/>
+
+
+                <p>11、除了基本的剪毛服务，如果还有其他像断甲、药浴、spa……等等的附加服务，可以这里进行设置：</p>
+                <img src="../img/guide/17.jpg" class="img-responsive"/>
+
+                <p>12、保存服务、预览</p>
+
+
+                <p>13、发布</p>
+
+
+                <h4>二、修改和管理服务</h4>
+
+                <p>进入欢宠伙伴服务号——进入“服务管理”页面，点击“查看”，可对已经建立的服务进行修改。</p>
+                <img src="../img/guide/18.jpg" class="img-responsive"/>
+                <img src="../img/guide/19.jpg" class="img-responsive"/>
+                <img src="../img/guide/20.jpg" class="img-responsive"/>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-hd-blue" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-default btn-hd-blue"
+                        onClick="$('#productSetting').modal('hide'); $('#productSettingEdit').modal('show');">编辑
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <ul class="list-unstyled">
+        <li>
+            <div class="row grey_text">
+                <div class="col-xs-6 text-left">美容>美容护理</div>
+                <div class="col-xs-6 text-right"><span class="label label-danger">未发布</span></div>
+            </div>
+            <div class="row text-left">
+                <div class="col-xs-12"><h3>5星级洗澡服务</h3></div>
+            </div>
+            <div class="row grey_text">
+                <div class="col-xs-4 text-left vcenter30">¥75-150</div>
+                <div class="col-xs-4 text-center vcenter30">12个用户使用</div>
+                <div class="col-xs-4 text-right">
+                    <button class="btn btn-hd-blue btn-sm" data-toggle="modal" data-target="#productDetail">查看</button>
+                </div>
+            </div>
+            <hr/>
+        </li>
+
+        <li>
+            <div class="row grey_text">
+                <div class="col-xs-6 text-left">美容>美容护理</div>
+                <div class="col-xs-6 text-right"><span class="label label-success">已发布</span></div>
+            </div>
+            <div class="row text-left">
+                <div class="col-xs-12"><h3>5星级洗澡服务</h3></div>
+            </div>
+            <div class="row grey_text">
+                <div class="col-xs-4 text-left vcenter30">¥75-150</div>
+                <div class="col-xs-4 text-center vcenter30">12个用户使用</div>
+                <div class="col-xs-4 text-right">
+                    <button class="btn btn-hd-blue btn-sm" data-toggle="modal" data-target="#productDetail">查看</button>
+                </div>
+            </div>
+            <hr/>
+        </li>
+
+    </ul>
+
+</div>
+
+<footer class="footer">
     <div class="container">
-        <ul class="list-unstyled">
-            <li>
-                <div class="row grey_text">
-                    <div class="col-xs-6 text-left">美容>美容护理</div>
-                    <div class="col-xs-6 text-right"><span class="label label-danger">未发布</span></div>
-                </div>
-                <div class="row text-left">
-                    <div class="col-xs-12"><h3>5星级洗澡服务</h3></div>
-                </div>
-                <div class="row grey_text">
-                    <div class="col-xs-4 text-left vcenter30">¥75-150</div>
-                    <div class="col-xs-4 text-center vcenter30">12个用户使用</div>
-                    <div class="col-xs-4 text-right"><button class="btn btn-hd-blue btn-sm" data-toggle="modal" data-target="#productDetail">查看</button></div>
-                </div>
-                <hr/>
-            </li>
-
-            <li>
-                <div class="row grey_text">
-                    <div class="col-xs-6 text-left">美容>美容护理</div>
-                    <div class="col-xs-6 text-right"><span class="label label-success">已发布</span></div>
-                </div>
-                <div class="row text-left">
-                    <div class="col-xs-12"><h3>5星级洗澡服务</h3></div>
-                </div>
-                <div class="row grey_text">
-                    <div class="col-xs-4 text-left vcenter30">¥75-150</div>
-                    <div class="col-xs-4 text-center vcenter30">12个用户使用</div>
-                    <div class="col-xs-4 text-right"><button class="btn btn-hd-blue btn-sm" data-toggle="modal" data-target="#productDetail">查看</button></div>
-                </div>
-                <hr/>
-            </li>
-
-        </ul>
-
-    </div>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <button class="btn btn-hd-blue text-muted" data-toggle="modal" data-target="#productSetting">设置</button>
-                    <button class="btn btn-hd-blue text-muted" data-toggle="modal" data-target="#productEdit">新建</button>
-                </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="btn btn-hd-blue text-muted" data-toggle="modal" data-target="#productSetting">设置</button>
+                <button class="btn btn-hd-blue text-muted" data-toggle="modal" data-target="#productEdit">新建</button>
+                <button class="btn btn-hd-blue text-muted" data-toggle="modal" data-target="#productGuide">教程</button>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
 
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-    <script src="../lib/jquery-2.1.4.min.js"></script>
-    <script src="../lib/bootstrap.min.js"></script>
-    <script src="../lib/bootstrap-switch.min.js"></script>
-    <script src="../lib/bootstrap-datepicker.min.js"></script>
-    <script>
-        $('[data-toggle="popover"]').popover();
-        $("[name='my-checkbox']").bootstrapSwitch();
-        $('#hg-datepicker').datepicker({
-            multidate: true,
-            todayHighlight: true
-        })
-    </script>
+<script src="../lib/jquery-2.1.4.min.js"></script>
+<script src="../lib/bootstrap.min.js"></script>
+<script src="../lib/bootstrap-switch.min.js"></script>
+<script src="../lib/bootstrap-datepicker.min.js"></script>
+<script>
+    $('[data-toggle="popover"]').popover();
+    $("[name='my-checkbox']").bootstrapSwitch();
+    $('#hg-datepicker').datepicker({
+        multidate: true,
+        todayHighlight: true
+    })
+</script>
 </body>
 </html>

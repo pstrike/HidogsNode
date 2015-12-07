@@ -125,7 +125,8 @@ exports.page = function(req, res, next){
                 role: "grooming",
                 head_image_url: "/upload/head_image_url_0210590b-cabe-9cd1-9ab8-d3719ff48268.jpg",
                 nick_name: "欢宠小Q",
-                status: "approved"
+                status: "approved",
+                openid: "123",
             };
 
             res.render('vendorproduct.ejs');
@@ -213,20 +214,221 @@ exports.meta = function(req, res, next){
 
 exports.otherget = function(req, res, next){
     var type = req.query.type;
-    var id = req.params.product_id;
 
     switch (type) {
         case 'availability':
-            var availability = [
-                {begin: "201010100900", end: "201010101000"},
-                {begin: "201010101000", end: "201010101100"},
-                {begin: "201010101100", end: "201010101200"},
-            ];
+            var paramCheckDayNo = 6; // incluing today, check total 7 days' availability of vendor
+            var paramTimeSlotDuration = 30; // product duration unit is 30 mins
 
-            res.send(availability);
+            var inputCheckStartTime = new Date();
+            var inputCheckEndTime = new Date();
+            inputCheckEndTime.setDate(inputCheckEndTime.getDate() + paramCheckDayNo +1);
+            inputCheckEndTime.setHours(0);
+            inputCheckEndTime.setMinutes(0);
+            inputCheckEndTime.setSeconds(0);
+            inputCheckEndTime.setMilliseconds(0);
+
+            var inputProductId = req.params.product_id;
+            var inputVendorId;
+            var inputDuration;
+            var inputBusinessStartTime;
+            var inputBusinessEndTime;
+            var inputTimeoffList;
+            var inputIsRejectToday = false;
+            var inputOrderList;
+
+            var resultAllTime = [];
+            var resultProductTime = [];
+
+            operation.getObject(operation.getCollectionList().product, inputProductId, {}, function(product) {
+                if(product) {
+                    operation.getObject(operation.getCollectionList().vendor, product.vendor.vendor_id, {}, function(vendor) {
+                        if(vendor) {
+                            inputDuration = product.duration;
+                            inputVendorId = vendor.vendor_id;
+                            inputBusinessStartTime = vendor.setting.business_time_list[0].start_time;
+                            inputBusinessEndTime = vendor.setting.business_time_list[0].end_time;
+                            inputTimeoffList = vendor.setting.timeoff_list;
+                            inputIsRejectToday = vendor.setting.reject_today_flag;
+
+                            operation.getObjectList(operation.getCollectionList().order, {
+                                    'vendor.vendor_id': inputVendorId,
+                                    'booked_time.start_time': {$gte: inputCheckStartTime, $lte: inputCheckEndTime},
+                                    $or: [ { status: "tbconfirmed" }, { status: "tbserviced" }, { status: "tbcommented" }, { status: "completed" } ],
+                                }, {}, function(orderList) {
+
+                                inputOrderList = orderList;
+
+                                var businessStartHour = parseInt(inputBusinessStartTime.split(":")[0]);
+                                var businessStartMin = parseInt(inputBusinessStartTime.split(":")[1]);
+                                var businessEndHour = parseInt(inputBusinessEndTime.split(":")[0]);
+                                var businessEndMin = parseInt(inputBusinessEndTime.split(":")[1]);
+
+                                // List all timeslot
+                                for(var tempDate = new Date(inputCheckStartTime); tempDate <= inputCheckEndTime; tempDate.setDate(tempDate.getDate()+1)) {
+                                    var businessStartTime = new Date(tempDate);
+                                    businessStartTime.setHours(businessStartHour);
+                                    businessStartTime.setMinutes(businessStartMin);
+                                    businessStartTime.setSeconds(0);
+                                    businessStartTime.setMilliseconds(0);
+
+                                    var businessEndTime = new Date(tempDate);
+                                    businessEndTime.setHours(businessEndHour);
+                                    businessEndTime.setMinutes(businessEndMin);
+                                    businessEndTime.setSeconds(0);
+                                    businessEndTime.setMilliseconds(0);
+
+                                    var tempDateItem = {}
+                                    tempDateItem.date = new Date(tempDate);
+                                    tempDateItem.timeslot = [];
+
+                                    for(var tempTime = businessStartTime; tempTime<=businessEndTime; tempTime.setMinutes(tempTime.getMinutes() + paramTimeSlotDuration)) {
+                                        var timeslotEndtime = new Date(tempTime);
+                                        timeslotEndtime.setMinutes(timeslotEndtime.getMinutes() + paramTimeSlotDuration);
+                                        tempDateItem.timeslot.push({start_time: new Date(tempTime), end_time: timeslotEndtime, isAvailable: true});
+                                    }
+
+                                    resultAllTime.push(tempDateItem);
+                                }
+
+                                // exclude timeoff timeslot
+                                inputTimeoffList.forEach(function(timeoffItem) {
+                                    var timeoffString = timeoffItem.replace(/月/g,"");
+                                    timeoffString = timeoffString.replace(/年/g,"");
+                                    timeoffString = timeoffString.replace(/日/g,"");
+
+                                    inputCheckStartTimeString = _formatDateToString(inputCheckStartTime);
+                                    inputCheckEndTimeString = _formatDateToString(inputCheckEndTime);
+
+                                    if((timeoffString > inputCheckStartTimeString && timeoffString < inputCheckEndTimeString)
+                                    || timeoffString == inputCheckStartTimeString
+                                    || timeoffString == inputCheckEndTimeString) {
+                                        resultAllTime.forEach(function(dateItem){
+
+                                            var dateItemString = _formatDateToString(dateItem.date);
+
+                                            if(timeoffString == dateItemString) {
+                                                dateItem.timeslot.forEach(function(timeslotItem){
+                                                    timeslotItem.isAvailable = false;
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+
+                                // exclude today timeslot if isRejectToday flag is ture
+                                if(inputIsRejectToday) {
+                                    resultAllTime[0].timeslot.forEach(function(timeslotItem){
+                                        timeslotItem.isAvailable = false;
+                                    })
+                                }
+
+                                // exlcude today past timeslot
+                                resultAllTime[0].timeslot.forEach(function(timeslotItem){
+                                    if(timeslotItem.end_time < inputCheckStartTime) {
+                                        timeslotItem.isAvailable = false;
+                                    }
+                                })
+
+                                // exclude existing order timeslot
+                                inputOrderList.forEach(function(orderItem) {
+
+                                    resultAllTime.forEach(function(dateItem) {
+                                        dateItem.timeslot.forEach(function(timeslotItem){
+                                            if(orderItem.booked_time.start_time == timeslotItem.start_time) {
+                                                timeslotItem.isAvailable = false;
+                                            }
+
+                                            if(orderItem.booked_time.end_time == timeslotItem.end_time) {
+                                                timeslotItem.isAvailable = false;
+                                            }
+
+                                            if(orderItem.booked_time.start_time < timeslotItem.end_time && orderItem.booked_time.end_time > timeslotItem.end_time) {
+                                                timeslotItem.isAvailable = false;
+                                            }
+
+                                            if(orderItem.booked_time.start_time < timeslotItem.start_time && orderItem.booked_time.end_time > timeslotItem.start_time) {
+                                                timeslotItem.isAvailable = false;
+                                            }
+
+                                            if(orderItem.booked_time.start_time < timeslotItem.end_time && orderItem.booked_time.end_time > timeslotItem.start_time) {
+                                                timeslotItem.isAvailable = false;
+                                            }
+                                        })
+                                    })
+
+                                })
+
+                                // summarize product available time base on all timeslot
+                                var tempTimeSlotNo = inputDuration / paramTimeSlotDuration;
+                                var tempTimeSlotCounter;
+                                var tempTimeSlotAvailableCounter;
+                                resultProductTime = JSON.parse(JSON.stringify(resultAllTime));
+
+                                resultAllTime.forEach(function(dateItem, index) {
+                                    resultProductTime[index].timeslot = [];
+                                    tempTimeSlotCounter = 0;
+                                    tempTimeSlotAvailableCounter = 0;
+                                    var tempProductTimeslotStart;
+
+                                    for(var i=0; i<dateItem.timeslot.length; i++) {
+                                        if(tempTimeSlotCounter == 0) {
+                                            tempProductTimeslotStart = dateItem.timeslot[i].start_time;
+                                        }
+
+                                        if(dateItem.timeslot[i].isAvailable) {
+                                            tempTimeSlotAvailableCounter++;
+                                        }
+
+                                        tempTimeSlotCounter++;
+
+                                        if(tempTimeSlotCounter == tempTimeSlotNo) {
+                                            var isAvailableFlag = false;
+
+                                            if(tempTimeSlotAvailableCounter == tempTimeSlotNo) {
+                                                isAvailableFlag = true;
+                                            }
+
+                                            resultProductTime[index].timeslot.push({start_time:tempProductTimeslotStart, end_time:dateItem.timeslot[i].end_time, isAvailable: isAvailableFlag});
+
+                                            tempTimeSlotCounter = 0;
+                                            tempTimeSlotAvailableCounter = 0;
+                                        }
+                                    }
+                                })
+
+                                // return result
+                                res.send(resultProductTime);
+
+                            })
+                        }
+
+                    })
+                }
+            })
+
             break;
 
         default:
             next();
     }
+};
+
+function _formatDateToString(date) {
+    var dateItemString = date.getFullYear();
+    if((date.getMonth()+1) < 10) {
+        dateItemString = dateItemString + "0" + (date.getMonth()+1);
+    }
+    else {
+        dateItemString = dateItemString + "" + (date.getMonth()+1);
+    }
+
+    if((date.getDate()) < 10) {
+        dateItemString = dateItemString + "0" + (date.getDate());
+    }
+    else {
+        dateItemString = dateItemString + "" + (date.getDate());
+    }
+
+    return dateItemString
 };

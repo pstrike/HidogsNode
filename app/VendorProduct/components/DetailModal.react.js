@@ -119,17 +119,20 @@ var app = React.createClass({
                 commentContent.push(<li>暂无评论</li>);
             }
 
-            for(var i=0; i<this.state.product.comment_list.length; i++) {
+            this.state.product.comment_list.forEach(function(item) {
+                var commentCreatedTime = new Date(item.created_time);
+
                 commentContent.push(<li>
                     <CommentItem
-                        author="大白"
-                        createdTime="2015/10/31"
-                        star="3"
-                        authorImage="../../img/ppl_icon.png"
-                        content="我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。"></CommentItem>
+                        author={item.author.nick_name}
+                        createdTime={commentCreatedTime.toLocaleDateString()}
+                        star={item.content.rate}
+                        authorImage={item.author.head_image_url}
+                        content={item.content.text}></CommentItem>
                     <hr/>
                 </li>);
-            }
+            })
+
         }
 
         var publishWithdrawBtn = "";

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="宠物 美容 造型 达人">
+    <link rel="icon" href="../favicon.ico">
+
+    <title></title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/hgbasic.css" rel="stylesheet">
+    <link href="../css/hgmodal.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body>
+<div class="container blue-background-decoration"></div>
+<nav class="navbar navbar-default navbar-fixed-top hg-navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">欢宠</a>
+        </div>
+    </div>
+</nav>
+
+<div id="orderDetail" class="hg-modal container-fluid hg-orange-section">
+    <div class="hg-modal-header row">
+        <div class="col-xs-2 text-left hg-modal-header-close">
+            <button type="button" class="close"><span
+                    aria-hidden="true" onclick="hideOrderDetail()">&times;</span></button>
+        </div>
+        <div class="col-xs-8 text-center hg-modal-title"><h4></h4></div>
+        <div class="col-xs-2 text-center hg-modal-title"></div>
+    </div>
+
+    <div class="hg-modal-body text-center" id="agreementBody">
+            <h4>订单详情</h4>
+            <h2 class="voffset10"><strong><span class="glyphicon glyphicon-jpy"></span>待支付</strong></h2>
+
+            <hr class="voffset30"/>
+
+            <span class="glyphicon glyphicon-certificate hg-session-header-icon"></span>
+            <div class="hg-session-header-title">服务项目</div>
+            <h3>5星级洗澡服务</h3>
+            <p>宠物美容>美容护理</p>
+            <table class="hg-table text-left voffset15">
+                <tbody>
+                <tr>
+                    <td>服务范围</td>
+                    <td class="hg-td-75pt">欧洲国家也普遍持支持立场。国际货币体系的变化正在发生，人民币国际化是时代发展的必然趋势，中英货币合作是其中的重要一部分。</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="hg-td-75pt"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <button class="btn btn-hd-blue btn-long voffset15">查看</button>
+
+            <hr class="voffset30"/>
+
+            <div class="row text-center">
+                <img src="../img/ppl.jpg" class="center-block img-responsive img-circle user-icon-header voffset10"/>
+                <div class="hg-session-header-title voffset5">仲秋</div>
+                <div class="hg-session-header-title">
+                    <span class="glyphicon glyphicon-earphone"></span>
+                    1888888888
+                </div>
+            </div>
+            <div class="row voffset30">
+                <div class="container">
+                    <table class="hg-table">
+                        <tbody>
+                        <tr>
+                            <td class="text-center">综合</td>
+                            <td class="hg-td-60pt">
+                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">美容</td>
+                            <td class="hg-td-60pt">
+                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">寄养</td>
+                            <td class="hg-td-60pt">
+                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                                <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">专业认证</td>
+                            <td class="hg-td-60pt">CKU A级美容师</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-center voffset15">
+                        <button class="btn btn-hd-blue btn-long">查看</button>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="voffset30"/>
+
+            <div class="row text-center voffset30">
+                <span class="glyphicon glyphicon-info-sign hg-session-header-icon"></span>
+
+                <div class="hg-session-header-title voffset5">订单信息</div>
+            </div>
+            <div class="row voffset15">
+                <div class="container">
+                    <p>总价: 200元</p>
+                    <table class="hg-table">
+                        <tbody>
+                        <tr>
+                            <td>美容造型</td>
+                            <td>4公斤以内</td>
+                            <td>40元</td>
+                        </tr>
+                        <tr>
+                            <td>附加项目</td>
+                            <td>上门接送</td>
+                            <td>40元</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Spa</td>
+                            <td>20元</td>
+                        </tr>
+                        <tr>
+                            <td>预订时间</td>
+                            <td colspan="2">2012年12月10日 10:00-11:00</td>
+                        </tr>
+                        <tr>
+                            <td>服务地点</td>
+                            <td colspan="2">广州市, 海珠区, 琶洲商业广场</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                    <img class="img-responsive center-block"
+                         src="http://api.map.baidu.com/staticimage?center=116.403874,39.914888&width=700&height=350&zoom=11&ak=uWWhwl3ycRCG6EAB3rpGlncT&markers=116.288891,40.004261&markerStyles=l,A"/>
+                </div>
+
+                <hr class="voffset30"/>
+
+                <div class="row text-center voffset30">
+                    <span class="glyphicon glyphicon-tag hg-session-header-icon"></span>
+                    <div class="hg-session-header-title">订单使用码</div>
+                </div>
+                <table class="hg-table voffset15">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <strong>1234567890</strong><br/>
+                            <i><small>(使用服务时,请向达人出示该使用码.在其它场合,请勿泄漏.)</small></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="row text-center voffset40">
+                    <i class="fa fa-commenting-o hg-session-header-icon"></i>
+
+                    <div class="hg-session-header-title voffset5">我的评论</div>
+                </div>
+                <div class="row voffset15">
+                    <div class="container">
+                        <ul class="list-unstyled">
+                            <li>
+                                <div class="row">
+                                    <div class="col-xs-3 text-center">
+                                        <img class="user-icon-small img-circle" src="../img/ppl_icon.png">
+
+                                        <p>大白</p>
+                                    </div>
+                                    <div class="col-xs-9">
+                                        <div class="row">
+                                            <div class="col-xs-6 text-left">
+                                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                                <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                                                <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                                                <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                                            </div>
+                                            <div class="col-xs-6 text-right">2015/10/31</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12 text-left">
+                                                <p>我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+    </div>
+
+    <div class="hg-modal-footer text-right row">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-default btn-hd-blue roffset5" onclick="hideOrderDetail()">关闭</button>
+        </div>
+    </div>
+</div>
+
+<div class="container blue-background">
+    <div class="page-header text-center hg-pageheader">
+        <h4>My Orders</h4>
+        <h2 class="voffset10"><strong>我的订单</strong></h2>
+    </div>
+
+    <div id="hgTab" class="text-center">
+        <div class="col-xs-3 hg-tab-item hg-tab-item-active"><a href="#">全部</a></div>
+        <div class="col-xs-3 hg-tab-item"><a href="#">待使用</a></div>
+        <div class="col-xs-3 hg-tab-item"><a href="#">待支付</a></div>
+        <div class="col-xs-3 hg-tab-item"><a href="#">待评价</a></div>
+    </div>
+
+    <hr/>
+
+    <div class="text-center voffset50 hg-blue-section">
+        <span class="glyphicon glyphicon-ok hg-session-header-icon"></span>
+        <p>待使用</p>
+        <h3>5星级洗澡服务</h3>
+        <div class="container voffset15">
+            <div class="row">
+                <div class="col-xs-4">
+                    <span>2015/10/12</span>
+                    <span>10:30-11:30</span>
+                </div>
+                <div class="col-xs-5">
+                    <img src="../img/ppl.jpg" class="img-circle user-icon-normal"/>
+                    <span>仲秋</span>
+                </div>
+                <div class="col-xs-3 vcenter45">
+                    <span>¥50</span>
+                </div>
+            </div>
+        </div>
+        <div class="voffset15">
+            <button class="btn btn-hd-blue text-muted btn-long" onclick="showOrderDetail()">查看</button>
+        </div>
+        <hr class="voffset30"/>
+    </div>
+
+    <div class="text-center voffset50 hg-yellow-section">
+        <span class="glyphicon glyphicon-jpy hg-session-header-icon"></span>
+        <p>待支付</p>
+        <h3>5星级洗澡服务</h3>
+        <div class="container voffset15">
+            <div class="row">
+                <div class="col-xs-4">
+                    <span>2015/10/12</span>
+                    <span>10:30-11:30</span>
+                </div>
+                <div class="col-xs-5">
+                    <img src="../img/ppl.jpg" class="img-circle user-icon-normal"/>
+                    <span>仲秋</span>
+                </div>
+                <div class="col-xs-3 vcenter45">
+                    <span>¥50</span>
+                </div>
+            </div>
+        </div>
+        <div class="voffset15">
+            <button class="btn btn-hd-blue text-muted btn-long">查看</button>
+        </div>
+        <hr class="voffset30"/>
+    </div>
+
+    <div class="text-center voffset50 hg-orange-section">
+        <span class="glyphicon glyphicon-comment hg-session-header-icon"></span>
+        <p>待评论</p>
+        <h3>5星级洗澡服务</h3>
+        <div class="container voffset15">
+            <div class="row">
+                <div class="col-xs-4">
+                    <span>2015/10/12</span>
+                    <span>10:30-11:30</span>
+                </div>
+                <div class="col-xs-5">
+                    <img src="../img/ppl.jpg" class="img-circle user-icon-normal"/>
+                    <span>仲秋</span>
+                </div>
+                <div class="col-xs-3 vcenter45">
+                    <span>¥50</span>
+                </div>
+            </div>
+        </div>
+        <div class="voffset15">
+            <button class="btn btn-hd-blue text-muted btn-long">查看</button>
+        </div>
+        <hr class="voffset30"/>
+    </div>
+
+    <div class="text-center voffset50 hg-green-section">
+        <span class="glyphicon glyphicon-stop hg-session-header-icon"></span>
+        <p>完成</p>
+        <h3>5星级洗澡服务</h3>
+        <div class="container voffset15">
+            <div class="row">
+                <div class="col-xs-4">
+                    <span>2015/10/12</span>
+                    <span>10:30-11:30</span>
+                </div>
+                <div class="col-xs-5">
+                    <img src="../img/ppl.jpg" class="img-circle user-icon-normal"/>
+                    <span>仲秋</span>
+                </div>
+                <div class="col-xs-3 vcenter45">
+                    <span>¥50</span>
+                </div>
+            </div>
+        </div>
+        <div class="voffset15">
+            <button class="btn btn-hd-blue text-muted btn-long">查看</button>
+        </div>
+        <hr class="voffset30"/>
+    </div>
+
+    <div class="text-center voffset50">
+        <span class="glyphicon glyphicon-remove hg-session-header-icon"></span>
+        <p>取消</p>
+        <h3>5星级洗澡服务</h3>
+        <div class="container voffset15">
+            <div class="row">
+                <div class="col-xs-4">
+                    <span>2015/10/12</span>
+                    <span>10:30-11:30</span>
+                </div>
+                <div class="col-xs-5">
+                    <img src="../img/ppl.jpg" class="img-circle user-icon-normal"/>
+                    <span>仲秋</span>
+                </div>
+                <div class="col-xs-3 vcenter45">
+                    <span>¥50</span>
+                </div>
+            </div>
+        </div>
+        <div class="voffset15">
+            <button class="btn btn-hd-blue text-muted btn-long">查看</button>
+        </div>
+        <hr class="voffset30"/>
+    </div>
+
+    <div class="text-center voffset50 hg-red-section">
+        <span class="glyphicon glyphicon-repeat hg-session-header-icon"></span>
+        <p>退款中</p>
+        <h3>5星级洗澡服务</h3>
+        <div class="container voffset15">
+            <div class="row">
+                <div class="col-xs-4">
+                    <span>2015/10/12</span>
+                    <span>10:30-11:30</span>
+                </div>
+                <div class="col-xs-5">
+                    <img src="../img/ppl.jpg" class="img-circle user-icon-normal"/>
+                    <span>仲秋</span>
+                </div>
+                <div class="col-xs-3 vcenter45">
+                    <span>¥50</span>
+                </div>
+            </div>
+        </div>
+        <div class="voffset15">
+            <button class="btn btn-hd-blue text-muted btn-long">查看</button>
+        </div>
+        <hr class="voffset30"/>
+    </div>
+
+</div>
+
+
+</body>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<script src="../lib/jquery-2.1.4.min.js"></script>
+<script src="../lib/bootstrap.min.js"></script>
+<script src="../js/hgmodal.js"></script>
+<script>
+    function showOrderDetail() {
+        showHgModal('orderDetail')
+    }
+
+    function hideOrderDetail() {
+        hideHgModal('orderDetail')
+    }
+
+    var tabs = $('#hgTab div');
+
+    tabs.click(function() {
+        tabs.removeClass('hg-tab-item-active')
+        var el = $(this);
+        el.addClass('hg-tab-item-active');
+    })
+
+
+</script>
+</body>
+</html>

@@ -54,6 +54,12 @@ function triggerListToAgreement() {
     Store.emitChange();
 };
 
+function triggerListToGuide() {
+    _status = Constants.STATE_VENDOR_PRODUCT_GUIDE;
+
+    Store.emitChange();
+};
+
 function loadSessionSuccessful(response) {
     _vendorProfile.vendorId = response.vendor_id;
     _vendorProfile.vendorRole = response.role;
@@ -111,7 +117,7 @@ function loadExampleSuccessful(productList) {
     //console.log('load example list');
     //console.log(productList);
 
-    if(_status != Constants.STATE_VENDOR_PRODUCT_LIST_JOIN) {
+    if(_status != Constants.STATE_VENDOR_PRODUCT_LIST_JOIN && _vendorProfile.agreement) {
         if(_productList.length > 0) {
             _status = Constants.STATE_VENDOR_PRODUCT_LIST;
         }
@@ -401,7 +407,24 @@ function triggerAgreementAgreeToList() {
 
 function agreeSuccssful() {
     // do nothing
-}
+};
+
+// Guide
+function triggerGuideToList() {
+    if(_vendorProfile.agreement) {
+        if(_productList.length == 0) {
+            _status = Constants.STATE_VENDOR_PRODUCT_LIST_WELCOME;
+        }
+        else {
+            _status = Constants.STATE_VENDOR_PRODUCT_LIST;
+        }
+    }
+    else {
+        _status = Constants.STATE_VENDOR_PRODUCT_LIST_AGREEMENT;
+    }
+
+    Store.emitChange();
+};
 
 // Other
 function getWXSignatureSuccess(signature) {
@@ -528,6 +551,10 @@ AppDispatcher.register(function(action) {
 
         case Constants.ACTION_VENDOR_PRODUCT_LIST_TRIGGER_AGREEMENT:
             triggerListToAgreement();
+            break;
+
+        case Constants.ACTION_VENDOR_PRODUCT_LIST_TRIGGER_GUIDE:
+            triggerListToGuide();
             break;
 
         case Constants.ACTION_VENDOR_PRODUCT_LIST_LOAD_EXAMPLE_SUCCESSFUL:
@@ -666,6 +693,11 @@ AppDispatcher.register(function(action) {
 
         case Constants.ACTION_VENDOR_PRODUCT_AGREEMENT_AGREE_SUCCESSFUL:
             agreeSuccssful();
+            break;
+
+        // Guide Actions
+        case Constants.ACTION_VENDOR_PRODUCT_GUIDE_TRIGGER_LIST:
+            triggerGuideToList();
             break;
 
         // Other

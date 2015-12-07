@@ -170,17 +170,22 @@ var app = React.createClass({
         var commentItemContent = [];
         if(this.state.product.comment_list) {
             if(this.state.product.comment_list.length > 0) {
-                for(var i=0; i<this.state.product.comment_list.length; i++) {
-                    commentItemContent.push(<li>
-                        <CommentItem
-                            author="大白"
-                            createdTime="2015/10/31"
-                            star="3"
-                            authorImage="../../img/ppl_icon.png"
-                            content="我家波波有幸被抽中免费体验洗白白y∩__∩y 当然要回敬一个点评以表感激。其实我是住在这附近，这店开了很久了，就在马路边，很容易找到。"></CommentItem>
-                        <hr/>
-                    </li>);
-                }
+                this.state.product.comment_list.forEach(function(item, index) {
+                    var commentCreatedTime = new Date(item.created_time);
+
+                    if(index == 0){
+                        commentItemContent.push(<li>
+                            <CommentItem
+                                author={item.author.nick_name}
+                                createdTime={commentCreatedTime.toLocaleDateString()}
+                                star={item.content.rate}
+                                authorImage={item.author.head_image_url}
+                                content={item.content.text}></CommentItem>
+                            <hr/>
+                        </li>);
+                    }
+
+                })
 
                 commentContent = <div>
                     <div className="row text-center voffset50">
@@ -548,7 +553,7 @@ var app = React.createClass({
                     <div className="row text-right">
                         <div className="col-xs-12">
                             <button className="btn btn-hd-blue text-muted roffset5">收藏</button>
-                            <button className="btn btn-hd-blue text-muted" data-toggle="modal" data-target="#productEdit">预订</button>
+                            <button className="btn btn-hd-blue text-muted" onClick={this._redirectToOrderCreation.bind(this,this.state.product.product_id)}>预订</button>
                         </div>
                     </div>
                 </div>
@@ -560,25 +565,8 @@ var app = React.createClass({
         this.setState(getAppState());
     },
 
-    createOrder: function () {
-        var order = {};
-        order["product_id"] = this.state.product._id;
-        order["user_id"] = "1";
-        order["vendor_id"] = this.state.product.owner_id;
-        order["status"] = "drafted";
-        order["price"] = {
-            "total": 100,
-            "normal": {"name": "洗澡", "price": 80},
-            "addition": [
-                {"name": "去结", "price": 20}
-            ]
-        };
-        order["booked_time"] = "201510100900";
-        order["commision_amt"] = order.price.total * this.state.product.commision_rate;
-        order["commision_status"] = "pending";
-        order["commsion_due_date"] = "201510310900";
-
-        Actions.createOrder(order);
+    _redirectToOrderCreation: function (productId) {
+        Actions.redirectToOrderCreation(productId);
     },
 
     _onCheckExitPolicy: function() {

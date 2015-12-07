@@ -1,0 +1,30 @@
+var keyMirror = require('keymirror');
+
+module.exports = keyMirror({
+    // actions
+    ACTION_PAYMENT_SUCCESSFUL: null,
+    ACTION_PAYMENT_FAIL: null,
+
+    ACTION_CREATE_ORDER_SUCCESSFUL: null,
+    ACTION_CREATE_ORDER_FAIL: null,
+
+    ACTION_LOAD_PRODUCT_SUCCESSFUL: null,
+    ACTION_LOAD_PRODUCT_FAIL: null,
+
+    ACTION_LOAD_SESSION_SUCCESSFUL: null,
+    ACTION_LOAD_SESSION_FAIL: null,
+
+    ACTION_LOAD_AVAILABILITY_SUCCESSFUL: null,
+    ACTION_LOAD_AVAILABILITY_FAIL: null,
+
+    ACTION_SHOW_TIMESLOT_UNAVAILABLE: null,
+
+    ACTION_SHOW_VERIFY_MSG: null,
+
+    ACTION_CANCEL: null,
+
+    // states
+    STATE_RELOAD: null,
+
+
+});

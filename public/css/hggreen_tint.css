@@ -1,0 +1,15 @@
+.tint_text {
+    color: #20af74;
+}
+
+.btn-hd-tint {
+    border: 1px solid #20af74;
+    color: #20af74;
+    background-color: white;
+}
+
+.btn-hd-tint:focus, .btn-hd-tint:hover, .btn-hd-tint:active:focus, .btn-hd-tint.active:focus {
+    border: 1px solid #20af74;
+    color: #20af74;
+    background-color: white;
+}

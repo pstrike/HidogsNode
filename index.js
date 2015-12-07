@@ -27,11 +27,11 @@ app.use(compress());
 if (!module.parent) app.use(logger(':date[clf]!:method!:url!:status!:response-time ms!:remote-addr!:referrer!:user-agent', {stream: writablestreamintodb}));
 if (!module.parent) app.use(logger('dev'));
 
-// setup session with expiration is 600s
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 600000 }}))
-
 // serve static files
 app.use(express.static(__dirname + '/public'));
+
+// setup session with expiration is 600s
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 600000 }}))
 
 // parse request bodies (req.body)
 //app.use(tokenverifiction.verify);

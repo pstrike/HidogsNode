@@ -428,7 +428,25 @@ var app = React.createClass({
                 <h3 className="hg-session">服务设置</h3>
                 <div className="form-group">
                     <label>服务时长(分钟)</label>
-                    <input type="number" pattern="[0-9]*" className="form-control simple-input" placeholder="服务时长" name="duration" value={this.state.editProduct.duration} onChange={this.handleChange}/>
+                    <select className="form-control simple-input" name="duration" value={this.state.editProduct.duration} onChange={this.handleChange}>
+                        <option value="0" disabled>请选择服务时长</option>
+                        <option value="30">30分钟</option>
+                        <option value="60">1个小时</option>
+                        <option value="90">1个半小时</option>
+                        <option value="120">2个小时</option>
+                        <option value="150">2个半小时</option>
+                        <option value="180">3个小时</option>
+                        <option value="210">3个半小时</option>
+                        <option value="240">4个小时</option>
+                        <option value="270">4个半小时</option>
+                        <option value="300">5个小时</option>
+                        <option value="330">5个半小时</option>
+                        <option value="360">6个小时</option>
+                        <option value="390">6个半小时</option>
+                        <option value="420">7个小时</option>
+                        <option value="450">7个半小时</option>
+                        <option value="480">8个小时</option>
+                    </select>
                 </div>
 
                 <div className="form-group">

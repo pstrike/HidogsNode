@@ -14,6 +14,7 @@ var EditModal = require('../components/EditModal.react');
 var SettingModal = require('../components/SettingModal.react');
 var SettingEditModal = require('../components/SettingEditModal.react');
 var AgreementModal = require('../components/AgreementModal.react');
+var GuideModal = require('../components/GuideModal.react');
 var WXSign = require('./../../Common/components/WXSign');
 
 
@@ -212,6 +213,7 @@ var app = React.createClass({
                         <div className="row text-right">
                             <div className="col-xs-12">
                                 <button className="btn btn-hd-blue text-muted roffset5" onClick={this._triggerAgreement}>服务协议</button>
+                                <button className="btn btn-hd-blue text-muted roffset5" onClick={this._triggerGuide}>教程</button>
                                 <button className="btn btn-hd-blue text-muted roffset5" onClick={this._triggerSetting}>设置</button>
                                 <button className="btn btn-hd-blue text-muted" onClick={this._triggerNew}>新建</button>
                             </div>
@@ -264,6 +266,7 @@ var app = React.createClass({
                         <div className="row text-right">
                             <div className="col-xs-12">
                                 <button className="btn btn-hd-blue text-muted roffset5" onClick={this._triggerAgreement}>服务协议</button>
+                                <button className="btn btn-hd-blue text-muted roffset5" onClick={this._triggerGuide}>教程</button>
                                 <button className="btn btn-hd-blue text-muted roffset5" onClick={this._triggerSetting}>设置</button>
                                 <button className="btn btn-hd-blue text-muted" onClick={this._triggerNew}>新建</button>
                             </div>
@@ -307,6 +310,10 @@ var app = React.createClass({
                 modalContent.push(<AgreementModal></AgreementModal>);
                 break;
 
+            case Constants.STATE_VENDOR_PRODUCT_GUIDE:
+                modalContent.push(<GuideModal></GuideModal>);
+                break;
+
             default:
 
         }
@@ -345,6 +352,11 @@ var app = React.createClass({
     _triggerAgreement: function() {
         Actions.triggerListToAgreement();
     },
+
+    _triggerGuide: function() {
+        Actions.triggerListToGuide();
+    },
+
 
     _getWXSign: function() {
         Actions.getWXSignature(document.location.href);

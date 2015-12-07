@@ -22,7 +22,7 @@ var app = React.createClass({
             <div>
                 <div className="row">
                     <div className="col-xs-3 text-center">
-                        <img src={this.props.authorImage}/>
+                        <img className="user-icon-small img-circle" src={this.props.authorImage}/>
 
                         <p>{this.props.author}</p>
                     </div>
@@ -35,7 +35,7 @@ var app = React.createClass({
                         </div>
                         <div className="row">
                             <div className="col-xs-12 text-left">
-                                <p>{this.props.content}</p>
+                                <p>{this.props.content ? this.props.content : "无内容"}</p>
                             </div>
                         </div>
                     </div>

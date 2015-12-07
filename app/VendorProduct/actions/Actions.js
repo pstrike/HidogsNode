@@ -104,6 +104,12 @@ var Actions = {
         });
     },
 
+    triggerListToGuide: function() {
+        AppDispatcher.dispatch({
+            actionType: Constants.ACTION_VENDOR_PRODUCT_LIST_TRIGGER_GUIDE,
+        });
+    },
+
     // New Actions
     triggerNewSaveToDetail: function(newProduct) {
         AppDispatcher.dispatch({
@@ -348,6 +354,13 @@ var Actions = {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_VENDOR_PRODUCT_AGREEMENT_AGREE_FAIL,
             });
+        });
+    },
+
+    // Guide
+    triggerGuideToList: function() {
+        AppDispatcher.dispatch({
+            actionType: Constants.ACTION_VENDOR_PRODUCT_GUIDE_TRIGGER_LIST,
         });
     },
 

@@ -68,6 +68,9 @@ body {
     /* Set the fixed height of the footer here */
     height: 60px;
     background: rgba(248,248,248,0.95);
+    border: 1px solid transparent;
+    border-width: 1px 0 0 0;
+    border-color: rgba(231,231,231,0.95);
 
 }
 
@@ -75,6 +78,10 @@ body {
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
+
+#react_body > .container {
+    padding: 60px 15px 0;
+}
 
 body > .container {
     padding: 60px 15px 0;
@@ -112,9 +119,25 @@ code {
     height: 75px;
 }
 
+.user-icon-normal {
+    width: 45px;
+    height: 45px;
+}
+
+.user-icon-small {
+    width: 40px;
+    height: 40px;
+}
+
+.user-icon-small30 {
+    width: 30px;
+    height: 30px;
+}
+
 /* form inline label */
 .vcenter30 { line-height: 30px; }
 .vcenter34 { line-height: 34px; }
+.vcenter56 { line-height: 56px; }
 
 
 .no-border {
@@ -228,4 +251,8 @@ h3.hg-session {
 
 .modal-header .close {
     margin-top: -7px;
+}
+
+.bg-white {
+    background-color: rgba(255,255,255,0.95);
 }

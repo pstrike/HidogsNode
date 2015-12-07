@@ -68,6 +68,37 @@ var Model = {
         return JSON.parse(JSON.stringify(object));
     },
 
+    getUserPrototype: function () {
+        var object = {
+            user_id: "",
+            pwd: "",
+            name: "",
+            nick_name: "",
+            openid: "",
+            gender: "",
+            birthday: "",
+            email: "",
+            mobile: "",
+            address: {
+                country: "",
+                province: "",
+                city: "",
+                region: "",
+                address: "",
+            },
+            location: {
+                longitude: "",
+                latitude: "",
+            },
+            head_image_url: "",
+            is_active: true,
+            created_time: "",
+            modified_time: "",
+        };
+
+        return JSON.parse(JSON.stringify(object));
+    },
+
     getProductPrototype: function () {
         var object = {
             product_id: "",
@@ -116,6 +147,66 @@ var Model = {
             variants: [],
             comment_list: [],
             created_time: "",
+            modified_time: "",
+        };
+
+        return JSON.parse(JSON.stringify(object));
+    },
+
+    getOrderPrototype: function () {
+        var object = {
+            order_id: "",
+            product: {
+                product_id: "",
+                product_title: "",
+                product_category: {
+                    name: "",
+                    slug: "",
+                    path_name: "",
+                    path_slug: "",
+                },
+            },
+            user: {
+                user_id: "",
+                user_name: "",
+                user_head_image_url: "",
+            },
+            vendor: {
+                vendor_id: "",
+                vendor_name: "",
+                vendor_head_image_url: "",
+            },
+            status: "tbpaid",
+            price: {
+                basic: [],
+                additional: [],
+                total: 0.0,
+            },
+            address: {
+                country: "",
+                province: "",
+                city: "",
+                region: "",
+                address: "",
+            },
+            location: {
+                longitude: "",
+                latitude: "",
+            },
+            booked_time: {
+                start_time: "",
+                end_time: "",
+                booked_date: "",
+            },
+            remark: "",
+            created_time: "",
+            paid_time: "",
+            confirmed_time: "",
+            serviced_time: "",
+            commented_time: "",
+            commision_time: "",
+            commision_due_date: "",
+            commision_status: "",
             modified_time: "",
         };
 

@@ -80,46 +80,10 @@ var Actions = {
     },
 
     // Order Creation
-    triggerOrderCreationToOrderConfirmation: function() {
+    redirectToOrderCreation: function(productId) {
         AppDispatcher.dispatch({
-            actionType: Constants.ACTION_ORDER_CREATION_TO_ORDER_CONFIRMATION
-        });
-    },
-
-    getUserDetail: function() {
-
-    },
-
-    triggerOrderCreationToProduct: function() {
-        AppDispatcher.dispatch({
-            actionType: Constants.ACTION_ORDER_CREATION_TO_PRODUCT,
-        });
-    },
-
-    createOrder: function(order) {
-        RC.insertOrderPromise(order).then(function(response) {
-            order["_id"]=JSON.parse(response.response)._id;
-            return RC.payOrderPromise(order);
-        }, function(err) {
-            AppDispatcher.dispatch({
-                actionType: Constants.ACTION_ORDER_CREATION_PAY_FAIL
-            });
-        }).then(function(payload) {
-            AppDispatcher.dispatch({
-                actionType: Constants.ACTION_ORDER_CREATION_PAY_SUCCESSFUL,
-                payload: payload
-            });
-        }, function(err) {
-            AppDispatcher.dispatch({
-                actionType: Constants.ACTION_ORDER_CREATION_PAY_FAIL
-            });
-        });
-    },
-
-    // Order Confirmation
-    triggerOrderConfirmationToProduct: function() {
-        AppDispatcher.dispatch({
-            actionType: Constants.ACTION_ORDER_CONFIRMATION_TO_PRODUCT,
+            actionType: Constants.ACTION_ORDER_REDIRECT_TO_ORDER_CREATION,
+            productId: productId,
         });
     },
 

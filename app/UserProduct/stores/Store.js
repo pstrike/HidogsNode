@@ -11,21 +11,6 @@ var _vendor = {};
 var _productMeta = [];
 var _status = "";
 
-// Store actions
-function payOrderSuccess(charge) {
-    pingpp.createPayment(charge, function(result, error){
-        if (result == "success") {
-            // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的 wap 支付结果都是在 extra 中对应的 URL 跳转。
-        } else if (result == "fail") {
-            // charge 不正确或者微信公众账号支付失败时会在此处返回
-        } else if (result == "cancel") {
-            // 微信公众账号支付取消支付
-        }
-    });
-};
-
-
-
 // Product
 function getProductSuccess(product) {
     _product = product;
@@ -60,6 +45,10 @@ function triggerProductToExitPolicy() {
     Store.emitChange();
 };
 
+// Order
+function redirectToOrderCreation(productId) {
+    window.location = "http://www.hidogs.cn/wechat/auth?destination=001order1view1userordercreation?productid="+productId+"_user";
+};
 
 // Exit Policy
 function triggerExitPolicyToProduct() {
@@ -166,16 +155,8 @@ AppDispatcher.register(function(action) {
             break;
 
         // Order Creation
-        case Constants.ACTION_ORDER_CREATION_TO_ORDER_CONFIRMATION:
-
-            break;
-        case Constants.ACTION_ORDER_CREATION_TO_PRODUCT:
-
-            break;
-
-        // Order Confirmation
-        case Constants.ACTION_ORDER_CONFIRMATION_TO_PRODUCT:
-
+        case Constants.ACTION_ORDER_REDIRECT_TO_ORDER_CREATION:
+            redirectToOrderCreation(action.productId);
             break;
 
         // Exit Policy
@@ -189,9 +170,6 @@ AppDispatcher.register(function(action) {
         case Constants.ACTION_PRODUCT_LOAD_META_FAIL:
         case Constants.ACTION_COMMENT_LOAD_COMMENT_FAIL:
         case Constants.ACTION_AVAILABILITY_LOAD_FAIL:
-        case Constants.ACTION_ORDER_CREATION_LOAD_USER_FAIL:
-        case Constants.ACTION_ORDER_CREATION_PAY_FAIL:
-        case Constants.ACTION_ORDER_CREATION_CREATE_FAIL:
             err(action.actionType);
             break;
 
