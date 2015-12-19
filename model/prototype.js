@@ -57,7 +57,11 @@ var Model = {
                         //{name: '美容后,站立后视图', image_url: ''},
                     ],
                     reject_reason: "",
-                    rate: "",
+                    rate: {
+                        sum: 0,
+                        no: 0,
+                    },
+                    comment: {},
                 },
             ],
             agreement: false,
@@ -106,10 +110,7 @@ var Model = {
             category: {},
             price: {
                 basic: [
-                    //{name: "体重在4公斤以内", price: ""},
-                    //{name: "体重在4公斤-5公斤以内", price: ""},
-                    //{name: "体重在5公斤-6公斤以内", price: ""},
-                    //{name: "体重在6公斤-7公斤以内", price: ""},
+                    {name: "", price: "", upper: "", lower: ""},
                 ],
                 additional: [
                     {name: "", price: ""},
@@ -143,9 +144,14 @@ var Model = {
                 head_image_url: "",
             },
             commision_rate: "",
-            sale_no: "",
+            sale_no: 0,
             variants: [],
             comment_list: [],
+            comment_show: {},
+            rate: {
+                sum: 0,
+                no: 0,
+            },
             created_time: "",
             modified_time: "",
         };

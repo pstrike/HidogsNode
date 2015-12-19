@@ -191,7 +191,7 @@ var app = React.createClass({
                     <div className="row text-center voffset50">
                         <i className="fa fa-commenting-o hg-session-header-icon"></i>
 
-                        <div className="hg-session-header-title voffset5">{this.state.product.comment_list.length}条评论</div>
+                        <div className="hg-session-header-title voffset5">{this.state.product.comment_list.length}条评价</div>
                     </div>
 
                     <div className="row voffset15">
@@ -322,10 +322,20 @@ var app = React.createClass({
 
         // vendor rating
         var ratingContent = [];
+        var overallStarContent = [];
         if(this.state.vendor.role) {
+            var overallSum = 0;
+            var overallNo = 0;
+            var overallStarCount = 0;
+
             this.state.vendor.role.forEach(function(item) {
-                var starContent = [];
-                var starCount = parseInt(item.rate);
+                var starContent = []
+                var starCount = 0;
+                if(item.rate && item.rate.no) {
+                    starCount = parseInt(item.rate.sum) / parseInt(item.rate.no);
+                    overallSum += item.rate.sum;
+                    overallNo += item.rate.no;
+                }
                 for(var i = 0; i<5; i++) {
                     if(i<starCount) {
                         starContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
@@ -342,27 +352,54 @@ var app = React.createClass({
                     </td>
                 </tr>);
             })
+
+            overallStarCount = overallSum / overallNo;
+            for(var i = 0; i<5; i++) {
+                if(i<overallStarCount) {
+                    overallStarContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
+                }
+                else {
+                    overallStarContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
+                }
+            }
         }
 
         // vendor certificate
-        var certificateContent = "";
-        var certificateItemContent = "";
+        var certificateContent = [];
         if(this.state.vendor.role) {
-            if(this.state.vendor.role.certificate_list) {
-                this.state.vendor.role.certificate_list.forEach(function(item, index) {
-                    if(index == 0) {
-                        certificateItemContent = item.name;
-                    }
-                    else {
-                        certificateItemContent = certificateItemContent + "," + item.name;
+            this.state.vendor.role.forEach(function(roleItem) {
+                roleItem.certificate_list.forEach(function(certificateItem) {
+                    if(certificateItem.name) {
+                        if(certificateContent.length == 0) {
+                            certificateContent.push(<tr>
+                                <td className="text-center">专业认证</td>
+                                <td className="hg-td-60pt">{certificateItem.name}</td>
+                            </tr>);
+                        }
+                        else {
+                            certificateContent.push(<tr>
+                                <td className="text-center"></td>
+                                <td className="hg-td-60pt">{certificateItem.name}</td>
+                            </tr>);
+                        }
                     }
                 })
+            })
+        }
 
-                certificateContent = <tr>
-                    <td className="text-center">专业认证</td>
-                    <td className="hg-td-60pt">{certificateItemContent}</td>
-                </tr>;
-            }
+        // footer
+        var footerContent = "";
+        if(this.state.product.status == 'published') {
+            footerContent = <footer className="footer">
+                <div className="container">
+                    <div className="row text-right">
+                        <div className="col-xs-12">
+                            <button className="btn btn-hd-blue text-muted roffset5">收藏</button>
+                            <button className="btn btn-hd-blue text-muted" onClick={this._redirectToOrderCreation.bind(this,this.state.product.product_id)}>预订</button>
+                        </div>
+                    </div>
+                </div>
+            </footer>;
         }
 
         var modalContent = [];
@@ -396,11 +433,7 @@ var app = React.createClass({
                     <h2><strong>{this.state.product.title}</strong></h2>
 
                     <div className="row text-center">
-                        <span className="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                        <span className="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                        <span className="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                        <span className="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
-                        <span className="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                        {overallStarContent}
                     </div>
                     <img src={this.state.product.vendor ? this.state.product.vendor.head_image_url : ""}
                          className="center-block img-responsive img-circle user-icon-header voffset10"/>
@@ -534,13 +567,13 @@ var app = React.createClass({
                             {ratingContent}
                             {certificateContent}
                             <tr>
-                                <td></td>
-                                <td></td>
+                                <td className="text-center"></td>
+                                <td className="hg-td-60pt"></td>
                             </tr>
                             </tbody>
                         </table>
                         <div className="text-center voffset15">
-                            <button className="btn btn-hd-blue">查看详情</button>
+                            <button className="btn btn-hd-blue" onClick={this._navToVendorPage.bind(this,this.state.product.vendor ? this.state.product.vendor.vendor_id : "")}>查看详情</button>
                         </div>
                     </div>
                 </div>
@@ -548,16 +581,7 @@ var app = React.createClass({
 
             </div>
 
-            <footer className="footer">
-                <div className="container">
-                    <div className="row text-right">
-                        <div className="col-xs-12">
-                            <button className="btn btn-hd-blue text-muted roffset5">收藏</button>
-                            <button className="btn btn-hd-blue text-muted" onClick={this._redirectToOrderCreation.bind(this,this.state.product.product_id)}>预订</button>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            {footerContent}
         </div>;
     },
 
@@ -571,6 +595,10 @@ var app = React.createClass({
 
     _onCheckExitPolicy: function() {
         Actions.triggerProductToExitPolicy();
+    },
+
+    _navToVendorPage: function(vendorId) {
+        window.location = "http://www.hidogs.cn/vendor/view/vendorpage?vendor="+vendorId;
     },
 
 });

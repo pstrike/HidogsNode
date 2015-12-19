@@ -169,6 +169,13 @@ exports.page = function(req, res, next){
             })
             //res.render('index.ejs');
             break;
+
+        case 'userproductlist':
+            var hgstyle = "../../css/hggreen.css";
+            res.render('userproductlist.ejs',{hgstyle: hgstyle});
+
+            break;
+
         default:
             next();
     }

@@ -143,22 +143,48 @@ var app = React.createClass({
             this.state.comment.created_time = new Date();
 
             var newProduct = {};
-
             newProduct.product_id = this.props.product.product_id;
             newProduct.comment_list = (this.props.product.comment_list ? this.props.product.comment_list : []);
             newProduct.comment_list.push(this.state.comment);
-
-            console.log(newProduct);
+            newProduct.comment_show = this.state.comment;
+            newProduct.rate = {};
+            if(this.props.product.rate) {
+                newProduct.rate.sum = (this.props.product.rate.sum ? this.props.product.rate.sum : 0)+ parseInt(this.state.comment.content.rate);
+                newProduct.rate.no = this.props.product.rate.no + 1;
+            }
+            else {
+                newProduct.rate.sum = parseInt(this.state.comment.content.rate);
+                newProduct.rate.no = 1;
+            }
 
             var newOrder = {};
             newOrder.order_id = this.props.order.order_id;
             newOrder.status = "completed";
             newOrder.commented_time = new Date();
             newOrder.comment = this.state.comment;
+            newOrder.created_time = this.props.order.created_time;
+            newOrder.openid = this.props.order.openid;
+            newOrder.price = this.props.order.price;
+            newOrder.product = this.props.order.product;
 
-            console.log(newOrder);
+            var newVendor = {};
+            newVendor.vendor_id = this.props.vendor.vendor_id;
+            newVendor.role = this.props.vendor.role;
+            for(var i=0; i<newVendor.role.length; i++) {
+                if(this.props.product.category.path_slug.indexOf(newVendor.role[i].slug) > 0) {
+                    newVendor.role[i].comment = this.state.comment;
 
-            Actions.submitCommentTriggerDetail(newProduct, newOrder);
+                    if(!newVendor.role[i].rate) {
+                        newVendor.role[i].rate = {};
+                    }
+
+                    newVendor.role[i].rate.sum = parseInt(newVendor.role[i].rate.sum ? newVendor.role[i].rate.sum : 0) + parseInt(this.state.comment.content.rate);
+                    newVendor.role[i].rate.no = parseInt(newVendor.role[i].rate.no ? newVendor.role[i].rate.no : 0) + 1;
+                    break;
+                }
+            };
+
+            Actions.submitCommentTriggerDetail(newProduct, newOrder, newVendor);
         }
         else {
             //scroll to err msg

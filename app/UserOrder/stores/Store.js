@@ -22,7 +22,7 @@ var _status = Constants.ORDER_LIST;
 function initSession(session) {
     _session = session;
 
-    console.log(_session);
+    //console.log(_session);
 
     Store.emitChange();
 };
@@ -31,7 +31,7 @@ function initOrderList(orderList) {
     _orderListData = orderList;
     _orderList = orderList;
 
-    console.log(_orderList);
+    //console.log(_orderList);
 
     Store.emitChange();
 };
@@ -83,7 +83,7 @@ function loadOrderDetailSuccessful(order) {
 function loadProductSuccessful(product) {
     _product = product;
 
-    console.log(_product);
+    //console.log(_product);
 
     Store.emitChange();
 };
@@ -91,7 +91,7 @@ function loadProductSuccessful(product) {
 function loadVendorSuccessful(vendor) {
     _vendor = vendor;
 
-    console.log(_vendor);
+    //console.log(_vendor);
 
     Store.emitChange();
 };
@@ -252,6 +252,10 @@ function submitCommentProductSuccessful() {
 };
 
 function submitCommentOrderSuccessful() {
+    // do nothing
+};
+
+function submitCommentVendorSuccessful() {
     // do nothing
 };
 
@@ -484,6 +488,10 @@ AppDispatcher.register(function(action) {
             submitCommentOrderSuccessful();
             break;
 
+        case Constants.COMMENT_SUBMIT_VENDOR_SUCCESSFUL:
+            submitCommentVendorSuccessful();
+            break;
+
         case Constants.COMMENT_CANCEL_TRIGGER_DETAIL:
             cancelCommentToDetail();
             break;
@@ -519,6 +527,7 @@ AppDispatcher.register(function(action) {
         case Constants.COMMENT_SUBMIT_FAIL:
         case Constants.DETAIL_CANCEL_ORDER_SUBMIT_FAIL:
         case Constants.REFUND_SUBMIT_FAIL:
+        case Constants.DETAIL_LOAD_ORDER_DETAIL_FAIL:
             err(action.actionType);
             break;
 

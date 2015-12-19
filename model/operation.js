@@ -107,7 +107,8 @@ var DAO = {
                 callback(failMsg);
             }
             else {
-                successMsg[idName] = result.ops[0][idName];
+                successMsg[idName] = result.ops[0][idName]
+                successMsg['created_time'] = result.ops[0]['created_time'];
                 callback(successMsg);
             }
         });

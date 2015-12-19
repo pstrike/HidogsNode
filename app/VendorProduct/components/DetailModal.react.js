@@ -596,21 +596,21 @@ var app = React.createClass({
             verifyMsg.push("-您输入的服务价格有误,请确保仅输入数字");
         }
 
-        if(this.state.product.price.type) {
-            var refPrice = [];
-            for(var i=0; i<this.state.product.category.price_item.length; i++) {
-                if (this.state.product.price.type == this.state.product.category.price_item[i].name) {
-                    refPrice = this.state.product.category.price_item[i].price_list;
-                }
-            }
-            this.state.product.price.basic.forEach(function(item, index){
-                var baseline = parseInt(refPrice[index].price);
-
-                if(parseInt(item.price) < baseline) {
-                    verifyMsg.push('-请调整"'+item.name+'"的价格(不低于'+refPrice[index].price+'元)');
-                }
-            }.bind(this))
-        }
+        //if(this.state.product.price.type) {
+        //    var refPrice = [];
+        //    for(var i=0; i<this.state.product.category.price_item.length; i++) {
+        //        if (this.state.product.price.type == this.state.product.category.price_item[i].name) {
+        //            refPrice = this.state.product.category.price_item[i].price_list;
+        //        }
+        //    }
+        //    this.state.product.price.basic.forEach(function(item, index){
+        //        var baseline = parseInt(refPrice[index].price);
+        //
+        //        if(parseInt(item.price) < baseline) {
+        //            verifyMsg.push('-请调整"'+item.name+'"的价格(不低于'+refPrice[index].price+'元)');
+        //        }
+        //    }.bind(this))
+        //}
 
         if(!this.state.product.feature) {
             verifyMsg.push("-请填写服务特色让用户更好的了解您的服务");

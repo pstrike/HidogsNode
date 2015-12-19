@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>欢宠</title>
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/hgbasic.css" rel="stylesheet">
+    <link href="../css/hgyellow.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div id="react-main-mount">
+
+    <div id="react_body">
+        <div class="container blue-background-decoration"></div>
+        <nav class="navbar navbar-default navbar-fixed-top hg-navbar">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">欢宠</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container blue-background">
+            <div class="page-header text-center hg-pageheader">
+                <h4>Grooming</h4>
+
+                <h2 class="voffset10">
+                    <i class="fa fa-certificate"></i>
+                    <strong>美容造型</strong>
+                </h2>
+
+                <div class="row text-center">
+                    <i class="fa fa-map-marker"></i>
+                    广州市, 海珠区, 琶洲商业广场
+                </div>
+                <div id="hgFilter" class="btn-group voffset25" role="group">
+                    <button type="button" class="btn btn-default btn-hd-blue btn-hd-active">价格排序</button>
+                    <button type="button" class="btn btn-default btn-hd-blue">评分排序</button>
+                    <button type="button" class="btn btn-default btn-hd-blue">距离排序</button>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div class="text-center">
+                <img src="../img/ppl.jpg" class="center-block img-responsive img-circle user-icon-header voffset10"/>
+                <div class="text-center voffset2">仲秋</div>
+                <div class="text-center">
+                    <h3>5星级洗澡服务</h3>
+                    <div class="row text-center voffset0">
+                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                    </div>
+                </div>
+                <div class="voffset10">
+                    <table class="hg-table table-condensed">
+                        <tbody>
+                            <tr><td>¥ 75-150元</td></tr>
+                            <tr><td>广州市, 海珠区 - 距离我2公里</td></tr>
+                            <tr><td>12个用户使用过</td></tr>
+                            <tr><td></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-center">
+                    <button class="btn btn-hd-blue">查看详情</button>
+                </div>
+
+                <hr/>
+
+            </div>
+
+            <div class="text-center">
+                <div class="row text-center voffset0">
+                    <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-star star-yellow" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-star-empty star-yellow" aria-hidden="true"></span>
+                </div>
+                <div class="text-center">
+                    <h2 class="voffset0">5星级洗澡服务</h2>
+                </div>
+                <div class="voffset25">
+                    <img class="user-icon-small30 img-circle" src="../img/ppl_icon.png">
+                    <span>大白</span>
+                </div>
+                <div class="voffset10">
+                    <table class="hg-table table-condensed">
+                        <tbody>
+                        <tr><td>¥ 75-150元</td></tr>
+                        <tr><td>广州市, 海珠区 - 距离我2公里</td></tr>
+                        <tr><td>12个用户使用过</td></tr>
+                        <tr><td></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="text-center">
+                    <button class="btn btn-hd-blue">查看详情</button>
+                </div>
+
+                <hr/>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<script src="../lib/jquery-2.1.4.min.js"></script>
+<script src="../lib/bootstrap.min.js"></script>
+<script src="../lib/bootstrap-switch.min.js"></script>
+<script src="../lib/bootstrap-datepicker.min.js"></script>
+<script src="../lib/bootstrap-datepicker.zh-CN.min.js"></script>
+<script src="../js/my.js"></script>
+
+<script>
+
+    var tabs = $('#hgFilter button');
+
+    tabs.click(function() {
+        tabs.removeClass('btn-hd-active')
+        var el = $(this);
+        el.addClass('btn-hd-active');
+    })
+
+
+</script>
+
+</body>
+</html>

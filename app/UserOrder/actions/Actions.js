@@ -40,27 +40,27 @@ var Actions = {
         });
     },
 
-    triggerOrderDetail: function(order) {
+    listTriggerOrderDetail: function(order) {
         AppDispatcher.dispatch({
             actionType: Constants.LIST_TRIGGER_ORDER_DETAIL,
             order: order,
         });
 
-        RC.getOrder(order.order_id).then(function (payload) { // load session
+        RC.getOrder(order.order_id).then(function (payload) {
             AppDispatcher.dispatch({
                 actionType: Constants.DETAIL_LOAD_ORDER_DETAIL_SUCCESSFUL,
                 payload: payload,
             });
 
             return RC.getProduct(order.product.product_id);
-        }).then(function (payload) { // load session
+        }).then(function (payload) {
             AppDispatcher.dispatch({
                 actionType: Constants.DETAIL_LOAD_PRODUCT_SUCCESSFUL,
                 payload: payload,
             });
 
             return RC.getVendor(order.vendor.vendor_id);
-        }).then(function (payload) { // load session
+        }).then(function (payload) {
             AppDispatcher.dispatch({
                 actionType: Constants.DETAIL_LOAD_VENDOR_SUCCESFUL,
                 payload: payload,
@@ -133,6 +133,16 @@ var Actions = {
                 actionType: Constants.DETAIL_CANCEL_ORDER_SUBMIT_SUCCSSFUL,
                 payload: payload,
             });
+
+            var notice = {
+                type: "user",
+                order: order,
+                template: HidogsConstants.USER_CANCELLED,
+            };
+
+            return RC.sendWXNotice(notice);
+        }).then(function (payload) {
+            // noting
         }, function(err) {
             AppDispatcher.dispatch({
                 actionType: Constants.DETAIL_CANCEL_ORDER_SUBMIT_FAIL,
@@ -185,11 +195,12 @@ var Actions = {
     },
 
     // Comment
-    submitCommentTriggerDetail: function(product, order) {
+    submitCommentTriggerDetail: function(product, order, vendor) {
         AppDispatcher.dispatch({
             actionType: Constants.COMMENT_SUBMIT_TRIGGER_DETAIL,
             product: product,
             order: order,
+            vendor: vendor,
         });
 
         RC.updateProduct(product).then(function (payload) {
@@ -201,9 +212,25 @@ var Actions = {
             RC.updateOrder(order);
         }).then(function (payload) {
             AppDispatcher.dispatch({
+                actionType: Constants.COMMENT_SUBMIT_PRODUCT_SUCCESSFUL,
+                payload: payload,
+            });
+
+            RC.updateVendor(vendor);
+        }).then(function (payload) {
+            AppDispatcher.dispatch({
                 actionType: Constants.COMMENT_SUBMIT_ORDER_SUCCESSFUL,
                 payload: payload,
             });
+
+            var notice = {
+                type: "user",
+                order: order,
+                template: HidogsConstants.USER_COMPLETED,
+            };
+            return RC.sendWXNotice(notice);
+        }).then(function (payload) {
+            // nothing
         }, function(err) {
             AppDispatcher.dispatch({
                 actionType: Constants.COMMENT_SUBMIT_FAIL,
@@ -229,6 +256,16 @@ var Actions = {
                 actionType: Constants.REFUND_SUBMIT_SUCCESSFUL,
                 payload: payload,
             });
+
+            var notice = {
+                type: "user",
+                order: order,
+                template: HidogsConstants.USER_TBREFUND,
+            };
+
+            return RC.sendWXNotice(notice)
+        }).then(function (payload) {
+            // nothing
         }, function(err) {
             AppDispatcher.dispatch({
                 actionType: Constants.REFUND_SUBMIT_FAIL,

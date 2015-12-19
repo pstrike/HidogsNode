@@ -168,7 +168,7 @@ var HidogsActions = {
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST
         });
 
-        VendorProductRC.getProductList(function(payload){
+        VendorProductRC.getOrderList(function(payload){
             if(payload.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                 || payload.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
                 || payload.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
@@ -941,7 +941,7 @@ React.render(new ShopApp(), mountNode);
 var APIUtils = require('../../Common/webapiutils/APIUtils');
 
 var VendorProductRC = {
-    getProductList: function (callback) {
+    getOrderList: function (callback) {
         var url = APIUtils.makeUrl("/products?projection=name,price_list,category&filter=owner_id,1");
         APIUtils.get(url, callback);
     },

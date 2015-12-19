@@ -7,7 +7,7 @@ var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var Actions = require('../actions/Actions');
 var SideBar = require('../components/SideBar.react');
 var NavBar = require('../components/NavBar.react');
-var ContentVendorProfile = require('../components/ContentVendorProfile');
+var ContentVendorProfile = require('../components/ContentVendorProfile.react');
 
 var app = React.createClass({
 
@@ -19,7 +19,7 @@ var app = React.createClass({
 
                 <div className="container-fluid">
                     <div className="row">
-                        <SideBar/>
+                        <SideBar active="vendor"/>
                         <ContentVendorProfile/>
                     </div>
                 </div>

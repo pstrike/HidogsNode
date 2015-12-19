@@ -7,6 +7,8 @@ var model = require('../../model/prototype');
 var sign = require('../../util/wxjssign');
 var fs = require('fs');
 var genuuid = require('../../util/genuuid');
+var genorderno = require('../../util/genorderno');
+var Constants = require('../../app/Common/constants/HidogsConstants');
 
 var configVendor = {
     token: 'hidogs',
@@ -30,28 +32,44 @@ var apiVendor = new WechatAPI(configVendor.appid, configVendor.secret);
 var clientUser = new OAuth(configUser.appid, configUser.secret);
 var apiUser = new WechatAPI(configUser.appid, configUser.secret);
 
+exports.getWXUserAPI = function() {
+    return apiUser;
+};
+
+exports.getWXVendorAPI = function() {
+    return apiVendor;
+};
+
 exports.insert = wechat(WXToken).text(function (message, req, res, next) {
     var msg;
 
     switch (message.Content) {
-        case "hgsecret":
+        case "3a3404":
             msg = "内部列表\n" +
-                "1.[达人功能]加入达人: hgvj\n" +
-                "2.[达人功能]达人服务管理: hgvp\n" +
-                "3.[管理者功能]欢宠小Q服务管理: hgvpq\n" +
-                "4.[用户功能]订单管理: hguo\n"
+                "1.[达人功能]加入达人: vj\n" +
+                "2.[达人功能]达人服务管理: vp\n" +
+                "3.[达人功能]达人订单管理: vo\n" +
+                "4.[用户功能]订单管理: uo\n" +
+                "5.[管理者功能]欢宠小Q服务管理: vpq\n" +
+                "6.[管理者功能]管理者后台: ad\n"
             break;
-        case "hgvj":
+        case "vj":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorjoin_vendor";
             break;
-        case "hgvp":
+        case "vp":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001product1view1vendorproduct_vendor";
             break;
-        case "hgvpq":
+        case "vpq":
             msg = "http://www.hidogs.cn/product/view/vendorproducthg1";
             break;
-        case "hguo":
+        case "uo":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001order1view1userorder_user";
+            break;
+        case "vo":
+            msg = "http://www.hidogs.cn/wechat/auth?destination=001order1view1vendororder_vendor";
+            break;
+        case "ad":
+            msg = "http://www.hidogs.cn/admin/view/vendor(请在电脑登录)";
             break;
         case "hgopenid":
             msg = message.FromUserName;
@@ -309,6 +327,322 @@ exports.show = function(req, res, next){
 
         default:
             // op
+    };
+};
+
+exports.otherpost = function(req, res, next) {
+    switch (req.params.wechat_id) {
+        case 'template':
+            /*
+             * order: order detail
+             * type: user / vendor
+             * template: refer to HGConstants
+             *
+             * */
+
+            var payload = req.body;
+
+            //console.log(payload);
+
+            var templateId = '';
+            var data = {};
+            var url = '';
+            var openId = "";
+
+            switch(payload.type) {
+                case "user":
+                    var order = payload.order;
+                    var orderNo = genorderno.orderno(order.order_id, order.created_time);
+                    templateId = '6qOcduQN72WBcj6bQmUKnY_hn-yEw-wNjNp6hAD82bk';
+                    url = 'http://www.hidogs.cn/wechat/auth?destination=001order1view1userorder_user';
+
+                    switch (payload.template) {
+                        case Constants.USER_TBPAID:
+                            openId = order.openid;
+                            data = {
+                                "first": {
+                                    "value":"您的订单已经创建,请尽快进行支付！",
+                                    "color":"#173177"
+                                },
+                                "keyword1":{
+                                    "value":orderNo,
+                                    "color":"#173177"
+                                },
+                                "keyword2": {
+                                    "value": order.price.total + "元",
+                                    "color":"#173177"
+                                },
+                                "keyword3": {
+                                    "value": order.product.title ? order.product.title : order.product.product_title,
+                                    "color":"#173177"
+                                },
+                                "remark":{
+                                    "value":"感谢您对欢宠的支持！",
+                                    "color":"#173177"
+                                }
+                            };
+                            break;
+
+                        case Constants.USER_TBSERVICED:
+                            // handled in payment webhook
+                            break;
+
+                        case Constants.USER_TBCOMMENTED:
+                            openId = order.openid;
+                            data = {
+                                "first": {
+                                    "value":"感谢您使用我们的服务！",
+                                    "color":"#173177"
+                                },
+                                "keyword1":{
+                                    "value":orderNo,
+                                    "color":"#173177"
+                                },
+                                "keyword2": {
+                                    "value": order.price.total + "元",
+                                    "color":"#173177"
+                                },
+                                "keyword3": {
+                                    "value": order.product.title ? order.product.title : order.product.product_title,
+                                    "color":"#173177"
+                                },
+                                "remark":{
+                                    "value":"我们邀请您花1分钟给我们反馈,帮助我们提高服务.",
+                                    "color":"#173177"
+                                }
+                            };
+                            break;
+
+                        case Constants.USER_REJECTED_REFUND:
+                            openId = order.openid;
+                            data = {
+                                "first": {
+                                    "value":"抱歉,达人无法在预订的时间内提供服务. 您的订单将进入退款流程.",
+                                    "color":"#173177"
+                                },
+                                "keyword1":{
+                                    "value":orderNo,
+                                    "color":"#173177"
+                                },
+                                "keyword2": {
+                                    "value": order.price.total + "元",
+                                    "color":"#173177"
+                                },
+                                "keyword3": {
+                                    "value": order.product.title ? order.product.title : order.product.product_title,
+                                    "color":"#173177"
+                                },
+                                "remark":{
+                                    "value":"感谢您对欢宠的支持！",
+                                    "color":"#173177"
+                                }
+                            };
+                            break;
+
+                        case Constants.USER_TBREFUND:
+                            openId = order.openid;
+                            data = {
+                                "first": {
+                                    "value":"您的退款申请已提交.",
+                                    "color":"#173177"
+                                },
+                                "keyword1":{
+                                    "value":orderNo,
+                                    "color":"#173177"
+                                },
+                                "keyword2": {
+                                    "value": order.price.total + "元",
+                                    "color":"#173177"
+                                },
+                                "keyword3": {
+                                    "value": order.product.title ? order.product.title : order.product.product_title,
+                                    "color":"#173177"
+                                },
+                                "remark":{
+                                    "value":"感谢您对欢宠的支持！",
+                                    "color":"#173177"
+                                }
+                            };
+                            break;
+
+                        case Constants.USER_COMPLETED:
+                            openId = order.openid;
+                            data = {
+                                "first": {
+                                    "value":"感谢您的评价.欢迎再次使用我们的服务.",
+                                    "color":"#173177"
+                                },
+                                "keyword1":{
+                                    "value":orderNo,
+                                    "color":"#173177"
+                                },
+                                "keyword2": {
+                                    "value": order.price.total + "元",
+                                    "color":"#173177"
+                                },
+                                "keyword3": {
+                                    "value": order.product.title ? order.product.title : order.product.product_title,
+                                    "color":"#173177"
+                                },
+                                "remark":{
+                                    "value":"感谢您对欢宠的支持！",
+                                    "color":"#173177"
+                                }
+                            };
+                            break;
+
+                        case Constants.USER_REFUND_COMPLETED:
+                            openId = order.openid;
+                            data = {
+                                "first": {
+                                    "value":"您的退款已经完成.",
+                                    "color":"#173177"
+                                },
+                                "keyword1":{
+                                    "value":orderNo,
+                                    "color":"#173177"
+                                },
+                                "keyword2": {
+                                    "value": order.price.total + "元",
+                                    "color":"#173177"
+                                },
+                                "keyword3": {
+                                    "value": order.product.title ? order.product.title : order.product.product_title,
+                                    "color":"#173177"
+                                },
+                                "remark":{
+                                    "value":"感谢您对欢宠的支持！",
+                                    "color":"#173177"
+                                }
+                            };
+                            break;
+
+                        case Constants.USER_CANCELLED:
+                            openId = order.openid;
+                            data = {
+                                "first": {
+                                    "value":"您的订单已经取消.",
+                                    "color":"#173177"
+                                },
+                                "keyword1":{
+                                    "value":orderNo,
+                                    "color":"#173177"
+                                },
+                                "keyword2": {
+                                    "value": order.price.total + "元",
+                                    "color":"#173177"
+                                },
+                                "keyword3": {
+                                    "value": order.product.title ? order.product.title : order.product.product_title,
+                                    "color":"#173177"
+                                },
+                                "remark":{
+                                    "value":"感谢您对欢宠的支持！",
+                                    "color":"#173177"
+                                }
+                            };
+                            break;
+                    }
+
+                    apiUser.sendTemplate(openId, templateId, url, '', data, function() {
+                        console.log("[sent template msg]")
+                    });
+
+                    res.send('sent');
+
+                    break;
+
+                case "vendor":
+                    switch (payload.template) {
+                        case Constants.VENDOR_JOIN_SUCCESSFUL:
+                            var vendor = payload.vendor;
+
+                            openId = vendor.openid;
+                            templateId = 'r_5Gp_PfRUfLw14kLzxLnN2a24P_CMHkE0r7fMTS9BA';
+                            url = 'http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorjoin_vendor';
+                            var currentDate = new Date();
+                            data = {
+                                "first": {
+                                    "value": "感谢您加入欢宠服务伙伴.您的审批已经通过！",
+                                    "color": "#173177"
+                                },
+                                "keyword1": {
+                                    "value": vendor.name,
+                                    "color": "#173177"
+                                },
+                                "keyword2": {
+                                    "value": vendor.mobile,
+                                    "color": "#173177"
+                                },
+                                "keyword3": {
+                                    "value": currentDate.getFullYear() + "/" + (currentDate.getMonth()+1) + "/" + currentDate.getDate() + " " +currentDate.getHours() + ":" + currentDate.getMinutes(),
+                                    "color": "#173177"
+                                },
+                                "remark": {
+                                    "value": "感谢您对欢宠的支持！",
+                                    "color": "#173177"
+                                }
+                            };
+
+                            apiVendor.sendTemplate(openId, templateId, url, '', data, function() {
+                                console.log("[sent template msg]")
+                            });
+
+                            res.send('sent');
+
+                            break;
+
+                        case Constants.VENDOR_JOIN_REJECT:
+                            var vendor = payload.vendor;
+
+                            openId = vendor.openid;
+                            templateId = 'r_5Gp_PfRUfLw14kLzxLnN2a24P_CMHkE0r7fMTS9BA';
+                            url = 'http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorjoin_vendor';
+                            var currentDate = new Date();
+                            data = {
+                                "first": {
+                                    "value": "感谢您加入欢宠服务伙伴.您需要更新/补充申请资料以完成审批过程.点击后查看详情！",
+                                    "color": "#173177"
+                                },
+                                "keyword1": {
+                                    "value": vendor.name,
+                                    "color": "#173177"
+                                },
+                                "keyword2": {
+                                    "value": vendor.mobile,
+                                    "color": "#173177"
+                                },
+                                "keyword3": {
+                                    "value": currentDate.getFullYear() + "/" + (currentDate.getMonth()+1) + "/" + currentDate.getDate() + " " +currentDate.getHours() + ":" + currentDate.getMinutes(),
+                                    "color": "#173177"
+                                },
+                                "remark": {
+                                    "value": "感谢您对欢宠的支持！",
+                                    "color": "#173177"
+                                }
+                            };
+
+                            apiVendor.sendTemplate(openId, templateId, url, '', data, function() {
+                                console.log("[sent template msg]")
+                            });
+
+                            res.send('sent');
+
+                            break;
+
+                            case Constants.VENDOR_PRODUCT_PAID:
+                                // handle in payment webhook
+                                break;
+
+                            case Constants.VENDOR_PRODUCT_COMMENTED:
+                                break;
+                    }
+
+                    break;
+            }
+
+            break;
+
     }
 
 };

@@ -6,15 +6,12 @@ var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 
 var Store = require('../stores/VendorStore');
 var Actions = require('../actions/Actions');
-var VendorProfileModal = require('../components/ContentVendorProfileModal');
 var Header = require('./../../Common/components/Header.react.js');
 
 
 function getAppState() {
     return {
         vendorList: Store.getVendorList(),
-        vendor: Store.getVendor(),
-        status: Store.getStatus(),
     };
 }
 
@@ -24,13 +21,9 @@ var app = React.createClass({
         return getAppState();
     },
 
-    componentWillMount: function(){
-        React.initializeTouchEvents(true);
-    },
-
     componentDidMount: function() {
         Store.addChangeListener(this._onChange);
-        Actions.vendorGetVendorList();
+        Actions.getVendorList();
     },
 
     componentWillUnmount: function() {
@@ -42,30 +35,29 @@ var app = React.createClass({
         return (
             <div className="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-                <VendorProfileModal vendor={this.state.vendor}/>
-
-                <h1 className="page-header">服务伙伴列表</h1>
-
+                <h1 className="page-header">潜在达人列表</h1>
 
                 <div className="table-responsive">
                     <table className="table table-striped">
                         <thead>
                         <tr>
-                            <th>昵称</th>
                             <th>姓名</th>
-                            <th>资质</th>
+                            <th>性别</th>
+                            <th>地址</th>
                             <th>电话</th>
-                            <th>状态</th>
+                            <th>推荐人姓名</th>
+                            <th>推荐人电话</th>
                         </tr>
                         </thead>
                         <tbody>
                         {this.state.vendorList.map(function(item){
-                            return <tr onClick={this._viewVendorProfile.bind(this, item.vendor_id)} onTouchStart={this.handleTouchStart}>
-                                <td>{item.nick_name}</td>
+                            return <tr>
                                 <td>{item.name}</td>
-                                <td>{item.role[0].name}</td>
+                                <td>{item.gender}</td>
+                                <td>{item.address}</td>
                                 <td>{item.mobile}</td>
-                                <td>{item.status}</td>
+                                <td>{item.referal_name}</td>
+                                <td>{item.referal_mobile}</td>
                             </tr>;
                         },this)}
                         </tbody>
@@ -73,15 +65,6 @@ var app = React.createClass({
                 </div>
             </div>
         );
-    },
-
-    _viewVendorProfile: function(id) {
-        $('#profileModal').modal('show');
-        Actions.vendorGetVendor(id);
-    },
-
-    handleTouchStart: function() {
-
     },
 
     _onChange: function() {

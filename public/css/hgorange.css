@@ -18,6 +18,12 @@ body {
     color: #f95e1a;
 }
 
+.btn-hd-blue.btn-hd-active {
+    border: 1px solid #f95e1a;
+    color: white;
+    background-color: #f95e1a;
+}
+
 .hg-navbar {
     background: rgba(254,231,221,0.95);
     border-color: rgba(249,94,26,0.25);

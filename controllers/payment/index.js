@@ -2,6 +2,8 @@
 var pingpp = require('pingpp')('sk_live_LeTSqLernfnTTGyHa9zr9CqP');
 var operation = require('../../model/operation');
 var uuid = require('../../util/genuuid');
+var genorderid = require('../../util/genorderno');
+var wechat = require('../../controllers/wechat');
 var pingppConfig = {
     id : "app_uLG0O8y1Oyn9Tm9u",
     currency: "cny",
@@ -17,7 +19,7 @@ exports.insert = function (req, res, next) {
         var timestamp = new Date();
         var orderNo = uuid.uuid().replace(/-/g, "");
         var clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        var body = "["+timestamp.toLocaleString() + "] " + order.user.user_name + " 预订 " + order.product.product_title;
+        var body = timestamp.toLocaleString() + "/" + order.user.user_name + "/" + order.product.product_title + "/" +order.price.total+"/"+genorderid.orderno(order.order_id, order.created_time)+"/"+order.vendor.vendor_id;
         var subject = "预订服务:" + order.product.product_title;
 
         pingpp.charges.create({
@@ -72,8 +74,79 @@ exports.otherpost = function(req, res, next){
                     if(result.status == 'fail') {
                         next(result.err);
                     }
-                    res.send("received");
+
+                    // send wechat notice to user
+                    var openid = payload.data.object.extra.open_id;
+                    var product = payload.data.object.body.split("/")[2];
+                    var price = payload.data.object.body.split("/")[3];
+                    var orderNo = payload.data.object.body.split("/")[4];
+                    var wechatUserApi = wechat.getWXUserAPI();
+                    var templateId= '6qOcduQN72WBcj6bQmUKnY_hn-yEw-wNjNp6hAD82bk';
+                    var url = 'http://www.hidogs.cn/wechat/auth?destination=001order1view1userorder_user';
+                    var data = {
+                        "first": {
+                            "value":"您的订单已经支付成功！",
+                            "color":"#173177"
+                        },
+                        "keyword1":{
+                            "value":orderNo,
+                            "color":"#173177"
+                        },
+                        "keyword2": {
+                            "value": price + "元",
+                            "color":"#173177"
+                        },
+                        "keyword3": {
+                            "value": product,
+                            "color":"#173177"
+                        },
+                        "remark":{
+                            "value":"感谢您对欢宠的支持！",
+                            "color":"#173177"
+                        }
+                    };
+                    wechatUserApi.sendTemplate(openid, templateId, url, '', data, function() {
+                        console.log("[sent template msg]")
+                    });
+
+                    // send wechat notice to vendor
+                    url = 'http://www.hidogs.cn/wechat/auth?destination=001order1view1vendororder_vendor';
+                    templateId = 'G4ks3STIqTSTjlpAE-lz0TeVU4cXiFTzbQi1hzqmINo';
+                    var vendorId= payload.data.object.body.split("/")[5];
+                    var wechatVendorApi = wechat.getWXVendorAPI();
+                    data = {
+                        "first": {
+                            "value":"您有新的订单!",
+                            "color":"#173177"
+                        },
+                        "keyword1":{
+                            "value":orderNo,
+                            "color":"#173177"
+                        },
+                        "keyword2": {
+                            "value": price + "元",
+                            "color":"#173177"
+                        },
+                        "keyword3": {
+                            "value": product,
+                            "color":"#173177"
+                        },
+                        "remark":{
+                            "value":"感谢您对欢宠的支持！",
+                            "color":"#173177"
+                        }
+                    };
+
+                    operation.getObject(operation.getCollectionList().vendor, vendorId, {}, function(object) {
+                        wechatVendorApi.sendTemplate(object.openid, templateId, url, '', data, function() {
+                            console.log("[sent template msg]")
+                        });
+
+                        res.send("received");
+                    })
+
                 });
+
             }
             else {
                 res.send("received");

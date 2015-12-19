@@ -87,6 +87,16 @@ var Actions = {
             actionType: Constants.ACTION_CANCEL,
         });
     },
+
+    sendWXNotice: function(object, callback) {
+        RC.sendWXNotice(object).then(function (payload) {
+            //alert("send notice ok");
+            callback();
+        }, function (err) {
+            //alert("send notice fail");
+            callback();
+        });
+    }
 };
 
 module.exports = Actions;

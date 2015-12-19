@@ -22,7 +22,7 @@ var Actions = {
                     response: response,
                 });
 
-                return RC.getProductList(vendorId);
+                return RC.getOrderList(vendorId);
             }
 
         }).then(function(payload) { // load product list
@@ -45,7 +45,7 @@ var Actions = {
                 payload: payload,
             });
 
-            return RC.getProductList('hg1');
+            return RC.getOrderList('hg1');
         }).then(function(payload) { // load example product
                 AppDispatcher.dispatch({
                     actionType: Constants.ACTION_VENDOR_PRODUCT_LIST_LOAD_EXAMPLE_SUCCESSFUL,

@@ -2,6 +2,8 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var Constants = require('../constants/Constants');
+var Actions = require('../actions/Actions');
+var HGConstants = require('../../Common/constants/HidogsConstants');
 var Prototype = require('../../../model/prototype');
 var Uudi = require('../../../util/genuuid');
 var CHANGE_EVENT = 'change';
@@ -19,16 +21,23 @@ function payOrderSuccessful(charge) {
     pingpp.createPayment(charge, function(result, error){
         if (result == "success") {
             // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的 wap 支付结果都是在 extra 中对应的 URL 跳转。
-            alert("支付成功");
             window.location = "http://www.hidogs.cn/order/view/userordercreationdone?productid="+_product.product_id+"&orderid="+_order.order_id;
 
         } else if (result == "fail") {
             // charge 不正确或者微信公众账号支付失败时会在此处返回
             alert("支付失败");
+
             cancelOrder();
+
         } else if (result == "cancel") {
             // 微信公众账号支付取消支付
-            cancelOrder();
+            var notice = {
+                type: "user",
+                order: _order,
+                template: HGConstants.USER_TBPAID,
+            };
+            Actions.sendWXNotice(notice, cancelOrder);
+
         }
     }.bind(this));
 };
@@ -196,7 +205,10 @@ AppDispatcher.register(function(action) {
             break;
 
         case Constants.ACTION_CREATE_ORDER_SUCCESSFUL:
+
+            var response = JSON.parse(action.payload.response);
             var order = action.order;
+            order.created_time = new Date(response.created_time)
             createOrderSuccessful(order);
             break;
 

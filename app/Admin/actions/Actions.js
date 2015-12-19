@@ -23,7 +23,7 @@ var Actions = {
         });
     },
 
-    vendorGetVendorList: function() {
+    getVendorList: function() {
         RC.getVendorListPromise().then(function (payload) {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_GET_VENDOR_LIST_SUCCESS,
@@ -45,8 +45,27 @@ var Actions = {
         RC.updateVendor(vendor).then(function (payload) {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_UPDATE_VENDOR_SUCCESS,
-                payload: payload
+                payload: payload,
             });
+
+            if(vendor.status == 'approved') {
+                var notice = {
+                    type: "vendor",
+                    vendor: vendor,
+                    template: HidogsConstants.VENDOR_JOIN_SUCCESSFUL,
+                };
+            }
+            else {
+                var notice = {
+                    type: "vendor",
+                    vendor: vendor,
+                    template: HidogsConstants.VENDOR_JOIN_REJECT,
+                };
+            }
+
+            return RC.sendWXNotice(notice);
+        }).then(function (payload) {
+            // nothing
         }, function (err) {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_UPDATE_VENDOR_FAIL

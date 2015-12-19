@@ -106,7 +106,10 @@ var app = React.createClass({
                 newOrder.refund.reason = this.refs["reason"].getDOMNode().value;
                 newOrder.refund.time = new Date();
 
-                console.log(newOrder);
+                newOrder.created_time = this.props.order.created_time;
+                newOrder.openid = this.props.order.openid;
+                newOrder.price = this.props.order.price;
+                newOrder.product = this.props.order.product;
 
                 Actions.submitRefundOrder(newOrder);
             }

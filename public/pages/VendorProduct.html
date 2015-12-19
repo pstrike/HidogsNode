@@ -89,15 +89,55 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-2"><label class="vcenter34">区域</label></div>
-                        <div class="col-xs-10"><input type="text" class="form-control simple-input" placeholder="区域"
-                                                      value="海珠区"/></div>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control simple-input" placeholder="区域" value="海珠区"/>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-xs-2"><label class="vcenter34">地址</label></div>
-                        <div class="col-xs-10"><input type="text" class="form-control simple-input" placeholder="具体地址"
-                                                      value="滨江东路418号天天小区3栋201"/></div>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control simple-input" placeholder="具体地址"
+                                                      value="滨江东路418号天天小区3栋201" list="cars"/>
+                            <datalist id="cars">
+                                <option value="BMW">
+                                <option value="Ford">
+                                <option value="Volvo">
+                            </datalist>
+                        </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label>服务地址</label>
+
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">搜索</label></div>
+                        <div class="col-xs-10">
+                            <div class="input-group">
+                                <span class="input-group-addon" id="sizing-addon2">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </span>
+                                <input id="suggestId" type="text" class="form-control simple-input" placeholder="请输入地址关键字" value=""/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34">地址</label></div>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control simple-input no-border" placeholder="请通过搜索结果来选择地址" value="" disabled/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-2"><label class="vcenter34"></label></div>
+                        <div class="col-xs-10">
+                            <input type="text" class="form-control simple-input" placeholder="补充楼号、门牌号等详细信息" value=""/>
+                        </div>
+                    </div>
+
+                </div>
+
                 <div class="form-group">
                     <label>服务特色</label>
                     <a tabindex="0" class="btn btn-lg no-border btn-default grey_text" role="button"
@@ -198,6 +238,12 @@
                         </div>
                         <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="项目价格"/>
                         </div>
+                    </div>
+                    <div class="row voffset10">
+                        <div class="col-xs-3 right-padding0"><input type="text" class="form-control simple-input" placeholder="公斤"/></div>
+                        <div class="col-xs-1 vcenter34 text-center left-padding0 right-padding0">至</div>
+                        <div class="col-xs-3 left-padding0"><input type="text" class="form-control simple-input" placeholder="公斤"/></div>
+                        <div class="col-xs-5"><input type="text" class="form-control simple-input" placeholder="价格"/></div>
                     </div>
                 </div>
 
@@ -926,6 +972,7 @@
 <script src="../lib/bootstrap.min.js"></script>
 <script src="../lib/bootstrap-switch.min.js"></script>
 <script src="../lib/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=uWWhwl3ycRCG6EAB3rpGlncT"></script>
 <script>
     $('[data-toggle="popover"]').popover();
     $("[name='my-checkbox']").bootstrapSwitch();
@@ -933,6 +980,27 @@
         multidate: true,
         todayHighlight: true
     })
+
+    var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+            {
+                "input" : "suggestId",
+                "location" : "广州市",
+            });
+
+    var myValue;
+    ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+
+        console.log(e);
+
+        var _value = e.item.value;
+        myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+        //G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+
+        alert(myValue);
+        //setPlace();
+    });
+
+
 </script>
 </body>
 </html>

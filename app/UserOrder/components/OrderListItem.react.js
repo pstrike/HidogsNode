@@ -7,6 +7,7 @@ var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
 
+var GenOrderNo = require('../../../util/genorderno');
 
 var app = React.createClass({
 
@@ -36,7 +37,7 @@ var app = React.createClass({
                 break;
 
             case "tbcommented":
-                status = "待评论";
+                status = "待评价";
                 tint = "hg-orange-section";
                 icon = <span className="glyphicon glyphicon-comment hg-session-header-icon"></span>;
                 break;
@@ -72,7 +73,8 @@ var app = React.createClass({
             <div className={hgStyle}>
                 {icon}
                 <p>{status}</p>
-                <h3>{this.props.order.product.product_title}</h3>
+                <div className="hg-header-24">{this.props.order.product.product_title}</div>
+                <span className="small">订单号: {GenOrderNo.orderno(this.props.order.order_id, this.props.order.created_time)}</span>
                 <div className="container voffset15">
                     <div className="row">
                         <div className="col-xs-4">
@@ -105,7 +107,7 @@ var app = React.createClass({
     },
 
     _triggerOrderDetail: function(order) {
-        Actions.triggerOrderDetail(order);
+        Actions.listTriggerOrderDetail(order);
     },
 
 });

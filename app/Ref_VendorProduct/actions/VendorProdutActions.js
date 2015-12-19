@@ -50,7 +50,7 @@ var HidogsActions = {
             actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST
         });
 
-        VendorProductRC.getProductListPromise().then(function (payload) {
+        VendorProductRC.getOrderListPromise().then(function (payload) {
             AppDispatcher.dispatch({
                 actionType: VendorProductConstants.HIDOGS_VENDOR_PRODUCT_GET_PRODUCT_LIST_SUCCESS,
                 payload: payload

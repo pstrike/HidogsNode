@@ -30,6 +30,10 @@ var WXSign = React.createClass({
                 this.setState({
                     isInit: true,
                 });
+
+                if(this.props.callback) {
+                    this.props.callback();
+                }
             }.bind(this));
 
             wx.error(function(res) {

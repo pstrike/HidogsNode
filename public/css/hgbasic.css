@@ -144,6 +144,10 @@ textarea {
     color: #8E8989;
 }
 
+.white_text {
+    color: white;
+}
+
 .light_text {
     font-weight: lighter;
 }
@@ -156,11 +160,17 @@ h3.hg-session {
     margin-top: 60px;
 }
 
+.hg-header-24 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
 .voffset0  { margin-top: 0px; }
 .voffset2  { margin-top: 2px; }
 .voffset5 { margin-top: 5px; }
 .voffset10 { margin-top: 10px; }
 .voffset15 { margin-top: 15px; }
+.voffset25 { margin-top: 25px; }
 .voffset30 { margin-top: 30px; }
 .voffset40 { margin-top: 40px; }
 .voffset50 { margin-top: 50px; }
@@ -427,4 +437,19 @@ h3.hg-session {
     color: #f95e1a;
 }
 
+/* vendor page bg */
 
+.vendor-bg {
+    width: 100%;
+    background-image: url('../img/daren1.png');
+    max-height: 190px;
+    margin-top: 50px;
+    z-index:-10;
+
+}
+
+.white-border {
+    border-color: white;
+    border-style: solid;
+    border-width: 2px;
+}

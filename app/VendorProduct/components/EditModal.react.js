@@ -55,6 +55,11 @@ var app = React.createClass({
         // handle back event
         window.history.pushState({title: "preventback", url: "#"}, "preventback", "#");
         window.onpopstate = this._triggerCancel;
+
+        // Set duation default option
+        if(!this.state.editProduct.duration) {
+            $("#durationDefaultOption").prop("selected", true)
+        }
     },
 
     componentWillUnmount: function() {
@@ -64,6 +69,7 @@ var app = React.createClass({
     },
 
     componentDidUpdate: function() {
+        // Err Msg
         if (this.state.verifyMsg.length > 0 && this.state.isScrollToErrMsg) {
             var position = $('#editBody').scrollTop() + $('#errMsgAnchor').offset().top;
 
@@ -88,13 +94,13 @@ var app = React.createClass({
             });
         }
 
-        var exitPolicyContent = [];
-        exitPolicyContent.push(<option value="" disabled>请选择服务类别</option>);
-        if(this.state.productMeta.exit_policy) {
-            this.state.productMeta.exit_policy.forEach(function(item) {
-                exitPolicyContent.push(<option value={item.product_meta_exit_policy_id}>{item.name}</option>);
-            });
-        }
+        //var exitPolicyContent = [];
+        //exitPolicyContent.push(<option value="" disabled>请选择服务类别</option>);
+        //if(this.state.productMeta.exit_policy) {
+        //    this.state.productMeta.exit_policy.forEach(function(item) {
+        //        exitPolicyContent.push(<option value={item.product_meta_exit_policy_id}>{item.name}</option>);
+        //    });
+        //}
 
         var titleContent = '编辑服务';
         if(this.props.type == 'new') {
@@ -142,7 +148,7 @@ var app = React.createClass({
             for(var i=0; i<this.state.productMeta.category.length; i++) {
                 if(this.state.editProduct.category.product_meta_category_id == this.state.productMeta.category[i].product_meta_category_id) {
                     this.state.productMeta.category[i].price_item.forEach(function(item) {
-                        priceTypeContent.push(<option value={item.name}>{item.name}</option>);
+                        priceTypeContent.push(<option value={item.name}>{item.name + ' (' + item.unit + ')'}</option>);
                     });
 
                     break;
@@ -153,10 +159,17 @@ var app = React.createClass({
         var priceBasicContent = [];
         if(this.state.editProduct.price && this.state.editProduct.price.type) {
 
-            var refPrice = [];
+            //var refPrice = [];
+            //for(var i=0; i<this.state.editProduct.category.price_item.length; i++) {
+            //    if (this.state.editProduct.price.type == this.state.editProduct.category.price_item[i].name) {
+            //        refPrice = this.state.editProduct.category.price_item[i].price_list;
+            //    }
+            //}
+
+            var unit = "";
             for(var i=0; i<this.state.editProduct.category.price_item.length; i++) {
                 if (this.state.editProduct.price.type == this.state.editProduct.category.price_item[i].name) {
-                    refPrice = this.state.editProduct.category.price_item[i].price_list;
+                    unit = this.state.editProduct.category.price_item[i].unit;
                 }
             }
 
@@ -164,14 +177,45 @@ var app = React.createClass({
 
                 var titleName = "price.basic.["+index+"].name";
                 var priceName = "price.basic.["+index+"].price";
+                var upperName = "price.basic.["+index+"].upper";
+                var lowerName = "price.basic.["+index+"].lower";
                 //var placeHolder = "参考价格>" + refPrice[index].price + "元";
+
+                //priceBasicContent.push(
+                //    <div className="row voffset10">
+                //        <div className="col-xs-7"><input type="text" className="form-control simple-input no-border" placeholder="服务名称" name={titleName} value={item.name} onChange={this.handleChange} disabled/></div>
+                //        <div className="col-xs-5"><input type="number" pattern="[0-9]*" className="form-control simple-input" placeholder="服务价格" name={priceName} value={item.price} onChange={this.handleChange}/></div>
+                //    </div>
+                //);
 
                 priceBasicContent.push(
                     <div className="row voffset10">
-                        <div className="col-xs-7"><input type="text" className="form-control simple-input no-border" placeholder="服务名称" name={titleName} value={item.name} onChange={this.handleChange} disabled/></div>
-                        <div className="col-xs-5"><input type="number" pattern="[0-9]*" className="form-control simple-input" placeholder="服务价格" name={priceName} value={item.price} onChange={this.handleChange}/></div>
+                        <div className="col-xs-3 right-padding0"><input type="text" className="form-control simple-input" placeholder={unit} name={lowerName} value={item.lower} onChange={this.handleChange}/></div>
+                        <div className="col-xs-1 vcenter34 text-center left-padding0 right-padding0">至</div>
+                        <div className="col-xs-3 left-padding0"><input type="text" className="form-control simple-input" placeholder={unit} name={upperName} value={item.upper} onChange={this.handleChange}/></div>
+                        <div className="col-xs-5"><input type="text" className="form-control simple-input" placeholder="价格" name={priceName} value={item.price} onChange={this.handleChange}/></div>
                     </div>
                 );
+
+                if(this.state.editProduct.price.basic.length == 1) {
+                    priceBasicContent.push(<div className="row voffset10"><div className="col-xs-12 text-right">
+                        <button className="btn btn-hd-blue btn-sm" onClick={this._addBasicPrice}>继续添加</button>
+                    </div></div>);
+                }
+                else {
+                    if(index == this.state.editProduct.price.basic.length-1) {
+                        priceBasicContent.push(<div className="row voffset10"><div className="col-xs-12 text-right">
+                            <button className="btn btn-hd-blue btn-sm roffset5" onClick={this._removeBasicPrice.bind(this, index)}>删除</button>
+                            <button className="btn btn-hd-blue btn-sm" onClick={this._addBasicPrice}>继续添加</button>
+                        </div></div>);
+                    }
+                    else {
+                        priceBasicContent.push(<div className="row voffset10"><div className="col-xs-12 text-right">
+                            <button className="btn btn-hd-blue btn-sm" onClick={this._removeBasicPrice.bind(this, index)}>删除</button>
+                        </div></div>);
+                    }
+                }
+
             }.bind(this));
         }
 
@@ -429,7 +473,7 @@ var app = React.createClass({
                 <div className="form-group">
                     <label>服务时长(分钟)</label>
                     <select className="form-control simple-input" name="duration" value={this.state.editProduct.duration} onChange={this.handleChange}>
-                        <option value="0" disabled>请选择服务时长</option>
+                        <option id="durationDefaultOption" value="0" disabled>请选择服务时长</option>
                         <option value="30">30分钟</option>
                         <option value="60">1个小时</option>
                         <option value="90">1个半小时</option>
@@ -452,7 +496,7 @@ var app = React.createClass({
                 <div className="form-group">
                     <label>价格设置(元)</label>
                     <blockquote>
-                        <p className="instruction">请先选择"服务类别"及"价格标准"来开始您的价格设置. 如果您只专注于某一项服务的价格(例如: 体重小于10公斤),您只需要设置该类别,其他类别价格留空即可.</p>
+                        <p className="instruction">请先选择"服务类别"及"价格标准"来开始您的价格设置</p>
                     </blockquote>
                     <select className="form-control simple-input" name="price.type" value={this.state.editProduct.price ? this.state.editProduct.price.type : ""} onChange={this.handleChange}>
                         {priceTypeContent}
@@ -542,8 +586,11 @@ var app = React.createClass({
                     if(event.target.value == this.state.productMeta.category[i].product_meta_category_id) {
                         value =  this.state.productMeta.category[i];
 
+                        // reset price & type
                         var newProduct = APVTO.assign(this.state.editProduct, "price", {
-                            basic: [],
+                            basic: [
+                                {name: "", price: "", upper: "", lower: ""},
+                            ],
                             additional: [
                                 {name: "", price: ""},
                             ],
@@ -554,6 +601,7 @@ var app = React.createClass({
                         break;
                     }
                 }
+                break;
 
             case "price.type":
                 if(this.state.editProduct.category.name) {
@@ -562,26 +610,40 @@ var app = React.createClass({
                         if(event.target.value == this.state.editProduct.category.price_item[i].name) {
                             value = this.state.editProduct.category.price_item[i].name;
 
-                            var newBasicPrice = [];
-                            this.state.editProduct.category.price_item[i].price_list.forEach(function(item) {
-                                newBasicPrice.push({name: item.name, price: "", show_name: item.show_name});
-                            })
+                            //var newBasicPrice = [];
+                            //this.state.editProduct.category.price_item[i].price_list.forEach(function(item) {
+                            //    newBasicPrice.push({name: item.name, price: "", show_name: item.show_name});
+                            //})
+                            //
+                            //var priceProduct = APVTO.assign(this.state.editProduct, "price.basic", newBasicPrice)
+                            //this.setState({editProduct: priceProduct});
 
-                            var priceProduct = APVTO.assign(this.state.editProduct, "price.basic", newBasicPrice)
-                            this.setState({editProduct: priceProduct});
+                            // reset price & set price unit
+                            var newProduct = APVTO.assign(this.state.editProduct, "price", {
+                                basic: [
+                                    {name: "", price: "", upper: "", lower: ""},
+                                ],
+                                additional: [
+                                    {name: "", price: ""},
+                                ],
+                                unit: this.state.editProduct.category.price_item[i].unit,
+                            })
+                            this.setState({editProduct: newProduct});
 
                             break;
                         }
                     }
                 }
+                break;
 
-            case "exit_policy":
-                for(var i=0; i<this.state.productMeta.exit_policy.length; i++) {
-                    if(event.target.value == this.state.productMeta.exit_policy[i].product_meta_exit_policy_id) {
-                        value =  this.state.productMeta.exit_policy[i];
-                        break;
-                    }
-                }
+            //case "exit_policy":
+            //    for(var i=0; i<this.state.productMeta.exit_policy.length; i++) {
+            //        if(event.target.value == this.state.productMeta.exit_policy[i].product_meta_exit_policy_id) {
+            //            value =  this.state.productMeta.exit_policy[i];
+            //            break;
+            //        }
+            //    }
+            //    break;
 
             default:
                 // do nothing
@@ -589,6 +651,25 @@ var app = React.createClass({
 
         var newProduct = APVTO.assign(this.state.editProduct ,event.target.name, value)
         this.setState({editProduct: newProduct});
+
+        // special handling for price basic price, automatically generate price name base on upper, lower and unit
+        if(event.target.name.indexOf("price.basic") > -1) {
+            var priceBasicParam = event.target.name.split(".");
+            var priceBasicName = priceBasicParam[0] + "." + priceBasicParam[1] + "." + priceBasicParam[2] + ".name";
+
+            var basicIndex = parseInt(priceBasicParam[2].substr(1,priceBasicParam[2].length-2));
+            var priceItem = this.state.editProduct.price.basic[basicIndex];
+            var priceBasicContent = this.state.editProduct.price.type
+                + "在"
+                + priceItem.lower
+                + "-"
+                + priceItem.upper
+                + this.state.editProduct.price.unit
+                + "之间";
+
+            var newProduct = APVTO.assign(this.state.editProduct ,priceBasicName, priceBasicContent)
+            this.setState({editProduct: newProduct});
+        }
     },
 
     _addImage: function () {
@@ -605,6 +686,24 @@ var app = React.createClass({
     _removeImage: function (index) {
         var product = this.state.editProduct;
         product.image_url_list.splice(index,1);
+        this.setState({editProduct: product});
+    },
+
+    _addBasicPrice: function() {
+        var product = this.state.editProduct;
+        if(!product.price.basic) {
+            product.price.basic = [{}];
+        }
+        else {
+            product.price.basic.push({});
+        }
+
+        this.setState({editProduct: product});
+    },
+
+    _removeBasicPrice: function (index) {
+        var product = this.state.editProduct;
+        product.price.basic.splice(index,1);
         this.setState({editProduct: product});
     },
 
@@ -682,9 +781,26 @@ var app = React.createClass({
 
         var priceReg = new RegExp("^[0-9]*$");
         var isPriceInvalid = false;
+        var isRangeNoInvalid = false;
+        var isRangeInvalid = false;
         this.state.editProduct.price.basic.forEach(function(item){
+
             if(!priceReg.test(item.price.trim())) {
                 isPriceInvalid = true;
+            }
+
+            if(!priceReg.test(item.upper.trim())) {
+                isRangeNoInvalid = true;
+            }
+
+            if(!priceReg.test(item.lower.trim())) {
+                isRangeNoInvalid = true;
+            }
+
+            if(item.price) {
+                if(!item.upper || !item.lower) {
+                    isRangeInvalid = true;
+                }
             }
         })
         this.state.editProduct.price.additional.forEach(function(item){
@@ -695,21 +811,30 @@ var app = React.createClass({
         if(isPriceInvalid) {
             verifyMsg.push("-您输入的服务价格有误,请确保仅输入数字");
         }
+        if(isRangeNoInvalid) {
+            verifyMsg.push("-您在设置服务价格时输入的服务体重/身高有误");
+        }
+        if(isRangeInvalid) {
+            verifyMsg.push("-在设置服务价格时,请确保填写了服务体重/身高");
+        }
 
         if(this.state.editProduct.price.type) {
-            var refPrice = [];
-            for(var i=0; i<this.state.editProduct.category.price_item.length; i++) {
-                if (this.state.editProduct.price.type == this.state.editProduct.category.price_item[i].name) {
-                    refPrice = this.state.editProduct.category.price_item[i].price_list;
-                }
-            }
-            this.state.editProduct.price.basic.forEach(function(item, index){
-                var baseline = parseInt(refPrice[index].price);
+            //var refPrice = [];
+            //for(var i=0; i<this.state.editProduct.category.price_item.length; i++) {
+            //    if (this.state.editProduct.price.type == this.state.editProduct.category.price_item[i].name) {
+            //        refPrice = this.state.editProduct.category.price_item[i].price_list;
+            //    }
+            //}
+
+            var refPrice = this.state.editProduct.category.lowest_price;
+
+            this.state.editProduct.price.basic.forEach(function(item){
+                var baseline = parseInt(refPrice);
 
                 if(parseInt(item.price) < baseline) {
-                    verifyMsg.push('-请调整"'+item.name+'"的价格(不低于'+refPrice[index].price+'元)');
+                    verifyMsg.push('-请调整"'+item.name+'"的价格(不低于'+refPrice+'元)');
                 }
-            }.bind(this))
+            })
         }
 
         //if(!this.state.editProduct.exit_policy.name) {

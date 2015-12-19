@@ -152,9 +152,6 @@ var app = React.createClass({
             <div className="hg-modal-body text-left" id="settingEditBody">
                 <div className="form-group">
                 <label>每天服务时间</label>
-                <blockquote>
-                    <p className="instruction">请按照格式hhmm填写. 例如: 1030 为上午10点30分</p>
-                </blockquote>
                 <div className="row">
                     <div className="col-xs-3"><label className="vcenter34">开始时间</label></div>
                     <div className="col-xs-9"><input type="time" className="form-control simple-input" placeholder="输入服务开始时间" name="business_time_list.[0].start_time" value={businessStartTimeContent} onChange={this._handleChange}/></div>

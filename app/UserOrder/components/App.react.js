@@ -95,7 +95,7 @@ var app = React.createClass({
                 break;
 
             case Constants.ORDER_COMMENT:
-                orderContent = <OrderComment session={this.state.session} product={this.state.product} order={this.state.order} verifyMsg={this.state.verifyMsg}></OrderComment>
+                orderContent = <OrderComment session={this.state.session} product={this.state.product} order={this.state.order} vendor={this.state.vendor} verifyMsg={this.state.verifyMsg}></OrderComment>
                 break;
 
             case Constants.ORDER_REFUND:

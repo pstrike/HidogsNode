@@ -37,7 +37,7 @@ function updateVendorSuccessFake(vendor) {
     _vendor = vendor;
 
     for(var i=0; i<_vendorList.length; i++) {
-        if(_vendorList[i]._id == vendor._id) {
+        if(_vendorList[i].vendor_id == vendor.vendor_id) {
             _vendorList[i].status = vendor.status;
             break;
         }
@@ -47,16 +47,19 @@ function updateVendorSuccessFake(vendor) {
 }
 
 function updateVendorSuccess(vendor) {
-    _vendor = vendor;
+    //_vendor = vendor;
+    //
+    //for(var i=0; i<_vendorList.length; i++) {
+    //    if(_vendorList[i]._id == vendor._id) {
+    //        _vendorList[i] = vendor;
+    //        break;
+    //    }
+    //}
+    //
+    //
+    //Store.emitChange();
 
-    for(var i=0; i<_vendorList.length; i++) {
-        if(_vendorList[i]._id == vendor._id) {
-            _vendorList[i] = vendor;
-            break;
-        }
-    }
-
-    Store.emitChange();
+    //do nothing
 }
 
 // Store definition

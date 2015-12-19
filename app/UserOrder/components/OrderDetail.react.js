@@ -7,6 +7,7 @@ var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
 
+var GenOrderNo = require('../../../util/genorderno');
 
 var app = React.createClass({
 
@@ -17,6 +18,9 @@ var app = React.createClass({
             $('#paybtn').text('支付');
             $('#paybtn').removeAttr('disabled');
         };
+
+        // if pay btn is disable, reschedule btn is also disable, so enable it
+        $('#rescheduleBtn').removeAttr('disabled');
     },
 
     render: function() {
@@ -27,6 +31,7 @@ var app = React.createClass({
         var orderCodeContent = "";
         var footerBtnContent = [];
         var footerLeftBtnContent = [];
+        var rejectReasonContent = "";
         var vendorMobileContent = <div>
             <span className="glyphicon glyphicon-earphone"></span>
             {this.props.vendor.mobile ? this.props.vendor.mobile : ""}
@@ -40,7 +45,7 @@ var app = React.createClass({
                 vendorMobileContent = "";
                 footerLeftBtnContent.push(<button className="btn btn-hd-blue text-muted roffset5" onClick={this._cancelOrder}>取消订单</button>);
                 if(this.props.order.tmp_show_reschedule_btn) {
-                    footerBtnContent.push(<button className="btn btn-hd-blue text-muted" onClick={this._reschedule}>调整预订时间</button>);
+                    footerBtnContent.push(<button id='rescheduleBtn' className="btn btn-hd-blue text-muted" onClick={this._reschedule}>调整预订时间</button>);
                 }
                 else {
                     footerBtnContent.push(<button id="paybtn" className="btn btn-hd-blue text-muted" onClick={this._payOrder}>支付</button>);
@@ -107,7 +112,7 @@ var app = React.createClass({
                 break;
 
             case "tbcommented":
-                status = "待评论";
+                status = "待评价";
                 tint = "hg-orange-section";
                 icon = <span className="glyphicon glyphicon-comment"></span>;
                 footerBtnContent.push(<button className="btn btn-hd-blue text-muted" onClick={this._comment}>评论</button>);
@@ -121,13 +126,23 @@ var app = React.createClass({
 
             case "cancelled":
                 status = "取消";
+                vendorMobileContent = "";
                 icon = <span className="glyphicon glyphicon-remove"></span>;
                 break;
 
             case "refund":
                 status = "退款中";
+                vendorMobileContent = "";
                 tint = "hg-red-section";
                 icon = <span className="glyphicon glyphicon-refresh"></span>;
+
+                if(this.props.order.reject_reason) {
+                    rejectReasonContent = <div>
+                        <small><i>由于达人无法在预订时间内提供服务,该订单转入退款流程</i></small><br/>
+                        <small><i>具体原因为: {this.props.order.reject_reason}</i></small>
+                    </div>;
+                }
+
                 break;
         }
         var tintStyle = "text-center " + tint;
@@ -308,6 +323,8 @@ var app = React.createClass({
 
                     <h2 className="voffset10"><strong>{icon} {status}</strong></h2>
 
+                    {rejectReasonContent}
+
                     <hr className="voffset30"/>
 
                     <span className="glyphicon glyphicon-certificate hg-session-header-icon"></span>
@@ -377,6 +394,10 @@ var app = React.createClass({
                             <p>总价: {this.props.order.price.total}元</p>
                             <table className="hg-table">
                                 <tbody>
+                                <tr>
+                                    <td>订单号</td>
+                                    <td colSpan="2">{GenOrderNo.orderno(this.props.order.order_id, this.props.order.created_time)}</td>
+                                </tr>
                                 {basicPriceContent}
                                 {additionalPriceContent}
                                 <tr>
@@ -458,6 +479,10 @@ var app = React.createClass({
             var newOrder = {};
             newOrder.order_id = this.props.order.order_id;
             newOrder.status = "cancelled";
+            newOrder.created_time = this.props.order.created_time;
+            newOrder.openid = this.props.order.openid;
+            newOrder.price = this.props.order.price;
+            newOrder.product = this.props.order.product;
 
             Actions.cancelOrder(newOrder);
         }

@@ -1,6 +1,4 @@
 var React = require('react'),
-    VendorOrderReactApp = React.createFactory(require('../../app/VendorOrder/components/VendorOrderApp.react.js')),
-    UserOrderReactApp = React.createFactory(require('../../app/UserOrder/components/App.react.js')),
     operation = require('../../model/operation');
 
 exports.engine = 'ejs';
@@ -12,6 +10,7 @@ exports.show = function(req, res, next){
 };
 
 exports.list = function(req, res, next){
+
     operation.getObjectList(operation.getCollectionList().order, req.filter, req.projection, function(objectList) {
         objectList.sort(function(a,b){return a.created_time<b.created_time?1:-1}); //sort from latest to oldest
 
@@ -68,10 +67,15 @@ exports.page = function(req, res, next){
 
     switch (page) {
         case 'vendororder':
-            var reactHtml = React.renderToString(VendorOrderReactApp({}));
-            // Output html rendered by react
-            res.render('vendororder.ejs', {reactOutput: reactHtml});
-            //res.render('index.ejs');
+            // for local testing
+            //req.session.current_user = {
+            //    vendor_id: "bf98f593-071e-48d7-3c73-e0e2f47c45af",
+            //    openid: "oxN2Mt-BQvXep8Jb0vF3ilHbt9Vc",
+            //    head_image_url: "http://wx.qlogo.cn/mmopen/ajNVdqHZLLAKwztbcTspbibFnCLP5D5eToEsia8SZXvjHu0swsd455HIcl5hxzK3jREKYhEqykVFYYhZZI7FZOgg/0",
+            //    nick_name: "one_pan",
+            //};
+
+            res.render('vendororder.ejs');
             break;
 
         case 'userorder':
