@@ -20,7 +20,7 @@ var WXSign = require('./../../Common/components/WXSign');
 
 function getAppState() {
     return {
-        productList: Store.getOrderList(),
+        productList: Store.getProductList(),
         status: Store.getStatus(),
         vendorProfile: Store.getVendorProfile(),
         wxSign: Store.getWXSign(),

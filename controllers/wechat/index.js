@@ -74,6 +74,47 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
         case "hgopenid":
             msg = message.FromUserName;
             break;
+        case "洗澡护理":
+            msg=[
+                    {
+                        title: '洗澡护理服务',
+                        description: '',
+                        picurl: '',
+                        url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-1,null'
+                    }
+            ];
+
+            break;
+        case "美容造型":
+            msg=[
+                {
+                    title: '美容造型服务',
+                    description: '',
+                    picurl: '',
+                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-2,null'
+                }
+            ];
+            break;
+        case "全身剃光":
+            msg=[
+                {
+                    title: '全身剃光服务',
+                    description: '',
+                    picurl: '',
+                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-3,null'
+                }
+            ];
+            break;
+        case "SPA":
+            msg=[
+                {
+                    title: 'SPA服务',
+                    description: '',
+                    picurl: '',
+                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-4,null'
+                }
+            ];
+            break;
         default :
             msg = "text";
 

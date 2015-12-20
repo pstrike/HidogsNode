@@ -11,6 +11,8 @@ var Header = require('./../../Common/components/Header.react.js');
 var WXIconUploader = require('./../../Common/components/WXIconUploader');
 var WXPicUploader = require('./../../Common/components/WXPicUploader');
 var APVTO = require('../../../util/assignpathvaluetoobject');
+var APVTO = require('../../../util/assignpathvaluetoobject');
+var mapconvertor = require('../../../util/mapconverter');
 
 function getAppState() {
     return {
@@ -39,6 +41,30 @@ var app = React.createClass({
         // handle back event
         window.history.pushState({title: "preventback", url: "#"}, "preventback", "#");
         window.onpopstate = this._onCancel;
+
+        // handle bd auto complete
+        var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+            {
+                "input" : "suggestId",
+                "location" : this.state.editVendor.address ? this.state.editVendor.address.city : "",
+            });
+
+        ac.addEventListener("onconfirm", function(e) {
+            var myValue;
+            var _value = e.item.value;
+            myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+
+            var local = new BMap.LocalSearch(this.state.editVendor.address ? this.state.editVendor.address.city : "", { //智能搜索
+                onSearchComplete: function () {
+                    var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+
+                    //console.log(pp);
+                    var newPoint = mapconvertor.bd09togcj02(pp.lng, pp.lat);
+                    this.handleAddressChange(_value, newPoint);
+                }.bind(this)
+            });
+            local.search(myValue);
+        }.bind(this));
 
     },
 
@@ -165,7 +191,7 @@ var app = React.createClass({
                     addFlag = 'true';
                 }
 
-                if(i < 3) {
+                if(i < 2) {
                     disabledFlag = 'true';
                     deleteFlag = 'false';
                 }
@@ -238,6 +264,15 @@ var app = React.createClass({
                 </p>
                 <div id="errMsgAnchor"></div>
             </div>;
+        }
+
+        // address
+        var addressContent = "";
+        if(this.state.editVendor.address.district) {
+            addressContent = (this.state.editVendor.address.city ? this.state.editVendor.address.city : "") +
+                (this.state.editVendor.address.district ? this.state.editVendor.address.district : "") +
+                (this.state.editVendor.address.street ? this.state.editVendor.address.street : "") +
+                (this.state.editVendor.address.business ? this.state.editVendor.address.business : "");
         }
 
         //return <div className="modal modal-fullscreen fade" id="vendorProfileEdit" tabindex="-2" role="dialog"
@@ -496,43 +531,32 @@ var app = React.createClass({
                 <div className="form-group">
                     <label>服务地址</label>
                     <blockquote>
-                        <p className="instruction">请填写您提供服务所在地的具体地址. 该地址将作为默认服务地址展现给用户.</p>
+                        <p className="instruction">请通过地址搜索来找到您提供服务的具体地址. 该地址将作为默认服务地址展现给用户.</p>
                     </blockquote>
                     <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34"
-                                                         for="vendorAddressProvince">省份</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
-                                                          id="vendorAddressProvince" placeholder="省份"
-                                                          name="address.province"
-                                                          value={this.state.editVendor.address ? this.state.editVendor.address.province : ""}
-                                                          onChange={this.handleChange}/></div>
-                    </div>
-                    <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34" for="vendorAddressCity">城市</label>
+                        <div className="col-xs-2"><label className="vcenter34">搜索</label></div>
+                        <div className="col-xs-10">
+                            <div className="input-group">
+                                <span className="input-group-addon" id="sizing-addon2">
+                                    <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </span>
+                                <input id="suggestId" type="text" className="form-control simple-input" placeholder="请输入关键字来搜索地址"/>
+                            </div>
                         </div>
-                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
-                                                          id="vendorAddressCity" placeholder="城市"
-                                                          name="address.city"
-                                                          value={this.state.editVendor.address ? this.state.editVendor.address.city : ""}
-                                                          onChange={this.handleChange}/></div>
                     </div>
+
                     <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34"
-                                                         for="vendorAddressRegion">区域</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
-                                                          id="vendorAddressRegion" placeholder="区域"
-                                                          name="address.region"
-                                                          value={this.state.editVendor.address ? this.state.editVendor.address.region : ""}
-                                                          onChange={this.handleChange}/></div>
+                        <div className="col-xs-2"><label className="vcenter34">地址</label></div>
+                        <div className="col-xs-10">
+                            <input type="text" className="form-control simple-input no-border" placeholder="请通过搜索结果来选择地址" value={addressContent} disabled/>
+                        </div>
                     </div>
+
                     <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34"
-                                                         for="vendorAddressDetail">地址</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control simple-input"
-                                                          id="vendorAddressDetail" placeholder="具体地址"
-                                                          name="address.address"
-                                                          value={this.state.editVendor.address ? this.state.editVendor.address.address : ""}
-                                                          onChange={this.handleChange}/></div>
+                        <div className="col-xs-2"><label className="vcenter34"></label></div>
+                        <div className="col-xs-10">
+                            <input type="text" className="form-control simple-input" placeholder="补充楼号、门牌号等详细信息" name="address.additional" value={this.state.editVendor.address ? this.state.editVendor.address.additional : ""} onChange={this.handleChange}/>
+                        </div>
                     </div>
                 </div>
                 <div className="form-group">
@@ -657,6 +681,20 @@ var app = React.createClass({
         this.setState({editVendor: newVendor});
     },
 
+    handleAddressChange: function(address, point) {
+        var newVendor = this.state.editVendor;
+        newVendor.address.city = address.city;
+        newVendor.address.district = address.district;
+        newVendor.address.street = address.street;
+        newVendor.address.street_number = address.streetNumber;
+        newVendor.address.business = address.business;
+
+        newVendor.location.type = "Point";
+        newVendor.location.coordinates = point;
+
+        this.setState({editVendor: newVendor});
+    },
+
     //handlePicUpload: function(name, data) {
     //    if(data) {
     //        Actions.uploadPicture(data, "", name);
@@ -695,7 +733,7 @@ var app = React.createClass({
             verifyMsg.push("-请填写手机号码");
         }
 
-        if(this.state.editVendor.address.address == "") {
+        if(this.state.editVendor.address.district == "") {
             verifyMsg.push("-请填写具体地址");
         }
 

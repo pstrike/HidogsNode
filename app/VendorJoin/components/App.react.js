@@ -163,6 +163,16 @@ var app = React.createClass({
                 // keep blank word
         }
 
+        // Address
+        var addressContent = "";
+        if(this.state.vendor.address) {
+            addressContent = (this.state.vendor.address.city ? this.state.vendor.address.city : "") +
+                (this.state.vendor.address.district ? this.state.vendor.address.district : "") +
+                (this.state.vendor.address.street ? this.state.vendor.address.street : "") +
+                (this.state.vendor.address.business ? this.state.vendor.address.business : "") +
+                (this.state.vendor.address.additional ? this.state.vendor.address.additional : "");
+        }
+
         return <div>
             <Header subtitle="服务伙伴 - 申请加入"/>
 
@@ -209,31 +219,7 @@ var app = React.createClass({
                 </div>
                 <div className="form-group">
                     <label>服务地址</label>
-
-                    <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34">省份</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                          placeholder="省份" value={this.state.vendor.address ? this.state.vendor.address.province : ""} disabled/>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34">城市</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                          placeholder="城市" value={this.state.vendor.address ? this.state.vendor.address.city : ""} disabled/>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34">区域</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                          placeholder="区域" value={this.state.vendor.address ? this.state.vendor.address.region : ""} disabled/>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34">地址</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                          placeholder="具体地址" value={this.state.vendor.address ? this.state.vendor.address.address : ""} disabled/>
-                        </div>
-                    </div>
+                    <textarea className="form-control no-border" rows="2" value={addressContent} disabled></textarea>
                 </div>
                 <div className="form-group">
                     <label>个人描述</label>

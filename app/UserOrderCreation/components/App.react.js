@@ -9,6 +9,7 @@ var Actions = require('../actions/Actions');
 var Constants = require('../constants/Constants');
 var Header = require('./../../Common/components/Header.react.js');
 var Uudi = require('../../../util/genuuid');
+var mapconvertor = require('../../../util/mapconverter');
 
 
 function getAppState() {
@@ -220,6 +221,7 @@ var app = React.createClass({
             }
         }.bind(this))
 
+        // verify msg
         var verifyMsgContent = "";
         if(this.state.verifyMsg.length > 0) {
             verifyMsgContent = <div className="text-right">
@@ -231,6 +233,32 @@ var app = React.createClass({
                 </p>
                 <div id="errMsgAnchor"></div>
             </div>;
+        }
+
+        // product address
+        var addressContent = "";
+        var mapURL = "";
+        if(this.state.product.address) {
+            addressContent = (this.state.product.address.city ? this.state.product.address.city : "") +
+                (this.state.product.address.district ? this.state.product.address.district : "") +
+                (this.state.product.address.street ? this.state.product.address.street : "") +
+                (this.state.product.address.business ? this.state.product.address.business : "") +
+                (this.state.product.address.additional ? this.state.product.address.additional : "");
+
+            var bdPoint = mapconvertor.gcj02tobd09(this.state.product.location.coordinates[0], this.state.product.location.coordinates[1])
+
+            mapURL = "http://api.map.baidu.com/staticimage?center="+
+                bdPoint[0]+
+                ","+
+                bdPoint[1]+
+                "&width="+
+                document.body.clientWidth +
+                "&height=350&zoom=15&ak=uWWhwl3ycRCG6EAB3rpGlncT&markers="+
+                bdPoint[0]+
+                ","+
+                bdPoint[1]+
+                "&markerStyles=l,A";
+
         }
 
 
@@ -315,12 +343,10 @@ var app = React.createClass({
                     </div>
                     <div className="form-group">
                         <label>详细地址</label>
-                        <input type="text" className="form-control no-border" placeholder="标题"
-                               value={this.state.product.address ? this.state.product.address.address : ""}
-                               disabled/>
+                        <textarea className="form-control no-border" rows="2" value={addressContent} disabled></textarea>
                     </div>
                     <img className="img-responsive center-block"
-                         src="http://api.map.baidu.com/staticimage?center=116.403874,39.914888&width=700&height=350&zoom=11&ak=uWWhwl3ycRCG6EAB3rpGlncT&markers=116.288891,40.004261&markerStyles=l,A"/>
+                         src={mapURL}/>
 
                     {verifyMsgContent}
 

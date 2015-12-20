@@ -3,9 +3,9 @@ var HidogsConstants = require('../../Common/constants/HidogsConstants');
 require('es6-shim');
 
 var RemoteCall = {
-    getProductList: function () {
+    getProductList: function (longitude,latitude,category,keyword) {
         var promise = new Promise(function(resolve, reject){
-            var url = APIUtils.makeUrl("/products?filter=status,published");
+            var url = APIUtils.makeUrl("/product/other/h1?type=geoproductlist&lat="+latitude+"&lng="+longitude+"&category="+category+"&keyword="+keyword+"&projection=vendor,title,rate,price,address,location,sale_no,product_id");
             APIUtils.get(url, function(result) {
                 if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND

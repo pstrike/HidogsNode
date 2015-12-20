@@ -11,6 +11,8 @@ var Header = require('./../../Common/components/Header.react.js');
 var CommentItem = require('./../components/CommentItem.react');
 var ExitPolicyModal = require('./../components/ExitPolicyModal.react');
 
+var mapconvertor = require('../../../util/mapconverter');
+
 
 function getAppState() {
     return {
@@ -141,11 +143,31 @@ var app = React.createClass({
 
         // product address
         var addressContent = "";
+        var mapURL = "";
         if(this.state.product.address) {
-            addressContent = this.state.product.address.city + ","
-                + this.state.product.address.region + ","
-                + this.state.product.address.address;
+            addressContent = (this.state.product.address.city ? this.state.product.address.city : "") +
+                (this.state.product.address.district ? this.state.product.address.district : "") +
+                (this.state.product.address.street ? this.state.product.address.street : "") +
+                (this.state.product.address.business ? this.state.product.address.business : "") +
+                (this.state.product.address.additional ? this.state.product.address.additional : "");
+
+            var bdPoint = mapconvertor.gcj02tobd09(this.state.product.location.coordinates[0], this.state.product.location.coordinates[1])
+
+            mapURL = "http://api.map.baidu.com/staticimage?center="+
+                bdPoint[0]+
+                ","+
+                bdPoint[1]+
+                "&width="+
+                document.body.clientWidth +
+                "&height=350&zoom=15&ak=uWWhwl3ycRCG6EAB3rpGlncT&markers="+
+                bdPoint[0]+
+                ","+
+                bdPoint[1]+
+                "&markerStyles=l,A";
+
         }
+
+
 
         // product feature
         var featureContent = "";
@@ -515,7 +537,7 @@ var app = React.createClass({
                 <div className="row voffset15 text-center">
                     <p>{addressContent}</p>
                     <img className="img-responsive center-block"
-                         src="http://api.map.baidu.com/staticimage?center=116.403874,39.914888&width=700&height=350&zoom=11&ak=uWWhwl3ycRCG6EAB3rpGlncT&markers=116.288891,40.004261&markerStyles=l,A"/>
+                         src={mapURL}/>
                 </div>
 
                 <div className="row text-center voffset60">

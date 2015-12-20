@@ -25,7 +25,9 @@ var DAO = {
 
         var filter = {};
         filter[idName] = object_id;
-        filter.status = {$ne: deletedStatus}; // exclude object whose status is "deleted"
+        if(!filter.status) {
+            filter.status = {$ne: deletedStatus}; // exclude object whose status is "deleted"
+        }
 
         if(!projection) {
             projection = {};
@@ -48,7 +50,10 @@ var DAO = {
         if(!filter) {
             filter = {};
         }
-        filter.status = {$ne: deletedStatus}; // exclude object whose status is "deleted"
+
+        if(!filter.status) {
+            filter.status = {$ne: deletedStatus}; // exclude object whose status is "deleted"
+        }
 
         if(!projection) {
             projection = {};

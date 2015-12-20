@@ -3,7 +3,8 @@ var React = require('react'),
     //UserProductApp = React.createFactory(require('../../app/UserProduct/components/App.react')),
     //db = require('../../db/db'),
     operation = require('../../model/operation'),
-    model = require('../../model/prototype');
+    model = require('../../model/prototype'),
+    asyncloop = require('../../util/asyncloop');
 
 exports.engine = 'ejs';
 
@@ -171,8 +172,37 @@ exports.page = function(req, res, next){
             break;
 
         case 'userproductlist':
-            var hgstyle = "../../css/hggreen.css";
-            res.render('userproductlist.ejs',{hgstyle: hgstyle});
+            var params = req.query.params.split(",");
+            var category = params[0];
+            var keyword = params[1];
+            var hgstyle = "";
+
+            operation.getObject(operation.getCollectionList().product_meta_category, category, {name:1}, function(object) {
+                if (object) {
+                    switch (category) {
+                        case "1-1-1":
+                            hgstyle = "../../css/hggreen.css";
+                            break;
+
+                        case "1-1-2":
+                            hgstyle = "../../css/hgred.css";
+                            break;
+
+                        case "1-1-3":
+                            hgstyle = "../../css/hgblue.css";
+                            break;
+
+                        case "1-1-4":
+                            hgstyle = "../../css/hgyellow.css";
+                            break;
+
+                    }
+                    res.render('userproductlist.ejs',{hgstyle: hgstyle, category: object.name, categoryId:category, keyword: keyword});
+                }
+                else {
+                    next();
+                }
+            })
 
             break;
 
@@ -220,6 +250,7 @@ exports.meta = function(req, res, next){
 };
 
 exports.otherget = function(req, res, next){
+    var otherId = req.params.product_id;
     var type = req.query.type;
 
     switch (type) {
@@ -413,6 +444,60 @@ exports.otherget = function(req, res, next){
                     })
                 }
             })
+
+            break;
+
+        case "geoproductlist":
+            var lat = parseFloat(req.query.lat);
+            var lng = parseFloat(req.query.lng);
+            var category = req.query.category;
+            var keyword = req.query.keyword;
+            var productList = [];
+            var filter = {};
+            var distance = 0;
+
+            asyncloop.asyncLoop(10, function(loop) {
+
+                    if(loop.iteration() > 3) {
+                        distance += 3;
+                    }
+                    else {
+                        distance++;
+                    }
+
+                    filter = {
+                        status: "published",
+                        location: {
+                            $near: {
+                                $geometry: {
+                                    type: "Point",
+                                    coordinates: [lng, lat],
+                                },
+                                $maxDistance: distance * 1000,
+                            }
+                        },
+                        'category.product_meta_category_id': category,
+                    }
+
+                    operation.getObjectList(operation.getCollectionList().product, filter, req.projection, function(objectList) {
+                        productList = objectList;
+
+                        if(objectList > 10) {
+                            loop.break();
+                        }
+                        else {
+                            loop.next();
+                        }
+                    })},
+                function(){
+                    var result = {
+                        distance: distance,
+                        productList: productList,
+                    };
+
+                    res.send(result);
+                }
+            );
 
             break;
 

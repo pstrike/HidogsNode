@@ -184,6 +184,16 @@ var app = React.createClass({
             );
         }
 
+        // Address
+        var addressContent = "";
+        if(this.props.order.address) {
+            addressContent = (this.props.order.address.city ? this.props.order.address.city : "") +
+                (this.props.order.address.district ? this.props.order.address.district : "") +
+                (this.props.order.address.street ? this.props.order.address.street : "") +
+                (this.props.order.address.business ? this.props.order.address.business : "") +
+                (this.props.order.address.additional ? this.props.order.address.additional : "");
+        }
+
         return (
             <div id="react_body">
                 <Header subtitle="订单详情" modal="true"></Header>
@@ -235,27 +245,7 @@ var app = React.createClass({
 
                     <div className="form-group">
                         <label>服务地址</label>
-
-                        <div className="row">
-                            <div className="col-xs-2"><label className="vcenter34">省份</label></div>
-                            <div className="col-xs-10"><input type="text" className="form-control no-border" placeholder="省份"
-                                                          value={this.props.order.address ? this.props.order.address.province : ""} disabled/></div>
-                        </div>
-                        <div className="row">
-                            <div className="col-xs-2"><label className="vcenter34">城市</label></div>
-                            <div className="col-xs-10"><input type="text" className="form-control no-border" placeholder="城市"
-                                                          value={this.props.order.address ? this.props.order.address.city : ""} disabled/></div>
-                        </div>
-                        <div className="row">
-                            <div className="col-xs-2"><label className="vcenter34">区域</label></div>
-                            <div className="col-xs-10"><input type="text" className="form-control no-border" placeholder="区域"
-                                                          value={this.props.order.address ? this.props.order.address.region : ""} disabled/></div>
-                        </div>
-                        <div className="row">
-                            <div className="col-xs-2"><label className="vcenter34">地址</label></div>
-                            <div className="col-xs-10"><input type="text" className="form-control no-border" placeholder="具体地址"
-                                                          value={this.props.order.address ? this.props.order.address.address : ""} disabled/></div>
-                        </div>
+                        <textarea className="form-control no-border" rows="2" value={addressContent} disabled></textarea>
                     </div>
 
                     <div className="form-group">

@@ -6,6 +6,7 @@ var Actions = require('../actions/Actions');
 var Uudi = require('../../../util/genuuid');
 var APVTO = require('../../../util/assignpathvaluetoobject');
 var WXPicUploader = require('./../../Common/components/WXPicUploader');
+var mapconvertor = require('../../../util/mapconverter');
 
 function getAppState() {
     return {
@@ -60,6 +61,30 @@ var app = React.createClass({
         if(!this.state.editProduct.duration) {
             $("#durationDefaultOption").prop("selected", true)
         }
+
+        // handle bd auto complete
+        var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+            {
+                "input" : "suggestId",
+                "location" : this.state.editProduct.address ? this.state.editProduct.address.city : "",
+            });
+
+        ac.addEventListener("onconfirm", function(e) {
+            var myValue;
+            var _value = e.item.value;
+            myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+
+            var local = new BMap.LocalSearch(this.state.editProduct.address ? this.state.editProduct.address.city : "", { //智能搜索
+                onSearchComplete: function () {
+                    var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+
+                    //console.log(pp);
+                    var newPoint = mapconvertor.bd09togcj02(pp.lng, pp.lat);
+                    this.handleAddressChange(_value, newPoint);
+                }.bind(this)
+            });
+            local.search(myValue);
+        }.bind(this));
     },
 
     componentWillUnmount: function() {
@@ -277,6 +302,15 @@ var app = React.createClass({
             defaultNoticeContent = <div className="instruction" dangerouslySetInnerHTML={{__html: this.state.productMeta.other[2].value}}></div>;
         }
 
+        // address
+        var addressContent = "";
+        if(this.state.editProduct.address.district) {
+            addressContent = (this.state.editProduct.address.city ? this.state.editProduct.address.city : "") +
+                (this.state.editProduct.address.district ? this.state.editProduct.address.district : "") +
+                (this.state.editProduct.address.street ? this.state.editProduct.address.street : "") +
+                (this.state.editProduct.address.business ? this.state.editProduct.address.business : "");
+        }
+
         //var refundPolicy = <div className="form-group">
         //    <label>退款政策</label>
         //    <select className="form-control simple-input" name="exit_policy" value={this.state.editProduct.exit_policy ? this.state.editProduct.exit_policy.product_meta_exit_policy_id : ""} onChange={this.handleChange}>
@@ -431,20 +465,29 @@ var app = React.createClass({
                         <p className="instruction">默认的地址为您的个人地址,您可以对其进行修改</p>
                     </blockquote>
                     <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34">省份</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control simple-input" placeholder="省份" name="address.province" value={this.state.editProduct.address ? this.state.editProduct.address.province : ""} onChange={this.handleChange}/></div>
+                        <div className="col-xs-2"><label className="vcenter34">搜索</label></div>
+                        <div className="col-xs-10">
+                            <div className="input-group">
+                                <span className="input-group-addon" id="sizing-addon2">
+                                    <span className="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </span>
+                                <input id="suggestId" type="text" className="form-control simple-input" placeholder="请输入关键字来搜索地址"/>
+                            </div>
+                        </div>
                     </div>
-                    <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34">城市</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control simple-input"  placeholder="城市" name="address.city" value={this.state.editProduct.address ? this.state.editProduct.address.city : ""} onChange={this.handleChange}/></div>
-                    </div>
-                    <div className="row">
-                        <div className="col-xs-2"><label className="vcenter34">区域</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control simple-input" placeholder="区域" name="address.region" value={this.state.editProduct.address ? this.state.editProduct.address.region : ""} onChange={this.handleChange}/></div>
-                    </div>
+
                     <div className="row">
                         <div className="col-xs-2"><label className="vcenter34">地址</label></div>
-                        <div className="col-xs-10"><input type="text" className="form-control simple-input" placeholder="具体地址" name="address.address" value={this.state.editProduct.address ? this.state.editProduct.address.address : ""} onChange={this.handleChange}/></div>
+                        <div className="col-xs-10">
+                            <input type="text" className="form-control simple-input no-border" placeholder="请通过搜索结果来选择地址" value={addressContent} disabled/>
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-xs-2"><label className="vcenter34"></label></div>
+                        <div className="col-xs-10">
+                            <input type="text" className="form-control simple-input" placeholder="补充楼号、门牌号等详细信息" name="address.additional" value={this.state.editProduct.address ? this.state.editProduct.address.additional : ""} onChange={this.handleChange}/>
+                        </div>
                     </div>
                 </div>
                 <div className="form-group">
@@ -670,6 +713,20 @@ var app = React.createClass({
             var newProduct = APVTO.assign(this.state.editProduct ,priceBasicName, priceBasicContent)
             this.setState({editProduct: newProduct});
         }
+    },
+
+    handleAddressChange: function(address, point) {
+        var newProduct = this.state.editProduct;
+        newProduct.address.city = address.city;
+        newProduct.address.district = address.district;
+        newProduct.address.street = address.street;
+        newProduct.address.street_number = address.streetNumber;
+        newProduct.address.business = address.business;
+
+        newProduct.location.type = "Point";
+        newProduct.location.coordinates = point;
+
+        this.setState({editProduct: newProduct});
     },
 
     _addImage: function () {

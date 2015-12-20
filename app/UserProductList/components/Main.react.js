@@ -45,7 +45,7 @@ var app = React.createClass({
 
                         <h2 className="voffset10">
                             <i className="fa fa-certificate"></i>
-                            <strong>美容造型</strong>
+                            <strong>{this.props.category}</strong>
                         </h2>
 
                         <div className="row text-center">

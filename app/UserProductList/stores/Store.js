@@ -143,8 +143,8 @@ AppDispatcher.register(function(action) {
 
         // init
         case Constants.INIT_LOAD_PRODUCT_LIST:
-            var productList = JSON.parse(action.payload.response)
-            initLoadProductList(productList);
+            var result = JSON.parse(action.payload.response)
+            initLoadProductList(result.productList);
             break;
 
         case Constants.INIT_ADDRESS:

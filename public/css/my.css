@@ -266,6 +266,6 @@ h3.hg-session {
 }
 
 /* bd auto complete */
-#tangram-suggestion--TANGRAM__3-main {
+.tangram-suggestion-main {
     z-index: 1999;
 }

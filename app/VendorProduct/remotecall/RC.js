@@ -61,7 +61,7 @@ var RemoteCall = {
 
     getVendorProfile: function (vendorId) {
         var promise = new Promise(function(resolve, reject){
-            var url = APIUtils.makeUrl("/vendor/"+vendorId+"?projection=address,nick_name,head_image_url,setting,agreement");
+            var url = APIUtils.makeUrl("/vendor/"+vendorId+"?projection=address,nick_name,head_image_url,setting,agreement,location");
             APIUtils.get(url, function(result) {
                 if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND

@@ -8,6 +8,7 @@ var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
 
 var GenOrderNo = require('../../../util/genorderno');
+var mapconvertor = require('../../../util/mapconverter');
 
 var app = React.createClass({
 
@@ -205,12 +206,30 @@ var app = React.createClass({
                                 + "-"
                                 + this._formatTime(orderEndTime);
 
-        // Order Address
+        // product address
         var addressContent = "";
+        var mapURL = "";
         if(this.props.order.address) {
-            addressContent = this.props.order.address.city + ","
-                +this.props.order.address.region + ","
-                +this.props.order.address.address;
+            addressContent = (this.props.order.address.city ? this.props.order.address.city : "") +
+                (this.props.order.address.district ? this.props.order.address.district : "") +
+                (this.props.order.address.street ? this.props.order.address.street : "") +
+                (this.props.order.address.business ? this.props.order.address.business : "") +
+                (this.props.order.address.additional ? this.props.order.address.additional : "");
+
+            var bdPoint = mapconvertor.gcj02tobd09(this.props.order.location.coordinates[0], this.props.order.location.coordinates[1])
+
+            mapURL = "http://api.map.baidu.com/staticimage?center="+
+                bdPoint[0]+
+                ","+
+                bdPoint[1]+
+                "&width="+
+                document.body.clientWidth +
+                "&height=350&zoom=15&ak=uWWhwl3ycRCG6EAB3rpGlncT&markers="+
+                bdPoint[0]+
+                ","+
+                bdPoint[1]+
+                "&markerStyles=l,A";
+
         }
 
         // Order Vendor
@@ -418,7 +437,7 @@ var app = React.createClass({
                             </table>
 
                             <img className="img-responsive center-block"
-                                 src="http://api.map.baidu.com/staticimage?center=116.403874,39.914888&width=700&height=350&zoom=11&ak=uWWhwl3ycRCG6EAB3rpGlncT&markers=116.288891,40.004261&markerStyles=l,A"/>
+                                 src={mapURL}/>
                         </div>
                     </div>
 

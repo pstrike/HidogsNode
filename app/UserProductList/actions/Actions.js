@@ -6,8 +6,11 @@ var RC = require('../remotecall/RC');
 var Actions = {
 
     // Init
-    initProductList: function(latitude, longitude) {
-        RC.getProductList().then(function (payload) {
+    initProductList: function(latitude, longitude, category, keyword) {
+
+        alert(latitude + "," + longitude + "," + category + "," + keyword);
+
+        RC.getProductList(longitude,latitude,category,keyword).then(function (payload) {
             AppDispatcher.dispatch({
                 actionType: Constants.INIT_LOAD_PRODUCT_LIST,
                 payload: payload,

@@ -10,6 +10,8 @@ var Actions = require('../actions/Actions');
 var Header = require('./../../Common/components/Header.react');
 var CommentItem = require('./../components/CommentItem.react');
 
+var mapconvertor = require('../../../util/mapconverter');
+
 var app = React.createClass({
 
     componentDidUpdate: function () {
@@ -129,7 +131,7 @@ var app = React.createClass({
                 // vendor rating
                 var starContent = [];
                 var starCount = 0;
-                if(roleItem.rate && roleItem.rate.no) {
+                if(roleItem.rate && roleItem.rate.no && roleItem.rate.no > 0) {
                     starCount = parseInt(roleItem.rate.sum) / parseInt(roleItem.rate.no);
                 }
                 for(var i = 0; i<5; i++) {
@@ -160,7 +162,7 @@ var app = React.createClass({
                 })
 
                 // vendor comment
-                if(roleItem.comment) {
+                if(roleItem.comment && roleItem.comment.created_time) {
                     var commentCreatedTime = new Date(roleItem.comment.created_time);
                     commentItemContent.push(<li>
                         <CommentItem
@@ -291,6 +293,31 @@ var app = React.createClass({
             </div>;
         }
 
+        // Address
+        var addressContent = "";
+        var mapURL = "";
+        if(this.props.vendor.address) {
+            addressContent = (this.props.vendor.address.city ? this.props.vendor.address.city : "") +
+                (this.props.vendor.address.district ? this.props.vendor.address.district : "") +
+                (this.props.vendor.address.street ? this.props.vendor.address.street : "") +
+                (this.props.vendor.address.business ? this.props.vendor.address.business : "");
+
+            var bdPoint = mapconvertor.gcj02tobd09(this.props.vendor.location.coordinates[0], this.props.vendor.location.coordinates[1])
+
+            mapURL = "http://api.map.baidu.com/staticimage?center="+
+                bdPoint[0]+
+                ","+
+                bdPoint[1]+
+                "&width="+
+                document.body.clientWidth +
+                "&height=350&zoom=15&ak=uWWhwl3ycRCG6EAB3rpGlncT&markers="+
+                bdPoint[0]+
+                ","+
+                bdPoint[1]+
+                "&markerStyles=l,A";
+
+        }
+
         return (
             <div id="react_body">
 
@@ -326,6 +353,16 @@ var app = React.createClass({
                     {certificateContent}
 
                     {descriptionContent}
+
+                    <div className="row text-center voffset60">
+                        <i className="fa fa-map-o hg-session-header-icon"></i>
+                        <div className="hg-session-header-title voffset5">服务地址</div>
+                    </div>
+                    <div className="row voffset15 text-center">
+                        <p>{addressContent}</p>
+                        <img className="img-responsive center-block"
+                             src={mapURL}/>
+                    </div>
 
                     {imageContent}
 

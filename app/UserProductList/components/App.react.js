@@ -31,6 +31,9 @@ var app = React.createClass({
 
     componentDidMount: function() {
         Store.addChangeListener(this._onChange);
+        this.props.keyword = $("#react-main-mount").attr("keyword");
+        this.props.category = $("#react-main-mount").attr("category");
+        this.props.categoryId = $("#react-main-mount").attr("categoryid");
     },
 
     componentWillUnmount: function() {
@@ -62,7 +65,7 @@ var app = React.createClass({
                         callback = {this._getLocation}>
                 </WXSign>
 
-                <Main productList={this.state.productList} address={this.state.address}></Main>
+                <Main productList={this.state.productList} address={this.state.address} category={this.props.category}></Main>
             </div>
         );
     },
@@ -93,8 +96,8 @@ var app = React.createClass({
                     Actions.initAddress(addComp.city + ", " + addComp.district + ", " + addComp.street);
                 });
 
-                Actions.initProductList(latitude, longitude);
-            }
+                Actions.initProductList(latitude, longitude, this.props.categoryId, this.props.keyword);
+            }.bind(this)
         });
     },
 

@@ -5,10 +5,9 @@
     top: 0px;
     width: 100%;
     text-align:center;
-    z-index: 1000;
     background: rgba(255,255,255,1);
     opacity:0;
-    z-index: 1999;
+    z-index: 1990;
     overflow-y: hidden;
 }
 
@@ -57,7 +56,8 @@
 
 body.hg-modal-open {
     overflow: hidden;
-    visibility: hidden;
+    /*visibility: hidden;*/
     position: fixed;
     width: 100%;
+    z-index: 1980;
 }

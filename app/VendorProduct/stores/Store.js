@@ -41,7 +41,8 @@ function triggerListToSetting() {
 
 function triggerListToNew() {
     _editProduct = ModelPrototype.getProductPrototype();
-    _editProduct.address = _vendorProfile.address;
+    _editProduct.address = JSON.parse(JSON.stringify(_vendorProfile.address));
+    _editProduct.location = JSON.parse(JSON.stringify(_vendorProfile.location));
     _status = Constants.STATE_VENDOR_PRODUCT_NEW;
     _productVerifyMsg = {};
 
@@ -140,6 +141,7 @@ function loadProductMetaSuccessful(metaData) {
 
 function loadVendorProfileSuccessful(profile) {
     _vendorProfile.address = profile.address;
+    _vendorProfile.location = profile.location;
     _vendorProfile.setting = profile.setting;
     _vendorProfile.agreement = profile.agreement;
 
