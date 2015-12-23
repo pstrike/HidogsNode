@@ -66,7 +66,7 @@ var app = React.createClass({
                     </div>
                     <div className="form-group">
                         <label>指定特定达人的所有服务</label>
-                        <select id="vendorSelect" className="form-control no-border"  value={this.props.coupon.rule ? this.props.coupon.rule.vendor[0] : ""} disabled>
+                        <select id="vendorSelect" className="form-control no-border" value={this.props.coupon.rule ? this.props.coupon.rule.vendor[0] : ""} disabled>
                             <option value=''>未设置</option>
                             <option value='null'>不限</option>
                             {this.props.vendorList.map(function(item){
@@ -76,11 +76,22 @@ var app = React.createClass({
                     </div>
                     <div className="form-group">
                         <label>指定特定服务</label>
-                        <select id="productSelect" className="form-control no-border"  value={this.props.coupon.rule ? this.props.coupon.rule.product[0] : ""} disabled>
+                        <select id="productSelect" className="form-control no-border" value={this.props.coupon.rule ? this.props.coupon.rule.product[0] : ""} disabled>
                             <option value=''>未设置</option>
                             <option value='null'>不限</option>
                             {this.props.productList.map(function(item){
                                 return <option value={item.product_id}>{item.title}</option>
+                            })}
+                        </select>
+                    </div>
+
+                    <h3>其它</h3>
+                    <div className="form-group">
+                        <label>让达人可以查看优惠码使用状态</label>
+                        <select className="form-control no-border" value={this.props.coupon.vendor_owner} disabled>
+                            <option value='' disabled>仅管理员可见</option>
+                            {this.props.vendorList.map(function(item){
+                                return <option value={item.vendor_id}>{item.nick_name}</option>
                             })}
                         </select>
                     </div>

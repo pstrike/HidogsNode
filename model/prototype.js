@@ -247,6 +247,7 @@ var Model = {
             },
             off_percentage: 0,
             due_date: "",
+            vendor_owner: "",
             created_time: "",
             is_active: true,
         };

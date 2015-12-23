@@ -40,7 +40,7 @@ function getProductListSuccess(productList) {
 function triggerNewFromList() {
     _status = Constants.STATE_NEW;
     _editCoupon = ModelPrototype.getCouponPrototype();
-    _vendorList = [];
+    _verifyMsg = [];
     Store.emitChange();
 };
 
@@ -89,7 +89,7 @@ function triggerListFromDetail() {
 function triggerEditFromDetail() {
     _editCoupon = _coupon;
     _status = Constants.STATE_EDIT;
-    _vendorList = [];
+    _verifyMsg = [];
     Store.emitChange();
 };
 

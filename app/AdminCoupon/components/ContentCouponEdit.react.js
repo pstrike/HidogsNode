@@ -71,6 +71,7 @@ var app = React.createClass({
     },
 
     render: function () {
+
         // off percentage
         var offPercentageContent = "";
         if(this.state.editCoupon.off_percentage) {
@@ -160,6 +161,17 @@ var app = React.createClass({
                             <option value='drafted'>草稿</option>
                             <option value='published'>发布</option>
                             <option value='deleted'>删除</option>
+                        </select>
+                    </div>
+
+                    <h3>其它</h3>
+                    <div className="form-group">
+                        <label>让达人可以查看优惠码使用状态</label>
+                        <select className="form-control simple-input" name="vendor_owner" value={this.state.editCoupon.vendor_owner} onChange={this.handleChange}>
+                            <option value='' disabled>仅管理员可见</option>
+                            {this.props.vendorList.map(function(item){
+                                return <option value={item.vendor_id}>{item.nick_name}</option>
+                            })}
                         </select>
                     </div>
 
