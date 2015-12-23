@@ -23,7 +23,28 @@ exports.list = function(req, res, next){
         res.send(docs);
     });
     */
-    operation.getObjectList(operation.getCollectionList().vendor, req.filter, req.projection, function(objectList) {
+
+    var filter = {};
+    if(req.filter) {
+        filter = req.filter;
+    }
+
+    var vendorIdList = [];
+    if(req.query.idlist) {
+        if(req.query.idlist.indexOf(",") > -1) {
+            vendorIdList = req.query.idlist.split(",");
+        }
+        else {
+            vendorIdList.push(req.query.idlist);
+        }
+
+        var orList = vendorIdList.map(function(item) {
+            return {vendor_id: item}
+        })
+        filter['$or'] = orList;
+    }
+
+    operation.getObjectList(operation.getCollectionList().vendor, filter, req.projection, function(objectList) {
         res.send(objectList);
     })
 };
@@ -77,7 +98,7 @@ exports.page = function(req, res, next){
 
     // for local testing
     //req.session.current_user = {
-    //    vendor_id: "bf98f593-071e-48d7-3c73-e0e2f47c45af",
+    //    vendor_id: "d18c4e5c-6f49-7f82-7d49-db362c64cb03",
     //    openid: "oxN2Mt-BQvXep8Jb0vF3ilHbt9Vc",
     //    head_image_url: "http://wx.qlogo.cn/mmopen/ajNVdqHZLLAKwztbcTspbibFnCLP5D5eToEsia8SZXvjHu0swsd455HIcl5hxzK3jREKYhEqykVFYYhZZI7FZOgg/0",
     //    nick_name: "one_pan",
@@ -85,8 +106,6 @@ exports.page = function(req, res, next){
 
     switch (page) {
         case 'vendorprofile':
-            //var reactHtml = React.renderToString(App({}));
-            //res.render('vendorprofile.ejs', {reactOutput: reactHtml});
             res.render('vendorprofile.ejs');
             break;
 
@@ -96,11 +115,64 @@ exports.page = function(req, res, next){
             res.render('vendorjoin.ejs');
             break;
 
-        case 'vendorpage':
+        //case 'vendorpage':
+        //    var vendorId = req.query.vendor;
+        //
+        //    operation.getObject(operation.getCollectionList().vendor, vendorId, {setting:1}, function(object) {
+        //        var hgstyle = "../../css/hg"+object.setting.page_style+".css";
+        //
+        //        res.render('vendorpage.ejs',{vendorId: vendorId, hgstyle: hgstyle});
+        //    })
+        //    break;
+
+        case 'vendorpageprecheck':
+
+            // for local testing
+            //req.session.current_user = {
+            //    user_id: "e79fe7aa-2dfe-1fd6-76e9-b62985b0aa7a",
+            //    head_image_url: "http://wx.qlogo.cn/mmopen/ajNVdqHZLLAKwztbcTspbibFnCLP5D5eToEsia8SZXvjHu0swsd455HIcl5hxzK3jREKYhEqykVFYYhZZI7FZOgg/0",
+            //    nick_name: "one_pan",
+            //};
+
             var vendorId = req.query.vendor;
-            //var reactHtml = React.renderToString(App({}));
-            //res.render('vendorprofile.ejs', {reactOutput: reactHtml});
-            res.render('vendorpage.ejs',{vendorId: vendorId});
+
+            var userAgent = req.headers['user-agent'];
+            if(userAgent.indexOf('MicroMessenger') > -1) {
+                if(req.session['current_user']) {
+                    operation.getObject(operation.getCollectionList().vendor, vendorId, {setting:1}, function(object) {
+
+                        if(object) {
+                            var hgstyle = "../../css/hg"+object.setting.page_style+".css";
+
+                            res.render('vendorpage.ejs',{vendorId: vendorId, hgstyle: hgstyle, isUser: "true"});
+                        }
+                        else {
+                            next();
+                        }
+                    })
+                }
+                else {
+                    var url = "http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorpageprecheck?vendor="+vendorId+"_user";
+                    res.redirect(url);
+                }
+            }
+            else {
+                operation.getObject(operation.getCollectionList().vendor, vendorId, {setting:1}, function(object) {
+
+                    if(object) {
+                        var hgstyle = "../../css/hg"+object.setting.page_style+".css";
+
+                        res.render('vendorpage.ejs',{vendorId: vendorId, hgstyle: hgstyle, isUser: "false"});
+
+                        // for testing
+                        //res.render('vendorpage.ejs',{vendorId: vendorId, hgstyle: hgstyle, isUser: "true"});
+                    }
+                    else {
+                        next();
+                    }
+                })
+            }
+
             break;
 
         default:

@@ -5,8 +5,8 @@ exports.show = function(req, res, next){
     switch(redirect) {
         case 'userproduct':
             var product = req.query.product;
-            console.log(product);
-            res.send("../../product/view/userproduct?product="+product);
+
+            res.send("../../product/view/userproductprecheck?product="+product);
             break;
 
         default:

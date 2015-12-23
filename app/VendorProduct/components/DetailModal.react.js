@@ -572,13 +572,17 @@ var app = React.createClass({
         var priceReg = new RegExp("^[0-9]*$");
         var isPriceInvalid = false;
         this.state.product.price.basic.forEach(function(item){
-            if(!priceReg.test(item.price.trim())) {
-                isPriceInvalid = true;
+            if(item.price) {
+                if(!priceReg.test(item.price.trim())) {
+                    isPriceInvalid = true;
+                }
             }
         })
         this.state.product.price.additional.forEach(function(item){
-            if(!priceReg.test(item.price.trim())) {
-                isPriceInvalid = true;
+            if(item.price) {
+                if(!priceReg.test(item.price.trim())) {
+                    isPriceInvalid = true;
+                }
             }
         })
         if(isPriceInvalid) {

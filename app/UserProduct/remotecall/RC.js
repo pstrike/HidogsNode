@@ -78,7 +78,7 @@ var RemoteCall = {
 
     getUserPromise: function(id) {
         var promise = new Promise(function(resolve, reject){
-            var url = APIUtils.makeUrl("/user/"+id);
+            var url = APIUtils.makeUrl("/user/"+id+"?projection=user_id,fav_list");
             APIUtils.get(url, function(result) {
                 if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
@@ -117,6 +117,24 @@ var RemoteCall = {
         var promise = new Promise(function(resolve, reject){
             var url = APIUtils.makeUrl("/product/other/"+id+"?type=availability");
             APIUtils.get(url, function(result) {
+                if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
+                    reject(Error(result));
+                }
+                else {
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    },
+
+    updateUser: function (object, callback) {
+        var promise = new Promise(function(resolve, reject){
+            var url = APIUtils.makeUrl("/user/"+object.user_id);
+            APIUtils.put(url, object, function(result) {
                 if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {

@@ -32,7 +32,27 @@ exports.list = function(req, res, next){
     });
     */
 
-    operation.getObjectList(operation.getCollectionList().product, req.filter, req.projection, function(objectList) {
+    var filter = {};
+    if(req.filter) {
+        filter = req.filter;
+    }
+
+    var productIdList = [];
+    if(req.query.idlist) {
+        if(req.query.idlist.indexOf(",") > -1) {
+            productIdList = req.query.idlist.split(",");
+        }
+        else {
+            productIdList.push(req.query.idlist);
+        }
+
+        var orList = productIdList.map(function(item) {
+            return {product_id: item}
+        })
+        filter['$or'] = orList;
+    }
+
+    operation.getObjectList(operation.getCollectionList().product, filter, req.projection, function(objectList) {
         res.send(objectList);
     })
 };
@@ -105,7 +125,7 @@ exports.page = function(req, res, next){
 
             // for local testing
             //req.session.current_user = {
-            //    vendor_id: "bf98f593-071e-48d7-3c73-e0e2f47c45af",
+            //    vendor_id: "d18c4e5c-6f49-7f82-7d49-db362c64cb03",
             //    role: "grooming",
             //    head_image_url: "http://wx.qlogo.cn/mmopen/ajNVdqHZLLAKwztbcTspbibFnCLP5D5eToEsia8SZXvjHu0swsd455HIcl5hxzK3jREKYhEqykVFYYhZZI7FZOgg/0",
             //    nick_name: "one_pan",
@@ -120,7 +140,7 @@ exports.page = function(req, res, next){
             // Output html rendered by react
             //res.render('vendorproduct.ejs', {reactOutput: reactHtml});
 
-            // for local testing
+            // for admin user login
             req.session.current_user = {
                 vendor_id: "hg1",
                 role: "grooming",
@@ -133,43 +153,43 @@ exports.page = function(req, res, next){
             res.render('vendorproduct.ejs');
             //res.render('index.ejs');
             break;
-        case 'userproduct':
-            //var reactHtml = React.renderToString(UserProductApp({}));
-            // Output html rendered by react
-            //res.render('userproduct.ejs', {reactOutput: reactHtml});
-
-            operation.getObject(operation.getCollectionList().product, productId, {category:1}, function(object) {
-
-                if(object) {
-                    var hgstyle = "";
-
-                    switch (object.category.product_meta_category_id) {
-                        case "1-1-1":
-                            hgstyle = "../../css/hggreen.css";
-                            break;
-
-                        case "1-1-2":
-                            hgstyle = "../../css/hgred.css";
-                            break;
-
-                        case "1-1-3":
-                            hgstyle = "../../css/hgblue.css";
-                            break;
-
-                        case "1-1-4":
-                            hgstyle = "../../css/hgyellow.css";
-                            break;
-
-                    }
-
-                    res.render('userproduct.ejs',{productId: productId, hgstyle: hgstyle});
-                }
-                else {
-                    next();
-                }
-            })
-            //res.render('index.ejs');
-            break;
+        //case 'userproduct':
+        //    //var reactHtml = React.renderToString(UserProductApp({}));
+        //    // Output html rendered by react
+        //    //res.render('userproduct.ejs', {reactOutput: reactHtml});
+        //
+        //    operation.getObject(operation.getCollectionList().product, productId, {category:1}, function(object) {
+        //
+        //        if(object) {
+        //            var hgstyle = "";
+        //
+        //            switch (object.category.product_meta_category_id) {
+        //                case "1-1-1":
+        //                    hgstyle = "../../css/hggreen.css";
+        //                    break;
+        //
+        //                case "1-1-2":
+        //                    hgstyle = "../../css/hgred.css";
+        //                    break;
+        //
+        //                case "1-1-3":
+        //                    hgstyle = "../../css/hgblue.css";
+        //                    break;
+        //
+        //                case "1-1-4":
+        //                    hgstyle = "../../css/hgyellow.css";
+        //                    break;
+        //
+        //            }
+        //
+        //            res.render('userproduct.ejs',{productId: productId, hgstyle: hgstyle, isUser: "false"});
+        //        }
+        //        else {
+        //            next();
+        //        }
+        //    })
+        //    //res.render('index.ejs');
+        //    break;
 
         case 'userproductlist':
             var params = req.query.params.split(",");
@@ -203,6 +223,90 @@ exports.page = function(req, res, next){
                     next();
                 }
             })
+
+            break;
+
+        case "userproductprecheck":
+
+            // for local testing
+            //req.session.current_user = {
+            //    user_id: "e79fe7aa-2dfe-1fd6-76e9-b62985b0aa7a",
+            //    head_image_url: "http://wx.qlogo.cn/mmopen/ajNVdqHZLLAKwztbcTspbibFnCLP5D5eToEsia8SZXvjHu0swsd455HIcl5hxzK3jREKYhEqykVFYYhZZI7FZOgg/0",
+            //    nick_name: "one_pan",
+            //};
+
+            var userAgent = req.headers['user-agent'];
+            if(userAgent.indexOf('MicroMessenger') > -1) {
+                if(req.session['current_user']) {
+                    operation.getObject(operation.getCollectionList().product, productId, {category:1}, function(object) {
+
+                        if(object) {
+                            var hgstyle = "";
+
+                            switch (object.category.product_meta_category_id) {
+                                case "1-1-1":
+                                    hgstyle = "../../css/hggreen.css";
+                                    break;
+
+                                case "1-1-2":
+                                    hgstyle = "../../css/hgred.css";
+                                    break;
+
+                                case "1-1-3":
+                                    hgstyle = "../../css/hgblue.css";
+                                    break;
+
+                                case "1-1-4":
+                                    hgstyle = "../../css/hgyellow.css";
+                                    break;
+                            }
+
+                            res.render('userproduct.ejs',{productId: productId, hgstyle: hgstyle, isUser: "true"});
+                        }
+                        else {
+                            next();
+                        }
+                    })
+                }
+                else {
+                    var url = "http://www.hidogs.cn/wechat/auth?destination=001product1view1userproductprecheck?product="+productId+"_user";
+                    res.redirect(url);
+                }
+            }
+            else {
+                operation.getObject(operation.getCollectionList().product, productId, {category:1}, function(object) {
+
+                    if(object) {
+                        var hgstyle = "";
+
+                        switch (object.category.product_meta_category_id) {
+                            case "1-1-1":
+                                hgstyle = "../../css/hggreen.css";
+                                break;
+
+                            case "1-1-2":
+                                hgstyle = "../../css/hgred.css";
+                                break;
+
+                            case "1-1-3":
+                                hgstyle = "../../css/hgblue.css";
+                                break;
+
+                            case "1-1-4":
+                                hgstyle = "../../css/hgyellow.css";
+                                break;
+                        }
+
+                        res.render('userproduct.ejs',{productId: productId, hgstyle: hgstyle, isUser: "false"});
+
+                        // for testing
+                        //res.render('userproduct.ejs',{productId: productId, hgstyle: hgstyle, isUser: "true"});
+                    }
+                    else {
+                        next();
+                    }
+                })
+            }
 
             break;
 

@@ -311,6 +311,12 @@ var app = React.createClass({
                 (this.state.editProduct.address.business ? this.state.editProduct.address.business : "");
         }
 
+        // delete Btn
+        var deleteBtnContent = <button type="button" className="btn btn-default btn-hd-blue roffset5" onClick={this._triggerDelete}>删除</button>;
+        if(this.props.type == 'new') {
+            deleteBtnContent = "";
+        }
+
         //var refundPolicy = <div className="form-group">
         //    <label>退款政策</label>
         //    <select className="form-control simple-input" name="exit_policy" value={this.state.editProduct.exit_policy ? this.state.editProduct.exit_policy.product_meta_exit_policy_id : ""} onChange={this.handleChange}>
@@ -561,7 +567,7 @@ var app = React.createClass({
             <div className="hg-modal-footer text-right row">
                 <div className="col-xs-12">
                     <button type="button" className="btn btn-default btn-hd-blue roffset5" onClick={this._triggerCancel}>关闭</button>
-                    <button type="button" className="btn btn-default btn-hd-blue roffset5" onClick={this._triggerDelete}>删除</button>
+                    {deleteBtnContent}
                     <button type="button" className="btn btn-default btn-hd-blue" onClick={this._triggerSave}>保存</button>
                 </div>
             </div>
@@ -842,23 +848,27 @@ var app = React.createClass({
         var isRangeInvalid = false;
         this.state.editProduct.price.basic.forEach(function(item){
 
-            if(!priceReg.test(item.price.trim())) {
-                isPriceInvalid = true;
-            }
-
-            if(!priceReg.test(item.upper.trim())) {
-                isRangeNoInvalid = true;
-            }
-
-            if(!priceReg.test(item.lower.trim())) {
-                isRangeNoInvalid = true;
-            }
-
-            if(item.price) {
-                if(!item.upper || !item.lower) {
+            if(!item.upper || !item.lower || !item.price) {
+                if(item.upper || item.lower || item.price) {
+                    // check when there is one item is inputted; ignore all blank item case
                     isRangeInvalid = true;
                 }
             }
+            else {
+                // if price items are inpuuted, check whether it is a valid number
+                if(!priceReg.test(item.price.trim())) {
+                    isPriceInvalid = true;
+                }
+
+                if(!priceReg.test(item.upper.trim())) {
+                    isRangeNoInvalid = true;
+                }
+
+                if(!priceReg.test(item.lower.trim())) {
+                    isRangeNoInvalid = true;
+                }
+            }
+
         })
         this.state.editProduct.price.additional.forEach(function(item){
             if(!priceReg.test(item.price.trim())) {
@@ -872,7 +882,7 @@ var app = React.createClass({
             verifyMsg.push("-您在设置服务价格时输入的服务体重/身高有误");
         }
         if(isRangeInvalid) {
-            verifyMsg.push("-在设置服务价格时,请确保填写了服务体重/身高");
+            verifyMsg.push("-在设置服务价格时,请确保填写了服务体重/身高/价格");
         }
 
         if(this.state.editProduct.price.type) {

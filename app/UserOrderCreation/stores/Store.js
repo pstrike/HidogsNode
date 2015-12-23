@@ -96,7 +96,7 @@ function showVerifyMsg(msg) {
 };
 
 function cancelOrder() {
-    window.location = "http://www.hidogs.cn/product/view/userproduct?product="+_product.product_id;
+    window.location = "http://www.hidogs.cn/product/view/userproductprecheck?product="+_product.product_id;
 };
 
 function updateOrderSuccessful() {

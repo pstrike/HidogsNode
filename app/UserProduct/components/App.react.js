@@ -3,6 +3,7 @@
 var React = require('react');
 var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
+var HGStore = require('../../Common/stores/session');
 
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
@@ -16,10 +17,12 @@ var mapconvertor = require('../../../util/mapconverter');
 
 function getAppState() {
     return {
+        session: HGStore.getSession(),
         product: Store.getProduct(),
         status: Store.getStatus(),
         vendor: Store.getVendor(),
         productMeta: Store.getProductMeta(),
+        user: Store.getUser(),
     };
 }
 
@@ -31,6 +34,7 @@ var app = React.createClass({
 
     componentDidMount: function () {
         Store.addChangeListener(this._onChange);
+        HGStore.addChangeListener(this._onChange);
 
         var productId = "";
         if (!this.props.productId) {
@@ -40,14 +44,24 @@ var app = React.createClass({
             productId = this.props.productId;
         }
 
+        this.props.isUser = $("#react-main-mount").attr("isUser") == "true" ? true : false;
+        this.props.genQcode = true; // gen Qcode when fist load
+
         Actions.getProductThenVendorThenMeta(productId);
+
+        if(this.props.isUser) {
+            Actions.getSessionThenUser();
+        }
     },
 
     componentWillUnmount: function () {
         Store.removeChangeListener(this._onChange);
+        HGStore.removeChangeListener(this._onChange);
     },
 
     componentDidUpdate: function () {
+
+        // carousel image position
         var wrapperHeight = parseInt($(".hg-carousel-img").css("height"));
         var wrapperWidth = parseInt($(".hg-carousel-img").css("width"));
         var top = 0;
@@ -63,8 +77,14 @@ var app = React.createClass({
             }
 
             $(this).css({"top": top + 'px' })
-
         });
+
+        // qr code
+        if(this.props.genQcode) {
+            $('#qrcode').qrcode({width: 150,height: 150,text: "http://www.hidogs.cn/wechat/auth?destination=001product1view1userproductprecheck?product="+this.state.product.product_id+"_user"});
+            this.props.genQcode = false;
+        }
+
     },
 
     render: function () {
@@ -203,7 +223,6 @@ var app = React.createClass({
                                 star={item.content.rate}
                                 authorImage={item.author.head_image_url}
                                 content={item.content.text}></CommentItem>
-                            <hr/>
                         </li>);
                     }
 
@@ -386,6 +405,22 @@ var app = React.createClass({
             }
         }
 
+        // product rating
+        var productRatingContent = [];
+        var productRatingStarCount = 0;
+
+        if(this.state.product.rate && this.state.product.rate.no) {
+            productRatingStarCount = parseInt(this.state.product.rate.sum) / parseInt(this.state.product.rate.no);
+        }
+        for(var i = 0; i<5; i++) {
+            if(i<productRatingStarCount) {
+                productRatingContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
+            }
+            else {
+                productRatingContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
+            }
+        }
+
         // vendor certificate
         var certificateContent = [];
         if(this.state.vendor.role) {
@@ -411,17 +446,36 @@ var app = React.createClass({
 
         // footer
         var footerContent = "";
-        if(this.state.product.status == 'published') {
+        var favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._favProduct.bind(this,this.state.product.product_id)}>收藏</button>;
+        if(this.state.user.fav_list) {
+            for(var i=0; i<this.state.user.fav_list.product.length; i++) {
+                if(this.state.user.fav_list.product[i] == this.state.product.product_id) {
+                    favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._unFavProduct.bind(this,this.state.product.product_id)}>取消收藏</button>;
+                    break;
+                }
+            }
+        }
+        if(this.props.isUser && this.state.product.status == 'published') {
             footerContent = <footer className="footer">
                 <div className="container">
                     <div className="row text-right">
                         <div className="col-xs-12">
-                            <button className="btn btn-hd-blue text-muted roffset5">收藏</button>
+                            {favBtnContent}
                             <button className="btn btn-hd-blue text-muted" onClick={this._redirectToOrderCreation.bind(this,this.state.product.product_id)}>预订</button>
                         </div>
                     </div>
                 </div>
             </footer>;
+        }
+
+        // qr code
+        var qCodeContent = "";
+        if(!this.props.isUser) {
+            qCodeContent = <div className="text-center">
+                <div className="voffset60" id="qrcode"></div>
+                <h2 className="voffset10">欢宠</h2>
+                <span className="text-center voffset10">通过微信扫描以上二维码即可预约服务</span>
+            </div>;
         }
 
         var modalContent = [];
@@ -440,8 +494,6 @@ var app = React.createClass({
 
         }
 
-
-
         return <div id="react_body">
             <div className="container blue-background-decoration"></div>
             <Header hgstyle="hg-navbar"/>
@@ -452,14 +504,15 @@ var app = React.createClass({
                 <div className="page-header text-center hg-pageheader">
                     <h4>{categoryContent}</h4>
 
-                    <h2><strong>{this.state.product.title}</strong></h2>
-
                     <div className="row text-center">
-                        {overallStarContent}
+                        {productRatingContent}
                     </div>
+
+                    <h2 className="voffset0"><strong>{this.state.product.title}</strong></h2>
+
                     <img src={this.state.product.vendor ? this.state.product.vendor.head_image_url : ""}
                          className="center-block img-responsive img-circle user-icon-header voffset10"/>
-                    <h4 className="text-center">{this.state.product.vendor ? this.state.product.vendor.vendor_name : ""}</h4>
+                    <h4 className="text-center voffset5">{this.state.product.vendor ? this.state.product.vendor.vendor_name : ""}</h4>
                 </div>
 
                 <hr/>
@@ -600,6 +653,7 @@ var app = React.createClass({
                     </div>
                 </div>
 
+                {qCodeContent}
 
             </div>
 
@@ -620,7 +674,32 @@ var app = React.createClass({
     },
 
     _navToVendorPage: function(vendorId) {
-        window.location = "http://www.hidogs.cn/vendor/view/vendorpage?vendor="+vendorId;
+        window.location = "http://www.hidogs.cn/vendor/view/vendorpageprecheck?vendor="+vendorId;
+    },
+
+    _favProduct: function(productId) {
+        var newUser = this.state.user;
+        if(!newUser.fav_list) {
+            newUser.fav_list = {
+                product: [],
+                vendor: [],
+            }
+        }
+        newUser.fav_list.product.push(productId);
+        console.log(newUser);
+        Actions.updateUserFav(newUser);
+    },
+
+    _unFavProduct: function(productId) {
+        var newUser = this.state.user;
+
+        for(var i=0; i<this.state.user.fav_list.product.length; i++) {
+            if(this.state.user.fav_list.product[i] == this.state.product.product_id) {
+                newUser.fav_list.product.splice(i, 1);
+                break;
+            }
+        }
+        Actions.updateUserFav(newUser);
     },
 
 });

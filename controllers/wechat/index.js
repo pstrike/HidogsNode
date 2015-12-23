@@ -49,9 +49,11 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
                 "1.[达人功能]加入达人: vj\n" +
                 "2.[达人功能]达人服务管理: vp\n" +
                 "3.[达人功能]达人订单管理: vo\n" +
-                "4.[用户功能]订单管理: uo\n" +
-                "5.[管理者功能]欢宠小Q服务管理: vpq\n" +
-                "6.[管理者功能]管理者后台: ad\n"
+                "4.[达人功能]达人主页/信息管理: vpf\n" +
+                "5.[用户功能]订单管理: uo\n" +
+                "6.[用户功能]订单管理: uf\n" +
+                "7.[管理者功能]欢宠小Q服务管理: vpq\n" +
+                "8.[管理者功能]管理者后台: ad\n"
             break;
         case "vj":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorjoin_vendor";
@@ -62,8 +64,14 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
         case "vpq":
             msg = "http://www.hidogs.cn/product/view/vendorproducthg1";
             break;
+        case "vpf":
+            msg = "http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorprofile_vendor";
+            break;
         case "uo":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001order1view1userorder_user";
+            break;
+        case "uf":
+            msg = "http://www.hidogs.cn/wechat/auth?destination=001user1view1userfav_user";
             break;
         case "vo":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001order1view1vendororder_vendor";
@@ -170,6 +178,8 @@ exports.show = function(req, res, next){
             break;
 
         case "base":
+            // /wechat/base?code=[code]&state=[url]?[param]_[entity]
+
             var code = req.query.code;
             var param = req.query.state.split("_");
             var destination;

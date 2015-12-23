@@ -96,7 +96,7 @@ var app = React.createClass({
                                 saleNoContent = 0;
                             }
 
-                            var productLink = "http://www.hidogs.cn/product/view/userproduct?product="+item.product_id;
+                            var productLink = "http://www.hidogs.cn/product/view/userproductprecheck?product="+item.product_id;
 
 
                             return <tr>

@@ -5,6 +5,7 @@ module.exports = keyMirror({
     INIT_LOAD_PRODUCT_LIST: null,
     INIT_ADDRESS: null,
     INIT_FAIL: null,
+    INIT_LOCATION: null,
 
     // sort
     SORT_SCORE: null,

@@ -15,6 +15,7 @@ var DAO = {
             product_meta_exit_policy: "product_meta_exit_policy",
             product_meta_other: "product_meta_other",
             order: "order",
+            coupon: "coupon",
 
             vendor_potential: "vendor_potential",
         };

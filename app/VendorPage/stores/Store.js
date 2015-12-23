@@ -1,24 +1,40 @@
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
+var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var Constants = require('../constants/Constants');
 var CHANGE_EVENT = 'change';
 
 // Store State
 var _vendor = {};
+var _user = {};
 var _productList = [];
 var _status = "";
 
 // Store actions
 function initLoadVendor(vendor) {
     _vendor = vendor;
-    console.log(_vendor);
+    //console.log(_vendor);
     Store.emitChange();
 };
 
 function initLoadProductList(productList) {
     _productList = productList;
-    console.log(_productList);
+    //console.log(_productList);
+    Store.emitChange();
+};
+
+function updateUserFav(user) {
+    _user = user;
+    Store.emitChange();
+};
+
+function updateUserFavSuccessful() {
+    // do nothing
+};
+
+function loadUserSuccessful(user) {
+    _user = user;
     Store.emitChange();
 };
 
@@ -41,6 +57,10 @@ var Store = assign({}, EventEmitter.prototype, {
 
     getStatus: function() {
         return _status;
+    },
+
+    getUser: function() {
+        return _user;
     },
 
     emitChange: function() {
@@ -76,7 +96,26 @@ AppDispatcher.register(function(action) {
             initLoadProductList(productList);
             break;
 
+        case Constants.ACTION_PRODUCT_FAV_FAKE:
+            updateUserFav(action.user);
+            break;
+
+        case Constants.ACTION_PRODUCT_FAV_SUCCESSFUL:
+            updateUserFavSuccessful();
+            break;
+
+        case Constants.ACTION_PRODUCT_LOAD_USER_SUCCESSFUL:
+            loadUserSuccessful(JSON.parse(action.payload.response));
+            break;
+
+        // HG Actions
+        case HidogsConstants.HIDOGS_SESSION_LOAD_SUCCESSFUL:
+            // do nothing
+            break;
+
+        // Err Handling
         case Constants.INIT_FAIL:
+        case Constants.ACTION_PRODUCT_LOAD_USER_FAIL:
             err(action.actionType);
             break;
 

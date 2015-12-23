@@ -17,6 +17,7 @@ var mapconverter = require('../../../util/mapconverter');
 function getAppState() {
     return {
         address: Store.getAddress(),
+        location: Store.getLocation(),
         productList: Store.getProductList(),
         status: Store.getStatus(),
         wxSign: Store.getWXSign(),
@@ -86,6 +87,15 @@ var app = React.createClass({
                 var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
                 var speed = res.speed; // 速度，以米/每秒计
                 var accuracy = res.accuracy; // 位置精度
+                var location = {
+                    type: "Point",
+                    coordinates: [
+                        longitude,
+                        latitude
+                    ],
+                };
+
+                Actions.initLocation(location);
 
                 var geoc = new BMap.Geocoder();
                 var bdPoint = mapconverter.gcj02tobd09(longitude, latitude);

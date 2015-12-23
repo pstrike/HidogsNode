@@ -1,6 +1,7 @@
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
+var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var Constants = require('../constants/Constants');
 var CHANGE_EVENT = 'change';
 
@@ -10,6 +11,7 @@ var _availability = {};
 var _vendor = {};
 var _productMeta = [];
 var _status = "";
+var _user = {};
 
 // Product
 function getProductSuccess(product) {
@@ -42,6 +44,20 @@ function getMetaSuccess(meta) {
 function triggerProductToExitPolicy() {
     _status = Constants.STATE_EXIT_POLICY;
 
+    Store.emitChange();
+};
+
+function updateUserFav(user) {
+    _user = user;
+    Store.emitChange();
+};
+
+function updateUserFavSuccessful() {
+    // do nothing
+};
+
+function loadUserSuccessful(user) {
+    _user = user;
     Store.emitChange();
 };
 
@@ -85,6 +101,10 @@ var Store = assign({}, EventEmitter.prototype, {
 
     getProductMeta: function() {
         return _productMeta;
+    },
+
+    getUser: function() {
+        return _user;
     },
 
     emitChange: function() {
@@ -144,6 +164,18 @@ AppDispatcher.register(function(action) {
             triggerProductToExitPolicy();
             break;
 
+        case Constants.ACTION_PRODUCT_FAV_FAKE:
+            updateUserFav(action.user);
+            break;
+
+        case Constants.ACTION_PRODUCT_FAV_SUCCESSFUL:
+            updateUserFavSuccessful();
+            break;
+
+        case Constants.ACTION_PRODUCT_LOAD_USER_SUCCESSFUL:
+            loadUserSuccessful(JSON.parse(action.payload.response));
+            break;
+
         // Comment
         case Constants.ACTION_COMMENT_TO_PRODUCT:
 
@@ -164,12 +196,19 @@ AppDispatcher.register(function(action) {
             triggerExitPolicyToProduct();
             break;
 
+        // HG Actions
+        case HidogsConstants.HIDOGS_SESSION_LOAD_SUCCESSFUL:
+            // do nothing
+            break;
+
         // Err Handlig
         case Constants.ACTION_PRODUCT_LOAD_PRODUCT_FAIL:
         case Constants.ACTION_PRODUCT_LOAD_VENDOR_FAIL:
         case Constants.ACTION_PRODUCT_LOAD_META_FAIL:
         case Constants.ACTION_COMMENT_LOAD_COMMENT_FAIL:
         case Constants.ACTION_AVAILABILITY_LOAD_FAIL:
+        case Constants.ACTION_PRODUCT_FAV_FAIL:
+        case Constants.ACTION_PRODUCT_LOAD_USER_FAIL:
             err(action.actionType);
             break;
 

@@ -63,7 +63,7 @@ var app = React.createClass({
 
                     {this.props.productList.map(function(item) {
                         return <ProductListItem product={item}></ProductListItem>
-                    })}
+                    }.bind(this))}
 
                 </div>
 

@@ -16,17 +16,18 @@
       "flux": "^2.0.1",
       "classnames": "^2.1.3",
       "object-assign": "^1.0.0",
-      "mongodb": "latest",
-      "request": "latest",
-      "superagent": "latest",
-      "multiparty": "latest",
-      "wechat": "latest",
-      "wechat-oauth": "latest",
-      "wechat-api": "latest",
-      "express-session": "latest",
-      "es6-shim": "latest",
+      "mongodb": "^2.0.48",
+      "request": "^2.65.0",
+      "superagent": "^1.4.0",
+      "multiparty": "^4.1.2",
+      "wechat": "^2.0.2",
+      "wechat-oauth": "^1.1.0",
+      "wechat-api": "^1.19.0",
+      "express-session": "^1.12.1",
+      "es6-shim": "^0.33.12",
       "jssha": "^1.5.0",
-      "compression": "latest"
+      "compression": "^1.6.0",
+      "geojson-utils": "^1.1.0"
   },
     "devDependencies": {
         "browserify": "^6.2.0",
@@ -37,8 +38,8 @@
         "node-jsx": "~0.2.0"
     },
     "scripts": {
-        "start": "watchify -o public/js/userProductListApp.js -v -d app/UserProductList/app.js",
-        "build": "uglifyjs public/js/userProductListApp.js -mo public/js/userProductListApp.min.js"
+        "start": "watchify -o public/js/userFavApp.js -v -d app/UserFav/app.js",
+        "build": "uglifyjs public/js/userFavApp.js -mo public/js/userFavApp.min.js"
     },
     "browserify": {
         "transform": [

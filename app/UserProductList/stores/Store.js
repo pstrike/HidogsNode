@@ -4,10 +4,13 @@ var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var Constants = require('../constants/Constants');
 var CHANGE_EVENT = 'change';
 
+var gju = require('geojson-utils')
+
 // Store State
 var _address = "";
+var _location = {};
 var _productList = [];
-var _status = Constants.INIT_LOCATION;
+var _status = "";
 var _wxSign = {};
 
 // Store actions
@@ -15,7 +18,7 @@ function initLoadProductList(productList) {
     _productList = productList.map(function(item) {
 
         // calculate rate
-        if(item.rate) {
+        if(item.rate && parseInt(item.rate.no) > 0) {
             item.rate.score = parseInt(item.rate.sum) / parseInt(item.rate.no);
         }
         else {
@@ -26,7 +29,7 @@ function initLoadProductList(productList) {
             }
         }
 
-        //// calculate avg price
+        // calculate avg price
 
         if(item.price.basic.length > 0) {
             var smallPrice = 999999999;
@@ -48,6 +51,10 @@ function initLoadProductList(productList) {
             item.price.avgPrice = 0;
         }
 
+        // calculate distance
+        if(_location) {
+            item.distance = gju.pointDistance(_location, item.location);
+        }
 
         return item
     })
@@ -61,6 +68,11 @@ function initAddress(address) {
     _address = address;
     Store.emitChange();
 };
+
+function initLocation(location) {
+    _location = location;
+    Store.emitChange();
+}
 
 // Sort
 function sortByScore() {
@@ -76,7 +88,9 @@ function sortBySaleNo() {
 };
 
 function sortByDistance() {
+    _productList.sort(function(a,b){return a.distance>b.distance?1:-1});
 
+    Store.emitChange();
 };
 
 function sortByPrice() {
@@ -103,6 +117,10 @@ var Store = assign({}, EventEmitter.prototype, {
 
     getAddress: function() {
         return _address;
+    },
+
+    getLocation: function() {
+        return _location;
     },
 
     getProductList: function() {
@@ -149,6 +167,10 @@ AppDispatcher.register(function(action) {
 
         case Constants.INIT_ADDRESS:
             initAddress(action.address);
+            break;
+
+        case Constants.INIT_LOCATION:
+            initLocation(action.location);
             break;
 
         // sort

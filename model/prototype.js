@@ -40,6 +40,7 @@ var Model = {
                 business_time_list: [{start_time: "", end_time: ""}],
                 timeoff_list: [],
                 reject_today_flag: false,
+                page_style: "",
             },
             is_active: true,
             payment_account: "",
@@ -100,6 +101,10 @@ var Model = {
             },
             head_image_url: "",
             is_active: true,
+            fav_list: {
+                product: [],
+                vendor: [],
+            },
             created_time: "",
             modified_time: "",
         };
@@ -222,6 +227,25 @@ var Model = {
             commision_due_date: "",
             commision_status: "",
             modified_time: "",
+        };
+
+        return JSON.parse(JSON.stringify(object));
+    },
+
+    getCouponPrototype: function () {
+        var object = {
+            coupon_id: "",
+            number_available: 0,
+            number_total: 0,
+            status: "",
+            rule: {
+                user_id: "",
+                vendor_id: "",
+                product_id: "",
+            },
+            off_percentage: 0,
+            due_date: "",
+            created_time: "",
         };
 
         return JSON.parse(JSON.stringify(object));

@@ -14,7 +14,15 @@ var mapconvertor = require('../../../util/mapconverter');
 
 var app = React.createClass({
 
+    getInitialState: function() {
+        return {
+            genQcode: true,
+        };
+    },
+
     componentDidUpdate: function () {
+
+        // carousel image position
         var wrapperHeight = parseInt($(".hg-carousel-img").css("height"));
         var wrapperWidth = parseInt($(".hg-carousel-img").css("width"));
         var top = 0;
@@ -32,6 +40,13 @@ var app = React.createClass({
             $(this).css({"top": top + 'px' })
 
         });
+
+         // qr code
+
+        if(this.state.genQcode) {
+            $('#qrcode').qrcode({width: 150,height: 150,text: "http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorpageprecheck?vendor="+this.props.vendor.vendor_id+"_user"});
+            this.state.genQcode = false;
+        }
     },
 
     render: function () {
@@ -318,10 +333,49 @@ var app = React.createClass({
 
         }
 
+        // vendor bg image
+        var vendorBG = "container vendor-bg-1";
+        if(this.props.vendor.gender == 1) {
+            var vendorBG = "container vendor-bg-2";
+        }
+
+        // qr code
+        var qCodeContent = "";
+        if(!this.props.isUser) {
+            qCodeContent = <div className="text-center">
+                <div className="voffset60" id="qrcode"></div>
+                <h2 className="voffset10">欢宠</h2>
+                <span className="text-center voffset10">通过微信扫描以上二维码即可预约服务</span>
+            </div>;
+        }
+
+        // footer
+        var footerContent = "";
+        var favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._favProduct.bind(this,this.props.vendor.vendor_id)}>收藏</button>;
+        if(this.props.user.fav_list) {
+            for(var i=0; i<this.props.user.fav_list.vendor.length; i++) {
+                if(this.props.user.fav_list.vendor[i] == this.props.vendor.vendor_id) {
+                    favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._unFavProduct}>取消收藏</button>;
+                    break;
+                }
+            }
+        }
+        if(this.props.isUser) {
+            footerContent = <footer className="footer">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-xs-12 text-right">
+                            {favBtnContent}
+                        </div>
+                    </div>
+                </div>
+            </footer>;
+        }
+
         return (
             <div id="react_body">
 
-                <div className="container vendor-bg">
+                <div className={vendorBG}>
                     <div className="text-center white_text">
                         <h5>Talent</h5>
                         <h2 className="voffset10"><strong>欢宠达人</strong></h2>
@@ -354,6 +408,8 @@ var app = React.createClass({
 
                     {descriptionContent}
 
+                    {imageContent}
+
                     <div className="row text-center voffset60">
                         <i className="fa fa-map-o hg-session-header-icon"></i>
                         <div className="hg-session-header-title voffset5">服务地址</div>
@@ -364,19 +420,11 @@ var app = React.createClass({
                              src={mapURL}/>
                     </div>
 
-                    {imageContent}
-
                     {productListContent}
 
-                    <footer className="footer">
-                        <div className="container">
-                            <div className="row">
-                                <div className="col-xs-12 text-right">
-                                    <button className="btn btn-hd-blue text-muted roffset5">收藏</button>
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
+                    {qCodeContent}
+
+                    {footerContent}
 
                 </div>
             </div>
@@ -384,7 +432,32 @@ var app = React.createClass({
     },
 
     _navToProductPage: function(productId) {
-        window.location = "http://www.hidogs.cn/product/view/userproduct?product="+productId;
+        window.location = "http://www.hidogs.cn/product/view/userproductprecheck?product="+productId;
+    },
+
+    _favProduct: function(vendorId) {
+        var newUser = this.props.user;
+        if(!newUser.fav_list) {
+            newUser.fav_list = {
+                product: [],
+                vendor: [],
+            }
+        }
+        newUser.fav_list.vendor.push(vendorId);
+
+        Actions.updateUserFav(newUser);
+    },
+
+    _unFavProduct: function() {
+        var newUser = this.props.user;
+
+        for(var i=0; i<this.props.user.fav_list.vendor.length; i++) {
+            if(this.props.user.fav_list.vendor[i] == this.props.vendor.vendor_id) {
+                newUser.fav_list.vendor.splice(i, 1);
+                break;
+            }
+        }
+        Actions.updateUserFav(newUser);
     },
 
 });

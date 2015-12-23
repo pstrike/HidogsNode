@@ -8,7 +8,7 @@ var Actions = {
     // Init
     initProductList: function(latitude, longitude, category, keyword) {
 
-        alert(latitude + "," + longitude + "," + category + "," + keyword);
+        //alert(latitude + "," + longitude + "," + category + "," + keyword);
 
         RC.getProductList(longitude,latitude,category,keyword).then(function (payload) {
             AppDispatcher.dispatch({
@@ -26,6 +26,13 @@ var Actions = {
         AppDispatcher.dispatch({
             actionType: Constants.INIT_ADDRESS,
             address: address,
+        });
+    },
+
+    initLocation: function (location) {
+        AppDispatcher.dispatch({
+            actionType: Constants.INIT_LOCATION,
+            location: location,
         });
     },
 

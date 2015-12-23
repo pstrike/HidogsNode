@@ -386,6 +386,13 @@
         </div>
     </div>
 
+    <div class="text-center">
+        <div class="voffset60" id="qrcode"></div>
+        <h2 class="voffset10">欢宠</h2>
+        <span class="text-center voffset10">通过微信扫描以上二维码即可预约服务</span>
+    </div>
+
+
 </div>
 
 <footer class="footer">
@@ -409,8 +416,11 @@
 
 <script src="../lib/jquery-2.1.4.min.js"></script>
 <script src="../lib/bootstrap.min.js"></script>
+<script src="../lib/jquery.qrcode.min.js"></script>
 <script>
     $('[data-toggle="popover"]').popover();
+
+    $('#qrcode').qrcode({width: 150,height: 150,text: "size doesn't matter"});
 </script>
 </body>
 </html>

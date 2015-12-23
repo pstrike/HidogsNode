@@ -3,16 +3,22 @@
 var React = require('react');
 var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
+var HGStore = require('../../Common/stores/session');
+var WXSign = require('./../../Common/components/WXSign');
 
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
-var Header = require('./../../Common/components/Header.react.js');
+var Constants = require('../constants/Constants');
+var Main = require('../components/Main.react');
+var Edit = require('../components/Edit.react');
 
 
 function getAppState() {
     return {
-        object: Store.getObject(),
+        session: HGStore.getSession(),
+        vendor: Store.getVendor(),
         status: Store.getStatus(),
+        wxSign: Store.getWXSign(),
     };
 }
 
@@ -24,6 +30,8 @@ var app = React.createClass({
 
     componentDidMount: function() {
         Store.addChangeListener(this._onChange);
+
+        Actions.init();
     },
 
     componentWillUnmount: function() {
@@ -32,17 +40,38 @@ var app = React.createClass({
 
     render: function() {
 
+        var content = "";
+
+        switch (this.state.status) {
+            case Constants.STATE_VIEW:
+                content = <Main vendor={this.state.vendor}></Main>
+                break;
+
+            case Constants.STATE_EDIT:
+                content = <Edit></Edit>
+                break;
+
+        }
+
         return (
             <div>
-                <Header/>
-                Hello World
+                <WXSign signature = {this.state.wxSign}
+                        getSign = {this.getWXSign}
+                        apilist = 'chooseImage,uploadImage'>
+                </WXSign>
+
+                {content}
             </div>
         );
     },
 
     _onChange: function() {
         this.setState(getAppState());
-    }
+    },
+
+    getWXSign: function() {
+        Actions.getWXSignature(document.location.href);
+    },
 
 });
 

@@ -40,14 +40,13 @@ var app = React.createClass({
 
         // address
         var addressContent = "";
-        if(this.props.product.address.region) {
-            addressContent = this.props.product.address.city + ", " + this.props.product.address.region;
-        }
-        else {
-            addressContent = this.props.product.address.city;
+        if(this.props.product.address.district) {
+            addressContent = this.props.product.address.city +
+                this.props.product.address.district +
+                this.props.product.address.business;
         }
 
-        // vendor rating
+        // product rating
         var starContent = [];
         var starCount = 0;
         if(this.props.product.rate && this.props.product.rate.no) {
@@ -59,6 +58,17 @@ var app = React.createClass({
             }
             else {
                 starContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
+            }
+        }
+
+        var distanceContent = "";
+        if(this.props.product.distance) {
+            if(this.props.product.distance < 1000) {
+                distanceContent = parseInt(this.props.product.distance) + "米";
+            }
+            else {
+                distanceContent = parseInt(this.props.product.distance / 1000) + "公里";
+
             }
         }
 
@@ -76,7 +86,10 @@ var app = React.createClass({
                         <table className="hg-table table-condensed">
                             <tbody>
                             <tr><td>{priceContent}</td></tr>
-                            <tr><td>{addressContent} - 距离我2公里</td></tr>
+                            <tr><td>
+                                <div>{addressContent}</div>
+                                <div><i>(距离我{distanceContent})</i></div>
+                            </td></tr>
                             <tr><td>{this.props.product.sale_no ? this.props.product.sale_no : 0}个用户使用过</td></tr>
                             <tr><td></td></tr>
                             </tbody>
@@ -84,13 +97,17 @@ var app = React.createClass({
                     </div>
 
                     <div className="text-center">
-                        <button className="btn btn-hd-blue">查看详情</button>
+                        <button className="btn btn-hd-blue" onClick={this._navToProductPage.bind(this, this.props.product.product_id)}>查看详情</button>
                     </div>
 
                     <hr/>
 
                 </div>
         );
+    },
+
+    _navToProductPage: function(productId) {
+        window.location = "http://www.hidogs.cn/product/view/userproductprecheck?product="+productId;
     },
 
 });

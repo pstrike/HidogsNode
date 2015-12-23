@@ -10,13 +10,13 @@
     <!-- Bootstrap -->
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/hgbasic.css" rel="stylesheet">
-    <link href="../../css/hgmodal.css" rel="stylesheet">
+    <link href="<%- hgstyle %>" rel="stylesheet">
     <link href="../../css/font-awesome.min.css" rel="stylesheet">
 
 </head>
 <body>
 
-    <div id="react-main-mount" vendorid="<%- vendorId %>">
+    <div id="react-main-mount" vendorid="<%- vendorId %>" isUser="<%- isUser %>">
 
     </div>
 
@@ -29,8 +29,8 @@
 
     <script src="../../lib/jquery-2.1.4.min.js"></script>
     <script src="../../lib/bootstrap.min.js"></script>
+    <script src="../../lib/jquery.qrcode.min.js"></script>
     <script src="../../js/vendorPageApp.min.js"></script>
-    <script src="../../js/hgmodal.js"></script>
 
 </body>
 </html>

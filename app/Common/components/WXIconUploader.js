@@ -13,11 +13,13 @@ var WXIconUploader = React.createClass({
     render: function() {
         var imageContent = [];
         if(this.state.isShowSpinner) {
-            imageContent.push(<i className="fa fa-spinner fa-spin fa-2x spinner"></i>);
+            imageContent = <i className="fa fa-spinner fa-spin fa-2x spinner"></i>;
         }
         else {
-            imageContent.push(<img src={this.props.imageUrl} className="center-block img-responsive img-circle user-icon-header"/>);
-            imageContent.push(<button className="btn btn-hd-blue btn-sm voffset5" onClick={this._selectPic}>更换</button>);
+            imageContent = <div>
+                <img src={this.props.imageUrl} className="center-block img-responsive img-circle user-icon-header"/>
+                <button className="btn btn-hd-blue btn-sm voffset5" onClick={this._selectPic}>更换</button>
+            </div>;
         }
 
         return (
