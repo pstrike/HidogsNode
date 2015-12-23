@@ -1,23 +1,25 @@
 var db = require('../../db/db'),
-    operation = require('../../model/operation');
+    operation = require('../../model/operation'),
+    uuid = require('../../util/genuuid'),
+    asyncloop = require('../../util/asyncloop');
 
 exports.engine = 'ejs';
 
 exports.show = function(req, res, next){
-    operation.getObject(operation.getCollectionList().user, req.params.user_id, req.projection, function(object) {
+    operation.getObject(operation.getCollectionList().coupon, req.params.coupon_id, req.projection, function(object) {
         res.send(object);
     })
 };
 
 exports.list = function(req, res, next){
-    operation.getObjectList(operation.getCollectionList().user, req.filter, req.projection, function(objectList) {
+    operation.getObjectList(operation.getCollectionList().coupon, req.filter, req.projection, function(objectList) {
         res.send(objectList);
     })
 };
 
 exports.update = function(req, res, next){
     if(req.body) {
-        operation.updateObject(operation.getCollectionList().user, req.body, function(result) {
+        operation.updateObject(operation.getCollectionList().coupon, req.body, function(result) {
             if(result.status == 'fail') {
                 next(result.err);
             }
@@ -28,20 +30,42 @@ exports.update = function(req, res, next){
 
 exports.insert = function(req, res, next){
     if(req.body) {
-        operation.insertObject(operation.getCollectionList().user, req.body, function(result) {
-            if(result.status == 'fail') {
-                next(result.err);
+        var couponCode;
+
+        asyncloop.asyncLoop(99, function(loop) {
+                couponCode = uuid.uuid().substring(0,4);
+
+                operation.getObjectList(operation.getCollectionList().coupon, {code: couponCode}, {coupon_id: 1}, function(objectList) {
+                    if(objectList.length == 0) {
+                        loop.break();
+                    }
+                    else {
+                        loop.next();
+                    }
+                })
+            },
+            function(){
+                req.body.code = couponCode;
+
+                operation.insertObject(operation.getCollectionList().coupon, req.body, function(result) {
+                    if(result.status == 'fail') {
+                        next(result.err);
+                    }
+
+                    result.code = couponCode;
+
+                    res.send(result);
+                });
             }
-            res.send(result);
-        });
+        );
     }
 };
 
 exports.page = function(req, res, next){
-    var page = req.params.user_id;
+    var page = req.params.coupon_id;
 
     switch (page) {
-        case 'userfav':
+        case 'usercoupon':
             // for local testing
             //req.session.current_user = {
             //    user_id: "e79fe7aa-2dfe-1fd6-76e9-b62985b0aa7a",
@@ -49,7 +73,11 @@ exports.page = function(req, res, next){
             //    nick_name: "one_pan",
             //};
 
-            res.render('userfav.ejs');
+            res.render('usercoupon.ejs');
+            break;
+
+        case 'vendorcoupon':
+            res.render('vendorcoupon.ejs');
             break;
 
         default:

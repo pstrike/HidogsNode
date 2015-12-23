@@ -11,7 +11,6 @@ var Header = require('./../../Common/components/Header.react.js');
 var WXIconUploader = require('./../../Common/components/WXIconUploader');
 var WXPicUploader = require('./../../Common/components/WXPicUploader');
 var APVTO = require('../../../util/assignpathvaluetoobject');
-var APVTO = require('../../../util/assignpathvaluetoobject');
 var mapconvertor = require('../../../util/mapconverter');
 
 function getAppState() {

@@ -235,17 +235,20 @@ var Model = {
     getCouponPrototype: function () {
         var object = {
             coupon_id: "",
-            number_available: 0,
+            code: "",
+            title: "",
+            number_occupied: 0,
             number_total: 0,
-            status: "",
+            status: "drafted",
             rule: {
-                user_id: "",
-                vendor_id: "",
-                product_id: "",
+                user: [],
+                vendor: [],
+                product: [],
             },
             off_percentage: 0,
             due_date: "",
             created_time: "",
+            is_active: true,
         };
 
         return JSON.parse(JSON.stringify(object));

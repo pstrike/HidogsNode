@@ -27,6 +27,10 @@ exports.page = function(req, res, next){
             res.render('adminorder.ejs');
             break;
 
+        case 'coupon':
+            res.render('admincoupon.ejs');
+            break;
+
         default:
             next();
     }

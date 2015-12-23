@@ -38,8 +38,8 @@
         "node-jsx": "~0.2.0"
     },
     "scripts": {
-        "start": "watchify -o public/js/userFavApp.js -v -d app/UserFav/app.js",
-        "build": "uglifyjs public/js/userFavApp.js -mo public/js/userFavApp.min.js"
+        "start": "watchify -o public/js/adminCouponApp.js -v -d app/AdminCoupon/app.js",
+        "build": "uglifyjs public/js/adminCouponApp.js -mo public/js/adminCouponApp.min.js"
     },
     "browserify": {
         "transform": [

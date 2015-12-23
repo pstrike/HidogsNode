@@ -19,6 +19,7 @@ var app = React.createClass({
         var productActive = "";
         var orderActive = "";
         var saleActive = "";
+        var couponActive = "";
 
         switch (this.props.active) {
             case "vendor":
@@ -44,6 +45,10 @@ var app = React.createClass({
             case "sale":
                 saleActive = "active";
                 break;
+
+            case "coupon":
+                couponActive = "active";
+                break;
         }
 
         return (
@@ -55,6 +60,7 @@ var app = React.createClass({
                     <li className={productActive}><a href="/admin/view/product">服务</a></li>
                     <li className={orderActive}><a href="/admin/view/order">订单</a></li>
                     <li className={saleActive}><a href="/admin/view/sale">销售</a></li>
+                    <li className={couponActive}><a href="/admin/view/coupon">优惠码</a></li>
                 </ul>
             </div>
         );
