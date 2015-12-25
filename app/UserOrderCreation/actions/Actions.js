@@ -41,6 +41,7 @@ var Actions = {
                     payload: payload,
                 });
             }
+
         }, function (err) {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_CREATE_ORDER_FAIL,
@@ -49,11 +50,18 @@ var Actions = {
     },
 
     loadSessionThenProductThenAvailability: function(productId) {
+        var userId;
+        var productId;
+        var vendorId;
+
         RC.getSession().then(function (payload) {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_LOAD_SESSION_SUCCESSFUL,
                 payload: payload,
             });
+
+            var user = JSON.parse(payload.response);
+            userId = user.user_id;
 
             return RC.getProduct(productId);
         }).then(function (payload) {
@@ -62,10 +70,21 @@ var Actions = {
                 payload: payload,
             });
 
+            var product = JSON.parse(payload.response);
+            productId = product.product_id;
+            vendorId = product.vendor.vendor_id;
+
             return RC.getVendorAvailabilityByProduct(productId);
         }).then(function (payload) {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_LOAD_AVAILABILITY_SUCCESSFUL,
+                payload: payload,
+            });
+
+            return RC.getCouponList(userId, vendorId, productId);
+        }).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_LOAD_COUPON_SUCCESSFUL,
                 payload: payload,
             });
         }, function (err) {

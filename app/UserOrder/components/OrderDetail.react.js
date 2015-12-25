@@ -9,6 +9,7 @@ var Actions = require('../actions/Actions');
 
 var GenOrderNo = require('../../../util/genorderno');
 var mapconvertor = require('../../../util/mapconverter');
+var gettbpaidprice = require('../../../util/gettbpaidprice');
 
 var app = React.createClass({
 
@@ -335,6 +336,15 @@ var app = React.createClass({
             </div>;
         }
 
+        // Coupon
+        var couponContent = "";
+        if(this.props.order.price.coupon && this.props.order.price.coupon.title) {
+                couponContent = <tr>
+                    <td>优惠码</td>
+                    <td colspan="2">{this.props.order.price.coupon.title}</td>
+                </tr>;
+        }
+
         return (
             <div className="container">
                 <div className={tintStyle}>
@@ -410,13 +420,14 @@ var app = React.createClass({
                     </div>
                     <div className="row voffset15">
                         <div className="container">
-                            <p>总价: {this.props.order.price.total}元</p>
+                            <p>订单价格: {this.props.order.price.total - this.props.order.price.discount}元 {this.props.order.price.discount > 0 ? "(总价"+this.props.order.price.total+", 使用优惠码优惠"+this.props.order.price.discount+"元)" : ""}</p>
                             <table className="hg-table">
                                 <tbody>
                                 <tr>
                                     <td>订单号</td>
                                     <td colSpan="2">{GenOrderNo.orderno(this.props.order.order_id, this.props.order.created_time)}</td>
                                 </tr>
+                                {couponContent}
                                 {basicPriceContent}
                                 {additionalPriceContent}
                                 <tr>

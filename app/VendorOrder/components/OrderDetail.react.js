@@ -10,6 +10,7 @@ var OrderListItem = require('./OrderListItem.react');
 var Header = require('./../../Common/components/Header.react.js');
 
 var GenOrderNo = require('../../../util/genorderno');
+var gettbpaidprice = require('../../../util/gettbpaidprice');
 
 var app = React.createClass({
 
@@ -194,6 +195,17 @@ var app = React.createClass({
                 (this.props.order.address.additional ? this.props.order.address.additional : "");
         }
 
+        // Price and Coupon Content
+        var priceContent = this.props.order.price.total;
+        var couponContent = "";
+        if(this.props.order.price.coupon && this.props.order.price.coupon.title) {
+            priceContent = this.props.order.price.total + " (使用优惠码优惠"+this.props.order.price.discount+", 实付"+gettbpaidprice.cal(this.props.order.price.total,this.props.order.price.discount)+")"
+            couponContent = <div className="form-group">
+                <label>优惠码</label>
+                <input type="text" className="form-control no-border" placeholder="订单总价" value={this.props.order.price.coupon.title} disabled/>
+            </div>;
+        }
+
         return (
             <div id="react_body">
                 <Header subtitle="订单详情" modal="true"></Header>
@@ -236,10 +248,11 @@ var app = React.createClass({
 
                     <h3 className="voffset60">订单信息</h3>
                     <div className="form-group">
-                        <label>订单总价</label>
-                        <input type="text" className="form-control no-border" placeholder="订单总价" value={this.props.order.price.total} disabled/>
+                        <label>订单总价(元)</label>
+                        <input type="text" className="form-control no-border" placeholder="订单总价" value={priceContent} disabled/>
                     </div>
 
+                    {couponContent}
                     {basicPriceContent}
                     {additionalPriceContent}
 

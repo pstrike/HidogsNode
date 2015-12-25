@@ -92,10 +92,6 @@ exports.page = function(req, res, next){
 
         case 'userordercreation':
             var productId = req.query.productid;
-            //var reactHtml = React.renderToString(UserOrderReactApp({}));
-            // Output html rendered by react
-            //res.render('userorder.ejs', {reactOutput: reactHtml});
-            //res.render('index.ejs');
 
             // for local testing
             //req.session.current_user = {

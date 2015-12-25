@@ -12,6 +12,7 @@ var CHANGE_EVENT = 'change';
 var _session = {};
 var _product = {};
 var _availability = [];
+var _couponList = [];
 var _order = Prototype.getOrderPrototype();
 var _verifyMsg = "";
 var _status = "";
@@ -89,6 +90,11 @@ function loadAvailabilitySuccessful(payload) {
     Store.emitChange();
 };
 
+function loadCouponSuccessful(couponList) {
+    _couponList = couponList;
+    Store.emitChange();
+}
+
 function showVerifyMsg(msg) {
     _verifyMsg = msg;
 
@@ -152,6 +158,10 @@ var Store = assign({}, EventEmitter.prototype, {
         return _verifyMsg;
     },
 
+    getCouponList: function() {
+        return _couponList;
+    },
+
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
@@ -193,6 +203,11 @@ AppDispatcher.register(function(action) {
         case Constants.ACTION_LOAD_AVAILABILITY_SUCCESSFUL:
             var payload = JSON.parse(action.payload.response);
             loadAvailabilitySuccessful(payload);
+            break;
+
+        case Constants.ACTION_LOAD_COUPON_SUCCESSFUL:
+            var payload = JSON.parse(action.payload.response);
+            loadCouponSuccessful(payload);
             break;
 
         case Constants.ACTION_SHOW_VERIFY_MSG:

@@ -5,7 +5,7 @@ require('es6-shim');
 var RemoteCall = {
     getOrderList: function (userId) {
         var promise = new Promise(function(resolve, reject){
-            var url = APIUtils.makeUrl("/orders?projection=status,product,booked_time,vendor,price,order_id,created_time&filter=user.user_id,"+userId);
+            var url = APIUtils.makeUrl("/orders?projection=status,product,booked_time,vendor,user,price,order_id,created_time&filter=user.user_id,"+userId);
             APIUtils.get(url, function(result) {
                 if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
@@ -223,6 +223,24 @@ var RemoteCall = {
         var promise = new Promise(function(resolve, reject){
             var url = APIUtils.makeUrl("/wechat/other/template");
             APIUtils.post(url, object, function(result) {
+                if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
+                    reject(Error(result));
+                }
+                else {
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    },
+
+    getCouponList: function (userId, vendorId, productId) {
+        var promise = new Promise(function(resolve, reject){
+            var url = APIUtils.makeUrl("/coupon/other/getcoupon?userid="+userId+"&vendorid="+vendorId+"&productid="+productId);
+            APIUtils.get(url, function(result) {
                 if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {

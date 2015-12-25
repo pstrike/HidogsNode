@@ -105,6 +105,7 @@ var Model = {
                 product: [],
                 vendor: [],
             },
+            coupon_list: [],
             created_time: "",
             modified_time: "",
         };
@@ -197,7 +198,9 @@ var Model = {
             price: {
                 basic: [],
                 additional: [],
+                coupon: {},
                 total: 0.0,
+                discount: 0.0,
             },
             address: {
                 country: "",
@@ -237,8 +240,10 @@ var Model = {
             coupon_id: "",
             code: "",
             title: "",
-            number_occupied: 0,
+            type: "",
             number_total: 0,
+            occupied: [],
+            used: [],
             status: "drafted",
             rule: {
                 user: [],

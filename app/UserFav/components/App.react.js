@@ -7,7 +7,6 @@ var HGStore = require('../../Common/stores/session');
 
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
-var Header = require('./../../Common/components/Header.react.js');
 var Main = require('../components/Main.react');
 
 

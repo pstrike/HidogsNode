@@ -13,6 +13,7 @@ var _product = {};
 var _vendor = {};
 var _user = {};
 var _availability = [];
+var _couponList = [];
 var _verifyMsg = [];
 var _status = Constants.ORDER_LIST;
 
@@ -95,6 +96,31 @@ function loadVendorSuccessful(vendor) {
 
     Store.emitChange();
 };
+
+function loadCouponSuccessful(couponList) {
+    _couponList = couponList;
+
+    // if the order is tbpaid, to check whether the coupon is already used or not
+    if(_order.status == 'tbpaid') {
+        var isCouponValid = false;
+        for(var i=0; i<_couponList.length; i++) {
+            if(_couponList[i].coupon_id == _order.price.coupon.coupon_id) {
+                isCouponValid = true;
+                break;
+            }
+        }
+
+        if(!isCouponValid) {
+            _order.price.coupon = {
+                title: "优惠码已失效",
+                off_percentage: 0.0,
+            }
+            _order.price.discount = 0.0;
+        }
+    }
+
+    Store.emitChange();
+}
 
 function showNoAvailableTimeSlot() {
     _order.tmp_show_reschedule_btn = true;
@@ -356,6 +382,10 @@ var Store = assign({}, EventEmitter.prototype, {
         return _availability;
     },
 
+    getCouponList: function() {
+        return _couponList;
+    },
+
     getVerifyMsg: function() {
         return _verifyMsg;
     },
@@ -426,6 +456,10 @@ AppDispatcher.register(function(action) {
             var vendor = JSON.parse(action.payload.response);
 
             loadVendorSuccessful(vendor);
+            break;
+
+        case Constants.DETAIL_LOAD_COUPON_SUCCESFUL:
+            loadCouponSuccessful(JSON.parse(action.payload.response));
             break;
 
         case Constants.DETAIL_NO_AVAILABLE_TIMESLOT:

@@ -60,7 +60,7 @@
     <div>
         <div class="form-group">
             <label>订单总价(元)</label>
-            <input type="text" class="form-control no-border" placeholder="标题" value="100" disabled/>
+            <input type="text" class="form-control no-border" placeholder="标题" value="100 (总价150元,使用优惠码后减去50元)" disabled/>
         </div>
         <div class="form-group">
             <label>请选择服务项目</label>
@@ -130,6 +130,15 @@
                 </label>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="grey_text light_text">优惠码</label>
+            <select class="form-control simple-input">
+                <option>8折优惠</option>
+                <option>9折优惠</option>
+                <option>不使用</option>
+            </select>
+        </div>
     </div>
 
     <div class="text-center voffset40">
@@ -182,7 +191,7 @@
                 <button class="btn btn-hd-blue text-muted">取消</button>
             </div>
             <div class="col-xs-6 voffset5 text-right">
-                <small class="grey_text">价格合计</small>
+                <small class="grey_text">(使用优惠码) 价格合计</small>
                 <h4 class="voffset0 tint_text">¥200元</h4>
             </div>
             <div class="col-xs-3 text-right">

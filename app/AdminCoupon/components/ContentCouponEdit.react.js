@@ -121,12 +121,19 @@ var app = React.createClass({
                         <label>到期日期</label>
                         <input type="date" className="form-control simple-input" placeholder="到期日期" value={formatdatetime.formatDate(new Date(this.state.editCoupon.due_date), "-")} name="due_date" onChange={this.handleChange}/>
                     </div>
+                    <div className="form-group">
+                        <label>可使用次数</label>
+                        <select className="form-control simple-input" name="type" value={this.state.editCoupon.type} onChange={this.handleChange}>
+                            <option value='' disabled>未设置</option>
+                            <option value='once'>单次</option>
+                            <option value='multi'>多次(到期日期后失效)</option>
+                        </select>
+                    </div>
 
                     <h3>规则</h3>
                     <div className="form-group">
                         <label>指定特定用户</label>
                         <select className="form-control simple-input" name="rule.user.[0]" value={this.state.editCoupon.rule.user[0]} onChange={this.handleChange}>
-                            <option value='' disabled>未设置</option>
                             <option value='null'>不限</option>
                             {this.props.userList.map(function(item){
                                 return <option value={item.user_id}>{item.nick_name}</option>
@@ -250,6 +257,10 @@ var app = React.createClass({
 
         if(!this.state.editCoupon.title) {
             verifyMsg.push("-请填写优惠码标题");
+        }
+
+        if(!this.state.editCoupon.type) {
+            verifyMsg.push("-请设置优惠码使用次数");
         }
 
         if(!this.state.editCoupon.number_total || this.state.editCoupon.number_total == 0) {

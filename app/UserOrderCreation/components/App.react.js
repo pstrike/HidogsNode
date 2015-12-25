@@ -10,6 +10,7 @@ var Constants = require('../constants/Constants');
 var Header = require('./../../Common/components/Header.react.js');
 var Uudi = require('../../../util/genuuid');
 var mapconvertor = require('../../../util/mapconverter');
+var gettbpaidprice = require('../../../util/gettbpaidprice');
 
 
 function getAppState() {
@@ -18,6 +19,7 @@ function getAppState() {
         product: Store.getProduct(),
         session: Store.getSession(),
         availability: Store.getAvailability(),
+        couponList: Store.getCouponList(),
         verifyMsg: Store.getVerifyMsg(),
         status: Store.getStatus(),
     };
@@ -176,8 +178,6 @@ var app = React.createClass({
             }
         }
 
-        var totalPriceContent = this.state.order.price.total + "元";
-
         var availableDateContent = [];
         var availableTimeslotContent = [];
         this.state.availability.forEach(function(item, index) {
@@ -261,6 +261,29 @@ var app = React.createClass({
 
         }
 
+        // Coupon
+        var couponContent = "";
+        var couponItemContent = [];
+        this.state.couponList.forEach(function(item) {
+            couponItemContent.push(<option value={item.coupon_id}>{item.title}</option>)
+        })
+        if(couponItemContent.length > 0 ) {
+            couponContent = <div className="form-group">
+                <label>优惠码</label>
+                <select className="form-control simple-input" value={this.state.order.price.coupon ? this.state.order.price.coupon.coupon_id : ""} name="price.coupon.coupon_id" onChange={this._handleChange}>
+                    {couponItemContent}
+                    <option value="">不使用</option>
+                </select>
+            </div>;
+        }
+
+        // price summay
+        var priceSummaryContent = "价格合计"
+        var totalPriceContent = this.state.order.price.total;
+        if(this.state.order.price.coupon && this.state.order.price.coupon.title) {
+            priceSummaryContent = "(使用优惠码) 价格合计";
+            totalPriceContent = gettbpaidprice.cal(this.state.order.price.total, this.state.order.price.discount) + " (总价"+this.state.order.price.total+"元,使用优惠码后优惠"+this.state.order.price.discount+"元)"
+        }
 
         return (
             <div id="react_body">
@@ -318,6 +341,8 @@ var app = React.createClass({
 
                     </div>
 
+                    {couponContent}
+
                     <div className="text-center voffset40">
                         <h4>服务时间</h4>
                     </div>
@@ -359,8 +384,8 @@ var app = React.createClass({
                                 <button className="btn btn-hd-blue text-muted" onClick={this._cancel}>取消</button>
                             </div>
                             <div className="col-xs-6 voffset5 text-right">
-                                <small className="grey_text">价格合计</small>
-                                <h4 className="voffset0 tint_text">¥{totalPriceContent}</h4>
+                                <small className="grey_text">{priceSummaryContent}</small>
+                                <h4 className="voffset0 tint_text">¥{gettbpaidprice.cal(this.state.order.price.total, this.state.order.price.discount)}元</h4>
                             </div>
                             <div className="col-xs-3 text-right">
                                 <button id="paybtn" className="btn btn-hd-tint text-muted" onClick={this._onPay}>支付</button>
@@ -429,6 +454,45 @@ var app = React.createClass({
                 break;
         }
 
+        switch (event.target.name) {
+            case "booked_date": // handle available timeslot date
+                newOrder.booked_time.booked_date = new Date(event.target.value);
+                newOrder.booked_time.start_time = "";
+                newOrder.booked_time.end_time = "";
+
+                $("#bookedTimeDefaultOption").prop("selected", true)
+                break;
+
+            case "booked_time": // handle available timeslot date
+                var startTime = new Date(event.target.value.split("-")[0]);
+                var endTime = new Date(event.target.value.split("-")[1]);
+                newOrder.booked_time.start_time = startTime;
+                newOrder.booked_time.end_time = endTime;
+
+                break;
+
+            case "price.coupon.coupon_id":
+                var i;
+                for(i=0; i<this.state.couponList.length; i++) {
+                    if(this.state.couponList[i].coupon_id == event.target.value) {
+                        newOrder.price.coupon = {
+                            coupon_id: event.target.value,
+                            title: this.state.couponList[i].title,
+                            off_percentage: this.state.couponList[i].off_percentage,
+                        }
+
+                        break;
+                    }
+                }
+                if(event.target.value == "") {
+                    newOrder.price.coupon = {
+                        off_percentage: 0,
+                    }
+                }
+
+                break;
+        }
+
         var totalPrice = 0.0;
         newOrder.price.basic.forEach(function(item) {
             totalPrice += parseFloat(item.price);
@@ -437,28 +501,13 @@ var app = React.createClass({
         newOrder.price.additional.forEach(function(item) {
             totalPrice += parseFloat(item.price);
         })
-
         newOrder.price.total = totalPrice;
 
-
-        // handle available timeslot
-        switch (event.target.name) {
-            case "booked_date":
-                newOrder.booked_time.booked_date = new Date(event.target.value);
-                newOrder.booked_time.start_time = "";
-                newOrder.booked_time.end_time = "";
-
-                $("#bookedTimeDefaultOption").prop("selected", true)
-                break;
-
-            case "booked_time":
-                var startTime = new Date(event.target.value.split("-")[0]);
-                var endTime = new Date(event.target.value.split("-")[1]);
-                newOrder.booked_time.start_time = startTime;
-                newOrder.booked_time.end_time = endTime;
-
-                break;
+        var discount = 0.0;
+        if(newOrder.price.coupon && newOrder.price.coupon.title) {
+            discount = parseFloat((totalPrice * parseFloat(newOrder.price.coupon.off_percentage)).toFixed(0));
         }
+        newOrder.price.discount = discount;
 
         this.setState({order: newOrder});
     },

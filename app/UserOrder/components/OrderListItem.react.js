@@ -8,6 +8,7 @@ var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
 
 var GenOrderNo = require('../../../util/genorderno');
+var gettbpaidprice = require('../../../util/gettbpaidprice');
 
 var app = React.createClass({
 
@@ -86,7 +87,7 @@ var app = React.createClass({
                             <span>{this.props.order.vendor.vendor_name}</span>
                         </div>
                         <div className="col-xs-3 vcenter45">
-                            <span>¥{this.props.order.price.total}</span>
+                            <span>¥{gettbpaidprice.cal(this.props.order.price.total, this.props.order.price.discount)}</span>
                         </div>
                     </div>
                 </div>

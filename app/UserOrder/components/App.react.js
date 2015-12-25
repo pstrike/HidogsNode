@@ -24,6 +24,7 @@ function getAppState() {
         vendor: Store.getVendor(),
         user: Store.getUser(),
         availability: Store.getAvailability(),
+        couponList: Store.getCouponList(),
         verifyMsg: Store.getVerifyMsg(),
         status: Store.getStatus(),
     };
@@ -55,7 +56,7 @@ var app = React.createClass({
                 break;
 
             case Constants.ORDER_DETAIL:
-                orderContent = <OrderDetail order={this.state.order} product={this.state.product} vendor={this.state.vendor} session={this.state.session}></OrderDetail>;
+                orderContent = <OrderDetail order={this.state.order} product={this.state.product} vendor={this.state.vendor} session={this.state.session} couponList={this.state.couponList}></OrderDetail>;
 
                 if(this.state.order.status) {
                     switch (this.state.order.status) {

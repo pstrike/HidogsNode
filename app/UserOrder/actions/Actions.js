@@ -65,6 +65,13 @@ var Actions = {
                 actionType: Constants.DETAIL_LOAD_VENDOR_SUCCESFUL,
                 payload: payload,
             });
+
+            return RC.getCouponList(order.user.user_id, order.vendor.vendor_id, order.product.product_id);
+        }).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: Constants.DETAIL_LOAD_COUPON_SUCCESFUL,
+                payload: payload,
+            });
         }, function(err) {
             AppDispatcher.dispatch({
                 actionType: Constants.DETAIL_LOAD_ORDER_DETAIL_FAIL,

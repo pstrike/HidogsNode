@@ -50,10 +50,12 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
                 "2.[达人功能]达人服务管理: vp\n" +
                 "3.[达人功能]达人订单管理: vo\n" +
                 "4.[达人功能]达人主页/信息管理: vpf\n" +
-                "5.[用户功能]订单管理: uo\n" +
-                "6.[用户功能]订单管理: uf\n" +
-                "7.[管理者功能]欢宠小Q服务管理: vpq\n" +
-                "8.[管理者功能]管理者后台: ad\n"
+                "5.[达人功能]优惠码: vc\n" +
+                "6.[用户功能]订单管理: uo\n" +
+                "7.[用户功能]收藏: uf\n" +
+                "8.[用户功能]优惠码: uc\n" +
+                "9.[管理者功能]欢宠小Q服务管理: vpq\n" +
+                "10.[管理者功能]管理者后台: ad\n"
             break;
         case "vj":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorjoin_vendor";
@@ -70,11 +72,17 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
         case "uo":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001order1view1userorder_user";
             break;
+        case "uc":
+            msg = "http://www.hidogs.cn/wechat/auth?destination=001coupon1view1usercoupon_user";
+            break;
         case "uf":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001user1view1userfav_user";
             break;
         case "vo":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001order1view1vendororder_vendor";
+            break;
+        case "vc":
+            msg = "http://www.hidogs.cn/wechat/auth?destination=001coupon1view1vendorcoupon_vendor";
             break;
         case "ad":
             msg = "http://www.hidogs.cn/admin/view/vendor(请在电脑登录)";

@@ -206,6 +206,10 @@ h3.hg-session {
     padding: 6px;
 }
 
+.hg-table, .hg-table.grey-border td {
+    border-color: #ccc;
+}
+
 .hg-td-60pt {
     width: 60%;
 }
@@ -301,6 +305,11 @@ h3.hg-session {
     color: #2B97E8;
 }
 
+.hg-blue-section .hg-label {
+    background-color: #2B97E8;
+    color: white;
+}
+
 .hg-green-section {
     color: #20af74;
 }
@@ -333,6 +342,11 @@ h3.hg-session {
 .hg-green-section .btn-hd-blue.active:focus {
     border: 1px solid #20af74;
     color: #20af74;
+}
+
+.hg-green-section .hg-label {
+    background-color: #20af74;
+    color: white;
 }
 
 .hg-yellow-section {
@@ -369,6 +383,11 @@ h3.hg-session {
     color: #f39d1c;
 }
 
+.hg-yellow-section .hg-label {
+    background-color: #f39d1c;
+    color: white;
+}
+
 .hg-red-section {
     color: #e82c4b;
 }
@@ -403,6 +422,11 @@ h3.hg-session {
     color: #e82c4b;
 }
 
+.hg-red-section .hg-label {
+    background-color: #e82c4b;
+    color: white;
+}
+
 .hg-orange-section {
     color: #f95e1a;
 }
@@ -435,6 +459,11 @@ h3.hg-session {
 .hg-orange-section .btn-hd-blue.active:focus {
     border: 1px solid #f95e1a;
     color: #f95e1a;
+}
+
+.hg-orange-section .hg-label {
+    background-color: #f95e1a;
+    color: white;
 }
 
 /* vendor page bg */

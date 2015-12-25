@@ -41,8 +41,12 @@ var app = React.createClass({
                         <input type="number" className="form-control no-border" placeholder="总量" name="number_total" value={this.props.coupon.number_total} disabled/>
                     </div>
                     <div className="form-group">
-                        <label>未使用数量</label>
-                        <input type="number" className="form-control no-border" placeholder="未使用数量" name="number_total" value={this.props.coupon.number_total - this.props.coupon.number_occupied} disabled/>
+                        <label>领取数量</label>
+                        <input type="number" className="form-control no-border" placeholder="领取数量" name="occupied" value={this.props.coupon.occupied ? this.props.coupon.occupied.length : ""} disabled/>
+                    </div>
+                    <div className="form-group">
+                        <label>使用数量</label>
+                        <input type="number" className="form-control no-border" placeholder="使用数量" name="used" value={this.props.coupon.used ? this.props.coupon.used.length : ""} disabled/>
                     </div>
                     <div className="form-group">
                         <label>优惠幅度(%)</label>
@@ -51,6 +55,14 @@ var app = React.createClass({
                     <div className="form-group">
                         <label>到期日期</label>
                         <input type="text" className="form-control no-border" placeholder="到期日期" value={formatdatetime.formatDate(new Date(this.props.coupon.due_date))} name="due_date" disabled/>
+                    </div>
+                    <div className="form-group">
+                        <label>可使用次数</label>
+                        <select className="form-control no-border" name="type" value={this.props.coupon.type} disabled>
+                            <option value='' disabled>未设置</option>
+                            <option value='once'>单次</option>
+                            <option value='multi'>多次(到期日期后失效)</option>
+                        </select>
                     </div>
 
                     <h3>规则</h3>
