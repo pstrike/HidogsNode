@@ -11,6 +11,7 @@ var Header = require('./../../Common/components/Header.react.js');
 
 var GenOrderNo = require('../../../util/genorderno');
 var gettbpaidprice = require('../../../util/gettbpaidprice');
+var formatdatetime = require('../../../util/formatdatetime');
 
 var app = React.createClass({
 
@@ -125,11 +126,11 @@ var app = React.createClass({
 
         // Date Content
         var orderDate = new Date(this.props.order.booked_time.booked_date);
-        var orderDateContent = this._formatDate(orderDate);
+        var orderDateContent = formatdatetime.formatDate(orderDate);
 
         var orderStartTime = new Date(this.props.order.booked_time.start_time);
         var orderEndTime = new Date(this.props.order.booked_time.end_time);
-        var orderTimeContent = this._formatTime(orderStartTime) + "-" + this._formatTime(orderEndTime);
+        var orderTimeContent = formatdatetime.formatTime(orderStartTime) + "-" + formatdatetime.formatTime(orderEndTime);
 
         // User Profile Content
         var userProfileContent = [];
@@ -206,6 +207,12 @@ var app = React.createClass({
             </div>;
         }
 
+        // is on site
+        var onSiteFlag = "";
+        if(this.props.order.isOnSite) {
+            onSiteFlag = <span className="label label-default roffset5">上门服务</span>;
+        }
+
         return (
             <div id="react_body">
                 <Header subtitle="订单详情" modal="true"></Header>
@@ -216,6 +223,7 @@ var app = React.createClass({
                             <h3>服务项目</h3>
                         </div>
                         <div className="col-xs-6 text-right">
+                            {onSiteFlag}
                             <span className={labelStyle}>{status}</span>
                         </div>
                     </div>
@@ -293,14 +301,6 @@ var app = React.createClass({
 
             </div>
         );
-    },
-
-    _formatTime: function(date) {
-        return date.getHours() + ":" + date.getMinutes();
-    },
-
-    _formatDate: function(date) {
-        return date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
     },
 
     _detailTriggerList: function() {

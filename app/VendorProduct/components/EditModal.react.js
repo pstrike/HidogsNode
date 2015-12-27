@@ -317,6 +317,16 @@ var app = React.createClass({
             deleteBtnContent = "";
         }
 
+        // is on site
+        var isOnSiteContent = "false";
+        for(var i=0; i<this.state.editProduct.tag_list.length; i++) {
+            if(this.state.editProduct.tag_list[i] == "上门服务") {
+                isOnSiteContent = "true";
+                break;
+            }
+        }
+
+
         //var refundPolicy = <div className="form-group">
         //    <label>退款政策</label>
         //    <select className="form-control simple-input" name="exit_policy" value={this.state.editProduct.exit_policy ? this.state.editProduct.exit_policy.product_meta_exit_policy_id : ""} onChange={this.handleChange}>
@@ -463,6 +473,13 @@ var app = React.createClass({
                         <p className="instruction">服务范围会根据服务类别自动生成</p>
                     </blockquote>
                     <textarea className="form-control no-border simple-input" rows="5" value={this.state.editProduct.category ? this.state.editProduct.category.scope : ""} disabled></textarea>
+                </div>
+                <div className="form-group">
+                    <label>是否是上门服务?</label>
+                    <select className="form-control simple-input" value={isOnSiteContent} onChange={this.handleIsOnSiteChange}>
+                        <option value="false">否</option>
+                        <option value="true">是</option>
+                    </select>
                 </div>
 
                 <div className="form-group">
@@ -733,6 +750,33 @@ var app = React.createClass({
         newProduct.location.coordinates = point;
 
         this.setState({editProduct: newProduct});
+    },
+
+    handleIsOnSiteChange: function(event) {
+
+        var product = this.state.editProduct;
+
+        if(event.target.value == "true") {
+            var i;
+            for(i=0; i<product.tag_list.length; i++) {
+                if(this.state.editProduct.tag_list[i] == "上门服务") {
+                    break;
+                }
+            }
+            if(i == product.tag_list.length) {
+                product.tag_list.push("上门服务");
+            }
+        }
+        else {
+            for(i=0; i<product.tag_list.length; i++) {
+                if(this.state.editProduct.tag_list[i] == "上门服务") {
+                    this.state.editProduct.tag_list.splice(i,1);
+                    break;
+                }
+            }
+        }
+
+        this.setState({editProduct: product});
     },
 
     _addImage: function () {

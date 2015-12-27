@@ -8,6 +8,7 @@ var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
 
 var GenOrderNo = require('../../../util/genorderno');
+var formatdatetime = require('../../../util/formatdatetime');
 
 
 var app = React.createClass({
@@ -53,17 +54,26 @@ var app = React.createClass({
         }
 
         var orderDate = new Date(this.props.order.booked_time.booked_date);
-        var orderDateContent = this._formatDate(orderDate);
+        var orderDateContent = formatdatetime.formatDate(orderDate);
 
         var orderStartTime = new Date(this.props.order.booked_time.start_time);
         var orderEndTime = new Date(this.props.order.booked_time.end_time);
-        orderDateContent += " " + this._formatTime(orderStartTime) + "-" + this._formatTime(orderEndTime);
+        orderDateContent += " " + formatdatetime.formatTime(orderStartTime) + "-" + formatdatetime.formatTime(orderEndTime);
+
+        // on site
+        var onSiteFlag = "";
+        if(this.props.order.isOnSite) {
+            onSiteFlag = <span className="label label-default roffset5">上门</span>;
+        }
 
         return (
             <li>
                 <div className="row grey_text">
                     <div className="col-xs-6 text-left">{orderDateContent}</div>
-                    <div className="col-xs-6 text-right"><span className={labelStyle}>{status}</span></div>
+                    <div className="col-xs-6 text-right">
+                        {onSiteFlag}
+                        <span className={labelStyle}>{status}</span>
+                    </div>
                 </div>
                 <div className="row text-left voffset15">
                     <div className="col-xs-12 small grey_text">订单号: {GenOrderNo.orderno(this.props.order.order_id, this.props.order.created_time)}</div>
@@ -85,14 +95,6 @@ var app = React.createClass({
                 <hr/>
             </li>
         );
-    },
-
-    _formatTime: function(date) {
-        return date.getHours() + ":" + date.getMinutes();
-    },
-
-    _formatDate: function(date) {
-        return date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
     },
 
     _triggerOrderDetail: function(order) {

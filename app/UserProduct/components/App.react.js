@@ -162,6 +162,7 @@ var app = React.createClass({
         }
 
         // product address
+        var addressSectionContent = "";
         var addressContent = "";
         var mapURL = "";
         if(this.state.product.address) {
@@ -186,6 +187,18 @@ var app = React.createClass({
                 "&markerStyles=l,A";
 
         }
+        addressSectionContent = <div>
+            <div className="row text-center voffset60">
+                <i className="fa fa-map-o hg-session-header-icon"></i>
+
+                <div className="hg-session-header-title voffset5">地点</div>
+            </div>
+            <div className="row voffset15 text-center">
+                <p>{addressContent}</p>
+                <img className="img-responsive center-block"
+                     src={mapURL}/>
+            </div>
+        </div>;
 
 
 
@@ -478,6 +491,18 @@ var app = React.createClass({
             </div>;
         }
 
+        // is on site
+        var isOnSiteStatus = "";
+        if(this.state.product.tag_list) {
+            for(var i=0; i<this.state.product.tag_list.length; i++) {
+                if(this.state.product.tag_list[i] == "上门服务") {
+                    isOnSiteStatus = <span className="label btn-hd-blue btn-hd-active">上门服务</span>;
+                    addressSectionContent = "";
+                    break;
+                }
+            }
+        }
+
         var modalContent = [];
         switch (this.state.status) {
             case Constants.STATE_PRODUCT:
@@ -502,6 +527,7 @@ var app = React.createClass({
 
             <div className="container blue-background">
                 <div className="page-header text-center hg-pageheader">
+                    {isOnSiteStatus}
                     <h4>{categoryContent}</h4>
 
                     <div className="row text-center">
@@ -582,16 +608,7 @@ var app = React.createClass({
 
                 {showCaseImageC}
 
-                <div className="row text-center voffset60">
-                    <i className="fa fa-map-o hg-session-header-icon"></i>
-
-                    <div className="hg-session-header-title voffset5">地点</div>
-                </div>
-                <div className="row voffset15 text-center">
-                    <p>{addressContent}</p>
-                    <img className="img-responsive center-block"
-                         src={mapURL}/>
-                </div>
+                {addressSectionContent}
 
                 <div className="row text-center voffset60">
                     <span className="glyphicon glyphicon-info-sign hg-session-header-icon"></span>

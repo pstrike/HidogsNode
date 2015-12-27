@@ -163,7 +163,7 @@ var app = React.createClass({
 
         var statusLabelClass = 'label label-default';
         var statusContent = '样例';
-        var footerContent = <div className="col-xs-10">
+        var footerContent = <div className="col-xs-12 text-right">
             <button type="button" className="btn btn-default btn-hd-blue roffset5" onClick={this._onCancel}>
                 关闭
             </button>
@@ -172,7 +172,7 @@ var app = React.createClass({
             </button>
         </div>;
         if(this.state.vendorProfile.vendorId == this.state.product.vendor.vendor_id) {
-            footerContent = <div className="col-xs-10">
+            footerContent = <div className="col-xs-12 text-right">
                 <button type="button" className="btn btn-default btn-hd-blue roffset5" onClick={this._onCancel}>
                     关闭
                 </button>
@@ -203,6 +203,15 @@ var app = React.createClass({
                 (this.state.product.address.street ? this.state.product.address.street : "") +
                 (this.state.product.address.business ? this.state.product.address.business : "") +
                 (this.state.product.address.additional ? this.state.product.address.additional : "");
+        }
+
+        // is on site
+        var isOnSiteStatus = "";
+        for(var i=0; i<this.state.product.tag_list.length; i++) {
+            if(this.state.product.tag_list[i] == "上门服务") {
+                isOnSiteStatus = <span className="label label-default roffset2">上门</span>;
+                break;
+            }
         }
 
         //return (
@@ -357,8 +366,16 @@ var app = React.createClass({
                 <div className="col-xs-2 text-center hg-modal-title"></div>
             </div>
 
-            <div className="hg-modal-body text-left"  id="detailBody">
-                <h3>基本信息</h3>
+            <div className="hg-modal-body text-left" id="detailBody">
+                <div className="row">
+                    <div className="col-xs-6 text-left">
+                        <h3>基本信息</h3>
+                    </div>
+                    <div className="col-xs-6 text-right vcenter56">
+                        {isOnSiteStatus}
+                        <span className={statusLabelClass}>{statusContent}</span>
+                    </div>
+                </div>
 
                 <div className="form-group">
                     <label>服务标题</label>
@@ -446,9 +463,6 @@ var app = React.createClass({
             <div className="hg-modal-footer text-right row">
                 <div className="col-xs-12">
                     <div className="row">
-                        <div className="col-xs-2 text-left">
-                            <span className={statusLabelClass}>{statusContent}</span>
-                        </div>
                         {footerContent}
                     </div>
                 </div>

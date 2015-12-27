@@ -261,6 +261,30 @@ var app = React.createClass({
 
         }
 
+        var addressSectionContent = <div>
+            <div className="text-center voffset40">
+                <h4>服务地点</h4>
+            </div>
+            <div className="form-group">
+                <label>详细地址</label>
+                <textarea className="form-control no-border" rows="2" value={addressContent} disabled></textarea>
+            </div>
+            <img className="img-responsive center-block"
+                 src={mapURL}/>
+        </div>;
+
+        // is on site
+        var isOnSiteStatus = "";
+        if(this.state.product.tag_list) {
+            for(var i=0; i<this.state.product.tag_list.length; i++) {
+                if(this.state.product.tag_list[i] == "上门服务") {
+                    isOnSiteStatus = <span className="label label-default">上门服务</span>;
+                    addressSectionContent = "";
+                    break;
+                }
+            }
+        }
+
         // Coupon
         var couponContent = "";
         var couponItemContent = [];
@@ -303,7 +327,7 @@ var app = React.createClass({
                     </div>
                     <div>
                         <div className="form-group">
-                            <label>服务项目</label>
+                            <label className="roffset5">服务项目</label>{isOnSiteStatus}
                             <input type="text" className="form-control no-border" placeholder="标题"
                                    value={this.state.product.title}
                                    disabled/>
@@ -363,15 +387,7 @@ var app = React.createClass({
                         </select>
                     </div>
 
-                    <div className="text-center voffset40">
-                        <h4>服务地点</h4>
-                    </div>
-                    <div className="form-group">
-                        <label>详细地址</label>
-                        <textarea className="form-control no-border" rows="2" value={addressContent} disabled></textarea>
-                    </div>
-                    <img className="img-responsive center-block"
-                         src={mapURL}/>
+                    {addressSectionContent}
 
                     {verifyMsgContent}
 
@@ -408,6 +424,13 @@ var app = React.createClass({
         if(verifyMsg.length == 0) {
             this.state.order.order_id = Uudi.uuid();
             this.state.order.openid = this.state.session.openid;
+
+            for(var i=0; i<this.state.product.tag_list.length; i++) {
+                if(this.state.product.tag_list[i] == "上门服务") {
+                    this.state.order.isOnSite = true;
+                    break;
+                }
+            }
 
             // disable pay btn after click once
             $('#paybtn').text('稍等');

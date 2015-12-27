@@ -6,7 +6,7 @@ var RemoteCall = {
 
     getProductList: function (vendorId) {
         var promise = new Promise(function(resolve, reject){
-            var url = APIUtils.makeUrl("/products?projection=category,status,title,price,sale_no,product_id,vendor&filter=vendor.vendor_id,"+vendorId);
+            var url = APIUtils.makeUrl("/products?projection=category,status,title,price,sale_no,product_id,vendor,tag_list&filter=vendor.vendor_id,"+vendorId);
             APIUtils.get(url, function(result) {
                 if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND

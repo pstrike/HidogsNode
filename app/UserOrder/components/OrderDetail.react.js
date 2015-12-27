@@ -10,6 +10,7 @@ var Actions = require('../actions/Actions');
 var GenOrderNo = require('../../../util/genorderno');
 var mapconvertor = require('../../../util/mapconverter');
 var gettbpaidprice = require('../../../util/gettbpaidprice');
+var formatdatetime = require('../../../util/formatdatetime');
 
 var app = React.createClass({
 
@@ -202,10 +203,10 @@ var app = React.createClass({
         var orderDate = new Date(this.props.order.booked_time.booked_date);
         var orderStartTime = new Date(this.props.order.booked_time.start_time);
         var orderEndTime = new Date(this.props.order.booked_time.end_time);
-        var bookedTimeContent = this._formatDate(orderDate) + " "
-                                + this._formatTime(orderStartTime)
+        var bookedTimeContent = formatdatetime.formatDate(orderDate) + " "
+                                + formatdatetime.formatTime(orderStartTime)
                                 + "-"
-                                + this._formatTime(orderEndTime);
+                                + formatdatetime.formatTime(orderEndTime);
 
         // product address
         var addressContent = "";
@@ -341,8 +342,14 @@ var app = React.createClass({
         if(this.props.order.price.coupon && this.props.order.price.coupon.title) {
                 couponContent = <tr>
                     <td>优惠码</td>
-                    <td colspan="2">{this.props.order.price.coupon.title}</td>
+                    <td colSpan="2">{this.props.order.price.coupon.title}</td>
                 </tr>;
+        }
+
+        // On Site Flag
+        var onSiteFlag = "";
+        if(this.props.order.isOnSite) {
+            onSiteFlag = <span className="label hg-label">上门服务</span>;
         }
 
         return (
@@ -361,7 +368,7 @@ var app = React.createClass({
                     <div className="hg-session-header-title">服务项目</div>
                     <h3>{this.props.order.product.product_title}</h3>
 
-                    <p>{categoryContent}</p>
+                    <p>{categoryContent} {onSiteFlag}</p>
                     <table className="hg-table text-left voffset15">
                         <tbody>
                         <tr>
@@ -474,14 +481,6 @@ var app = React.createClass({
 
             </div>
         );
-    },
-
-    _formatTime: function(date) {
-        return date.getHours() + ":" + date.getMinutes();
-    },
-
-    _formatDate: function(date) {
-        return date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
     },
 
     _detailTrigerOrderList: function() {

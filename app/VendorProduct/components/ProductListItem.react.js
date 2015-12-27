@@ -25,11 +25,20 @@ var app = React.createClass({
             }
         }
 
+        // is on site
+        var isOnSiteStatus = "";
+        if(this.props.isOnSite) {
+            isOnSiteStatus = <span className="label label-default roffset2">上门</span>;
+        }
+
         return (
             <div>
                 <div className="row grey_text">
-                    <div className="col-xs-9 text-left">{this.props.category}</div>
-                    <div className="col-xs-3 text-right"><span className={statusLabelClass}>{statusContent}</span></div>
+                    <div className="col-xs-6 text-left">{this.props.category}</div>
+                    <div className="col-xs-6 text-right">
+                        {isOnSiteStatus}
+                        <span className={statusLabelClass}>{statusContent}</span>
+                    </div>
                 </div>
                 <div className="row text-left">
                     <div className="col-xs-12"><h3>{this.props.title}</h3></div>

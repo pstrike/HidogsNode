@@ -131,6 +131,15 @@ var app = React.createClass({
                     }
                 }
 
+                var isOnSite = false;
+                for(var i=0; i<item.tag_list.length; i++) {
+                    console.log(item);
+                    if(item.tag_list[i] == "上门服务") {
+                        isOnSite = true;
+                        break;
+                    }
+                }
+
                 productListContent.push(<li>
                     <ProductListItem
                         category={categoryContent}
@@ -139,6 +148,7 @@ var app = React.createClass({
                         price={priceContent}
                         usedNo={saleNoContent}
                         productId={item.product_id}
+                        isOnSite={isOnSite}
                         isExample={isExample}></ProductListItem>
                 </li>);
             }.bind(this));

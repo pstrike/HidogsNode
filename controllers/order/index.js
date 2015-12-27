@@ -136,6 +136,7 @@ exports.page = function(req, res, next){
         case 'userordercreationdone':
             var orderId = req.query.orderid;
             var productId = req.query.productid;
+            var isOnSite = "false";
             // for local testing
             //req.session.current_user = {
             //    user_id: "e79fe7aa-2dfe-1fd6-76e9-b62985b0aa7a",
@@ -144,9 +145,15 @@ exports.page = function(req, res, next){
             //    nick_name: "one_pan",
             //};
 
-            operation.getObject(operation.getCollectionList().product, productId, {category:1}, function(object) {
+            operation.getObject(operation.getCollectionList().product, productId, {category: 1, tag_list: 1}, function (object) {
 
                 if (object) {
+                    for (var i = 0; i < object.tag_list.length; i++) {
+                        if (object.tag_list[i] == "上门服务") {
+                            isOnSite = "true";
+                            break;
+                        }
+                    }
                     var hgstyle = "";
 
                     switch (object.category.product_meta_category_id) {
@@ -168,12 +175,13 @@ exports.page = function(req, res, next){
 
                     }
 
-                    res.render('userordercreationdone.ejs', {orderid: orderId, hgstyle: hgstyle});
+                    res.render('userordercreationdone.ejs', {orderid: orderId, hgstyle: hgstyle, isonsite: isOnSite});
                 }
                 else {
                     next();
                 }
             })
+
             break;
 
         default:

@@ -9,6 +9,7 @@ var Actions = require('../actions/Actions');
 
 var GenOrderNo = require('../../../util/genorderno');
 var gettbpaidprice = require('../../../util/gettbpaidprice');
+var formatdatetime = require('../../../util/formatdatetime');
 
 var app = React.createClass({
 
@@ -64,18 +65,24 @@ var app = React.createClass({
         var hgStyle = "text-center voffset50 " + tint;
 
         var orderDate = new Date(this.props.order.booked_time.booked_date);
-        var orderDateContent = this._formatDate(orderDate);
+        var orderDateContent = formatdatetime.formatDate(orderDate);
 
         var orderStartTime = new Date(this.props.order.booked_time.start_time);
         var orderEndTime = new Date(this.props.order.booked_time.end_time);
-        var orderTimeContent = this._formatTime(orderStartTime) + "-" + this._formatTime(orderEndTime);
+        var orderTimeContent = formatdatetime.formatTime(orderStartTime) + "-" + formatdatetime.formatTime(orderEndTime);
+
+        var onSiteFlag = "";
+        if(this.props.order.isOnSite) {
+            onSiteFlag = <span className="label hg-label">上门服务</span>;
+        }
 
         return (
             <div className={hgStyle}>
                 {icon}
                 <p>{status}</p>
                 <div className="hg-header-24">{this.props.order.product.product_title}</div>
-                <span className="small">订单号: {GenOrderNo.orderno(this.props.order.order_id, this.props.order.created_time)}</span>
+                <span className="small roffset5">订单号: {GenOrderNo.orderno(this.props.order.order_id, this.props.order.created_time)}</span>
+                {onSiteFlag}
                 <div className="container voffset15">
                     <div className="row">
                         <div className="col-xs-4">
@@ -97,14 +104,6 @@ var app = React.createClass({
                 <hr className="voffset30"/>
             </div>
         );
-    },
-
-    _formatTime: function(date) {
-        return date.getHours() + ":" + date.getMinutes();
-    },
-
-    _formatDate: function(date) {
-        return date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
     },
 
     _triggerOrderDetail: function(order) {

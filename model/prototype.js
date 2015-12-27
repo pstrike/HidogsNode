@@ -220,6 +220,7 @@ var Model = {
                 end_time: "",
                 booked_date: "",
             },
+            isOnSite: false,
             remark: "",
             created_time: "",
             paid_time: "",

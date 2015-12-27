@@ -72,6 +72,20 @@ var app = React.createClass({
             }
         }
 
+        var addressSectionContent = <div>
+            <div>{addressContent}</div>
+            <div><i>(距离我{distanceContent})</i></div>
+        </div>;
+
+        if(this.props.product.tag_list) {
+            for(var i=0; i<this.props.product.tag_list.length; i++) {
+                if(this.props.product.tag_list[i] == "上门服务") {
+                    addressSectionContent = <span className="label btn-hd-blue btn-hd-active">上门服务</span>;
+                    break;
+                }
+            }
+        }
+
         return (
                 <div className="text-center">
                     <img src={this.props.product.vendor.head_image_url} className="center-block img-responsive img-circle user-icon-header voffset10"/>
@@ -87,8 +101,7 @@ var app = React.createClass({
                             <tbody>
                             <tr><td>{priceContent}</td></tr>
                             <tr><td>
-                                <div>{addressContent}</div>
-                                <div><i>(距离我{distanceContent})</i></div>
+                                {addressSectionContent}
                             </td></tr>
                             <tr><td>{this.props.product.sale_no ? this.props.product.sale_no : 0}个用户使用过</td></tr>
                             <tr><td></td></tr>
