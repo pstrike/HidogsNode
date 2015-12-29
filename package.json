@@ -27,7 +27,8 @@
       "es6-shim": "^0.33.12",
       "jssha": "^1.5.0",
       "compression": "^1.6.0",
-      "geojson-utils": "^1.1.0"
+      "geojson-utils": "^1.1.0",
+      "node-schedule": "^0.6.0"
   },
     "devDependencies": {
         "browserify": "^6.2.0",
@@ -38,8 +39,8 @@
         "node-jsx": "~0.2.0"
     },
     "scripts": {
-        "start": "watchify -o public/js/vendorOrderApp.js -v -d app/VendorOrder/app.js",
-        "build": "uglifyjs public/js/vendorOrderApp.js -mo public/js/vendorOrderApp.min.js"
+        "start": "watchify -o public/js/userProductListApp.js -v -d app/UserProductList/app.js",
+        "build": "uglifyjs public/js/userProductListApp.js -mo public/js/userProductListApp.min.js"
     },
     "browserify": {
         "transform": [

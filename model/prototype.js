@@ -178,6 +178,7 @@ var Model = {
                 product_id: "",
                 product_title: "",
                 product_category: {
+                    product_meta_category_id: "",
                     name: "",
                     slug: "",
                     path_name: "",

@@ -8,6 +8,7 @@ var tokenverifiction = require("./util/tokenverification");
 var writablestreamintodb = require('./util/writablestreamintodb');
 var session = require('express-session')
 var compress = require('compression');
+var schedulers = require('./schedulers/index');
 //var wechatvalidation = require('./util/wechatvalidation');
 
 var app = module.exports = express();
@@ -40,6 +41,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.query());
 
+
 // load controllers
 require('./router/boot')(app, { verbose: !module.parent });
 
@@ -70,15 +72,21 @@ app.use(function(req, res){
 
 /* istanbul ignore next */
 if (!module.parent) {
+
+    // init db
     db.connect('mongodb://' + config.mongo.host + ':' + config.mongo.port + '/hidogs', function(err) {
         if (err) {
             console.log('Sorry, there is no mongo db server running.');
         }
         else
         {
+            // kickoff scheduler
+            schedulers.kickoff();
+
+            // kickoff server
             app.listen(config.port);
             console.log(
-                    'Successfully connected to mongodb://' + config.mongo.host + ':' + config.mongo.port,
+                    'Successfully connected to mongodb://' + config.mongo.showhost + ':' + config.mongo.port,
                     '\nExpress server listening on port ' + config.port
             );
         }

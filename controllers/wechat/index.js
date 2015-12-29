@@ -93,10 +93,16 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
         case "洗澡护理":
             msg=[
                     {
-                        title: '洗澡护理服务',
+                        title: '全城热门洗澡护理服务',
                         description: '',
                         picurl: '',
-                        url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-1,null'
+                        url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-1,null,pop'
+                    },
+                    {
+                        title: '您附近的洗澡护理服务',
+                        description: '',
+                        picurl: '',
+                        url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-1,null,geo'
                     }
             ];
 
@@ -104,30 +110,48 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
         case "美容造型":
             msg=[
                 {
-                    title: '美容造型服务',
+                    title: '全城热门美容造型服务',
                     description: '',
                     picurl: '',
-                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-2,null'
+                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-2,null,pop'
+                },
+                {
+                    title: '您附近的美容造型服务',
+                    description: '',
+                    picurl: '',
+                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-2,null,geo'
                 }
             ];
             break;
         case "全身剃光":
             msg=[
                 {
-                    title: '全身剃光服务',
+                    title: '全城热门全身剃光服务',
                     description: '',
                     picurl: '',
-                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-3,null'
+                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-3,null,pop'
+                },
+                {
+                    title: '您附近的全身剃光服务',
+                    description: '',
+                    picurl: '',
+                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-3,null,geo'
                 }
             ];
             break;
         case "SPA":
             msg=[
                 {
-                    title: 'SPA服务',
+                    title: '全城热门SPA服务',
                     description: '',
                     picurl: '',
-                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-4,null'
+                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-4,null,pop'
+                },
+                {
+                    title: '您附近的SPA服务',
+                    description: '',
+                    picurl: '',
+                    url: 'http://www.hidogs.cn/product/view/userproductlist?params=1-1-4,null,geo'
                 }
             ];
             break;

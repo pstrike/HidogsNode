@@ -1,3 +1,5 @@
+var operation = require('../../model/operation');
+
 exports.show = function(req, res, next){
     var key = req.params.session_id;
 
@@ -7,38 +9,41 @@ exports.show = function(req, res, next){
 exports.otherget = function(req, res, next){
     var sessionId = req.params.session_id;
 
+    if(!req.query.code == "3a3404") {
+        next();
+    }
+
     switch (sessionId) {
         case "sessionforusertesting":
-            if(req.query.code=="3a3404") {
+            var userId = req.query.userid;
+
+            operation.getObject(operation.getCollectionList().user, userId, {}, function(object) {
                 req.session.current_user = {
-                    user_id: "e79fe7aa-2dfe-1fd6-76e9-b62985b0aa7a",
-                    head_image_url: "http://wx.qlogo.cn/mmopen/ajNVdqHZLLAKwztbcTspbibFnCLP5D5eToEsia8SZXvjHu0swsd455HIcl5hxzK3jREKYhEqykVFYYhZZI7FZOgg/0",
-                    nick_name: "one_pan",
+                    user_id: object.user_id,
+                    head_image_url: object.head_image_url,
+                    nick_name: object.nick_name,
+                    openid: object.opend_id,
                 };
 
-                res.send("login with user one_pan")
-            }
-            else {
-                next();
-            }
+                res.send("login with user")
+            })
 
             break;
 
         case "sessionforvendortesting":
-            if(req.query.code=="3a3404") {
+            var vendorId = req.query.vendorid;
+
+            operation.getObject(operation.getCollectionList().vendor, vendorId, {}, function(object) {
                 req.session.current_user = {
-                    vendor_id: "d18c4e5c-6f49-7f82-7d49-db362c64cb03",
+                    vendor_id: object.vendor_id,
                     role: "grooming",
-                    head_image_url: "http://wx.qlogo.cn/mmopen/ajNVdqHZLLAKwztbcTspbibFnCLP5D5eToEsia8SZXvjHu0swsd455HIcl5hxzK3jREKYhEqykVFYYhZZI7FZOgg/0",
-                    nick_name: "one_pan",
-                    status: "approved"
+                    head_image_url: object.head_image_url,
+                    nick_name: object.nick_name,
+                    status: object.status
                 };
 
-                res.send("login with vendor one_pan")
-            }
-            else {
-                next();
-            }
+                res.send("login with vendor")
+            })
 
             break;
     }

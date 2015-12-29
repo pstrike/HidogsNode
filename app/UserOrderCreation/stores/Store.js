@@ -48,6 +48,7 @@ function loadProductSuccessful(product) {
 
     _order.product.product_id = _product.product_id;
     _order.product.product_title = _product.title;
+    _order.product.product_category.product_meta_category_id = _product.category.product_meta_category_id;
     _order.product.product_category.name = _product.category.name;
     _order.product.product_category.slug = _product.category.slug;
     _order.product.product_category.path_name = _product.category.path_name;

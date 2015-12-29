@@ -1,11 +1,11 @@
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert')
 var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://120.25.105.129:27017/hidogs';
+var url = 'mongodb://hidogs:Huanchong888888@120.25.105.129:27017/hidogs';
 //var url = 'mongodb://localhost:27017/hidogs';
 //var shopData = require('./db/db_shop');
 //var vendorData = require('./db/db_vendor');
-var type = "product_meta_category"
+var type = "admin"
 var data = require('./db/db_'+type);
 
 var insertDocument = function(db, data, callback) {

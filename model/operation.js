@@ -14,8 +14,10 @@ var DAO = {
             product_meta_category: "product_meta_category",
             product_meta_exit_policy: "product_meta_exit_policy",
             product_meta_other: "product_meta_other",
+            product_popular: "product_popular",
             order: "order",
             coupon: "coupon",
+            admin: "admin",
 
             vendor_potential: "vendor_potential",
         };
@@ -132,6 +134,23 @@ var DAO = {
                 $set: {status: deletedStatus},
                 $currentDate: {"modified_time": true}
             },
+            function (err, result) {
+                if (err) {
+                    console.log("[Remove DB " + objectName + " Err]" + err);
+                    failMsg.err = err;
+                    callback(failMsg);
+                }
+                else {
+                    callback(successMsg);
+                }
+            });
+    },
+
+    removeObjectReal: function (objectName, filter, callback) {
+        var idName = objectName + '_id';
+
+        db.get().collection(objectName).deleteMany(
+            filter,
             function (err, result) {
                 if (err) {
                     console.log("[Remove DB " + objectName + " Err]" + err);

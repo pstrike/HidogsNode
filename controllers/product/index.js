@@ -195,6 +195,7 @@ exports.page = function(req, res, next){
             var params = req.query.params.split(",");
             var category = params[0];
             var keyword = params[1];
+            var type = params[2];
             var hgstyle = "";
 
             operation.getObject(operation.getCollectionList().product_meta_category, category, {name:1}, function(object) {
@@ -217,7 +218,7 @@ exports.page = function(req, res, next){
                             break;
 
                     }
-                    res.render('userproductlist.ejs',{hgstyle: hgstyle, category: object.name, categoryId:category, keyword: keyword});
+                    res.render('userproductlist.ejs',{hgstyle: hgstyle, category: object.name, categoryId:category, keyword: keyword, type: type});
                 }
                 else {
                     next();
@@ -602,6 +603,56 @@ exports.otherget = function(req, res, next){
                     res.send(result);
                 }
             );
+
+            break;
+
+        case "popularproductlist":
+            var category = req.query.category;
+            var productList = [];
+            var resultList = [];
+            var filter;
+
+            operation.getObjectList(operation.getCollectionList().product_popular, {}, {}, function(objectList) {
+
+                var popularProduct = objectList[0];
+
+                switch (category) {
+                    case "1-1-1":
+                        productList = popularProduct["1-1-1"];
+                        break;
+
+                    case "1-1-2":
+                        productList = popularProduct["1-1-2"];
+                        break;
+
+                    case "1-1-3":
+                        productList = popularProduct["1-1-3"];
+                        break;
+
+                    case "1-1-4":
+                        productList = popularProduct["1-1-4"];
+                        break;
+                }
+
+                var orList = productList.map(function(item) {
+                    return {product_id: item.product_id}
+                })
+
+                filter = {
+                    $or: orList,
+                }
+
+                operation.getObjectList(operation.getCollectionList().product, filter, req.projection, function(objectList) {
+
+                    var result = {
+                        distance: 0,
+                        productList: objectList,
+                    };
+
+                    res.send(result);
+                })
+
+            })
 
             break;
 

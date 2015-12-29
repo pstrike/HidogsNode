@@ -25,12 +25,35 @@ var app = React.createClass({
 
     render: function () {
 
-        var addressContent = <i className="fa fa-spinner fa-spin"></i>;
-        if(this.props.address) {
-            addressContent = <div>
-                <i className="fa fa-map-marker roffset2"></i>
-                {this.props.address}
+        // type content
+        var addressContent = <div>
+            <i className="fa fa-star roffset2"></i>
+            全城热门
+        </div>;
+
+        if(this.props.type == 'geo') {
+            addressContent = <i className="fa fa-spinner fa-spin"></i>;
+
+            if(this.props.address) {
+                addressContent = <div>
+                    <i className="fa fa-map-marker roffset2"></i>
+                    {this.props.address}
                 </div>;
+            }
+        }
+
+        // footer content
+        var footerContent = "";
+        if(this.props.type == 'geo') {
+            footerContent = <footer className="footer">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-xs-12 text-right">
+                            <button className="btn btn-hd-blue text-muted roffset5">更改地点</button>
+                        </div>
+                    </div>
+                </div>
+            </footer>;
         }
 
         return (
@@ -67,15 +90,7 @@ var app = React.createClass({
 
                 </div>
 
-                <footer className="footer">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-xs-12 text-right">
-                                <button className="btn btn-hd-blue text-muted roffset5">更改地点</button>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
+                {footerContent}
             </div>
         );
     },
