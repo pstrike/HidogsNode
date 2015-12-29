@@ -25,11 +25,11 @@ var app = React.createClass({
                 var orderCreatedTime = new Date(this.props.order.created_time);
                 var minDistance = parseInt(Math.abs(today-orderCreatedTime)/1000/60);
 
-                if(minDistance <= 15) {
-                    status = "待确认";
-                    labelStyle += "label-warning"
-                }
-                else {
+                status = "待确认";
+                labelStyle += "label-warning"
+
+                // if the order is onsite order, then need vendor to confirm
+                if(!this.props.order.isOnSite && minDistance > 15) {
                     status = "待使用";
                     labelStyle += "label-success"
                 }

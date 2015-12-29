@@ -44,6 +44,16 @@ var app = React.createClass({
             // keep blank word
         }
 
+        // Address
+        var addressContent = "";
+        if(this.props.vendor.address) {
+            addressContent = (this.props.vendor.address.city ? this.props.vendor.address.city : "") +
+                (this.props.vendor.address.district ? this.props.vendor.address.district : "") +
+                (this.props.vendor.address.street ? this.props.vendor.address.street : "") +
+                (this.props.vendor.address.business ? this.props.vendor.address.business : "") +
+                (this.props.vendor.address.additional ? this.props.vendor.address.additional : "");
+        }
+
         return (
             <div className="modal-fullscreen modal fade" id="profileModal" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel" data-backdrop="static">
@@ -88,31 +98,7 @@ var app = React.createClass({
                             </div>
                             <div className="form-group">
                                 <label>服务地址</label>
-
-                                <div className="row">
-                                    <div className="col-xs-2"><label className="vcenter34">省份</label></div>
-                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                                      placeholder="省份" value={this.props.vendor.address ? this.props.vendor.address.province : ""} disabled/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-xs-2"><label className="vcenter34">城市</label></div>
-                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                                      placeholder="城市" value={this.props.vendor.address ? this.props.vendor.address.city : ""} disabled/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-xs-2"><label className="vcenter34">区域</label></div>
-                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                                      placeholder="区域" value={this.props.vendor.address ? this.props.vendor.address.region : ""} disabled/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-xs-2"><label className="vcenter34">地址</label></div>
-                                    <div className="col-xs-10"><input type="text" className="form-control no-border"
-                                                                      placeholder="具体地址" value={this.props.vendor.address ? this.props.vendor.address.address : ""} disabled/>
-                                    </div>
-                                </div>
+                                <textarea className="form-control no-border" rows="2" value={addressContent} disabled></textarea>
                             </div>
                             <div className="form-group">
                                 <label>个人描述</label>

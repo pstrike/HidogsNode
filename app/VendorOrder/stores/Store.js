@@ -76,6 +76,29 @@ function detailTriggerReject() {
     Store.emitChange();
 }
 
+function detailAcceptOrder(order) {
+    _order.status = order.status;
+    for(var i=0; i<_orderList.length; i++) {
+        if(_orderList[i].order_id == _order.order_id) {
+            _orderList[i].status = _order.status;
+            break;
+        }
+    }
+
+    for(var i=0; i<_orderListData.length; i++) {
+        if(_orderListData[i].order_id == _order.order_id) {
+            _orderListData[i].status = _order.status;
+            break;
+        }
+    }
+
+    Store.emitChange();
+}
+
+function detailAcceptOrderSuccessful() {
+    // do nothing
+}
+
 //function detailRejectOrder(order) {
 //    _order.status = order.status;
 //    for(var i=0; i< _orderList.length; i++) {
@@ -95,10 +118,10 @@ function detailTriggerReject() {
 //
 //    Store.emitChange();
 //}
-
-function detailRejectOrderSuccessful() {
-    // do nothing
-}
+//
+//function detailRejectOrderSuccessful() {
+//    // do nothing
+//}
 
 // Code
 function codeTriggerDetail() {
@@ -255,6 +278,14 @@ AppDispatcher.register(function(action) {
             detailTriggerReject();
             break;
 
+        case Constants.DETAIL_ACCEPT_ORDER_FAKE:
+            detailAcceptOrder(action.order);
+            break;
+
+        case Constants.DETAIL_ACCEPT_ORDER_SUCCESSFUL:
+            detailAcceptOrderSuccessful();
+            break;
+
         //case Constants.DETAIL_REJECT_ORDER:
         //    detailRejectOrder(action.order);
         //    break;
@@ -305,6 +336,7 @@ AppDispatcher.register(function(action) {
         case Constants.CODE_SUBMIT_FAIL:
         //case Constants.DETAIL_REJECT_ORDER_FAIL:
         case Constants.REJECT_ORDER_FAIL:
+        case Constants.DETAIL_ACCEPT_ORDER_FAIL:
             err(action.actionType);
             break;
 

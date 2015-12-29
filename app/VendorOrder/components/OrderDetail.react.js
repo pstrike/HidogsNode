@@ -28,13 +28,14 @@ var app = React.createClass({
                 var orderCreatedTime = new Date(this.props.order.created_time);
                 var minDistance = parseInt(Math.abs(today-orderCreatedTime)/1000/60);
 
-                if(minDistance <= 15) {
-                    status = "待确认";
-                    labelStyle += "label-warning"
-                    foorterBtn.push(<button className="btn btn-hd-blue text-muted" onClick={this._detailTriggerReject}>拒绝订单</button>);
-                    foorterBtn.push(<button className="btn btn-hd-blue text-muted" onClick={this._detailTriggerCode}>使用码</button>);
-                }
-                else {
+                // if the order is onsite order, then need vendor to confirm
+
+                status = "待确认";
+                labelStyle += "label-warning"
+                foorterBtn.push(<button className="btn btn-hd-blue text-muted" onClick={this._detailTriggerReject}>拒绝订单</button>);
+                foorterBtn.push(<button className="btn btn-hd-blue text-muted" onClick={this._acceptOrder}>接受订单</button>);
+
+                if(!this.props.order.isOnSite && minDistance > 15) {
                     status = "待使用";
                     labelStyle += "label-success"
                     foorterBtn.push(<button className="btn btn-hd-blue text-muted" onClick={this._detailTriggerCode}>使用码</button>);
@@ -314,6 +315,15 @@ var app = React.createClass({
     _detailTriggerReject: function() {
         Actions.detailTriggerReject();
     },
+
+    _acceptOrder: function() {
+        var newOrder = {
+            order_id: this.props.order.order_id,
+            status: 'tbserviced',
+        }
+
+        Actions.detailAcceptOrder(newOrder);
+    }
 
     //_rejectOrder: function() {
     //    if(confirm('您确定要拒接该订单吗?')) {

@@ -91,6 +91,23 @@ var Actions = {
 
     },
 
+    detailAcceptOrder: function(order) {
+        AppDispatcher.dispatch({
+            actionType: Constants.DETAIL_ACCEPT_ORDER_FAKE,
+            order: order,
+        });
+
+        RC.updateOrder(order).then(function () {
+            AppDispatcher.dispatch({
+                actionType: Constants.DETAIL_ACCEPT_ORDER_SUCCESSFUL,
+            });
+        }, function(err) {
+            AppDispatcher.dispatch({
+                actionType: Constants.DETAIL_ACCEPT_ORDER_FAIL,
+            });
+        });
+    },
+
     //detailRejectOrder: function(order) {
     //    AppDispatcher.dispatch({
     //        actionType: Constants.DETAIL_REJECT_ORDER,
