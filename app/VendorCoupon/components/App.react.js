@@ -4,9 +4,12 @@ var React = require('react');
 var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var HGStore = require('../../Common/stores/session');
+var Loading = require('../../Common/components/Loading.react');
+var BecomeVendorInfo = require('../../Common/components/BecomeVendorInfo.react');
 
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
+var Constants = require('../constants/Constants');
 var CouponList = require('../components/CouponList.react');
 
 
@@ -38,9 +41,25 @@ var app = React.createClass({
 
     render: function() {
 
+        var content = "";
+
+        switch (this.state.status) {
+            case Constants.STATE_COUPON_LIST:
+                content = <CouponList couponList={this.state.couponList}></CouponList>
+                break;
+
+            default:
+                content = <Loading></Loading>
+
+        }
+
+        if(this.state.session.status && this.state.session.status != "approved") {
+            content = <BecomeVendorInfo></BecomeVendorInfo>
+        }
+
         return (
             <div id="react_body">
-                <CouponList couponList={this.state.couponList}></CouponList>
+                {content}
             </div>
         );
     },

@@ -5,6 +5,8 @@ var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var HGStore = require('../../Common/stores/session');
 var WXSign = require('./../../Common/components/WXSign');
+var Loading = require('../../Common/components/Loading.react');
+var BecomeVendorInfo = require('../../Common/components/BecomeVendorInfo.react');
 
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
@@ -51,6 +53,13 @@ var app = React.createClass({
                 content = <Edit></Edit>
                 break;
 
+            default:
+                content = <Loading></Loading>
+
+        }
+
+        if(this.state.session.status && this.state.session.status != "approved") {
+            content = <BecomeVendorInfo></BecomeVendorInfo>
         }
 
         return (

@@ -503,3 +503,7 @@ h3.hg-session {
     border-style: solid;
     border-width: 2px;
 }
+
+.grey-border {
+    border-color: #e5e5e5;
+}

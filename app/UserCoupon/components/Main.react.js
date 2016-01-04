@@ -127,12 +127,12 @@ var app = React.createClass({
     },
 
     _submitCode: function() {
-        this.refs["code"].getDOMNode().value = "";
 
         var verifyMsg = this._verify();
 
         if(verifyMsg.length == 0) {
             var code = this.refs["code"].getDOMNode().value;
+            this.refs["code"].getDOMNode().value = "";
 
             this.setState(
                 {isScrollToErrMsg: true}

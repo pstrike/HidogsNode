@@ -133,7 +133,6 @@ var app = React.createClass({
 
                 var isOnSite = false;
                 for(var i=0; i<item.tag_list.length; i++) {
-                    console.log(item);
                     if(item.tag_list[i] == "上门服务") {
                         isOnSite = true;
                         break;

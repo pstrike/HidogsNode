@@ -18,14 +18,20 @@ exports.otherget = function(req, res, next){
             var userId = req.query.userid;
 
             operation.getObject(operation.getCollectionList().user, userId, {}, function(object) {
-                req.session.current_user = {
-                    user_id: object.user_id,
-                    head_image_url: object.head_image_url,
-                    nick_name: object.nick_name,
-                    openid: object.opend_id,
-                };
+                if(object) {
+                    req.session.current_user = {
+                        user_id: object.user_id,
+                        head_image_url: object.head_image_url,
+                        nick_name: object.nick_name,
+                        openid: object.opend_id,
+                    };
 
-                res.send("login with user")
+                    res.send("login with user")
+                }
+                else {
+                    next();
+                }
+
             })
 
             break;
@@ -34,15 +40,21 @@ exports.otherget = function(req, res, next){
             var vendorId = req.query.vendorid;
 
             operation.getObject(operation.getCollectionList().vendor, vendorId, {}, function(object) {
-                req.session.current_user = {
-                    vendor_id: object.vendor_id,
-                    role: "grooming",
-                    head_image_url: object.head_image_url,
-                    nick_name: object.nick_name,
-                    status: object.status
-                };
+                if(object) {
+                    req.session.current_user = {
+                        vendor_id: object.vendor_id,
+                        role: "grooming",
+                        head_image_url: object.head_image_url,
+                        nick_name: object.nick_name,
+                        status: object.status
+                    };
 
-                res.send("login with vendor")
+                    res.send("login with vendor")
+                }
+                else {
+                    next();
+                }
+
             })
 
             break;

@@ -3,7 +3,8 @@
 var React = require('react');
 var Actions = require('../actions/Actions');
 var Store = require('../stores/Store');
-var CommentItem = require('../components/CommentItem.react');
+var CommentItem = require('../../Common/components/CommentItem.react');
+var formatdatetime = require('../../../util/formatdatetime');
 
 function getAppState() {
     return {
@@ -112,6 +113,9 @@ var app = React.createClass({
                 }
             })
         }
+        if(basicPriceContent.length == 0) {
+            basicPriceContent.push(<div className="row"><div className="col-xs-12">尚未设置服务价格</div></div>);
+        }
 
         var commentContent = [];
         if(this.state.product.comment_list) {
@@ -125,7 +129,7 @@ var app = React.createClass({
                 commentContent.push(<li>
                     <CommentItem
                         author={item.author.nick_name}
-                        createdTime={commentCreatedTime.toLocaleDateString()}
+                        createdTime={formatdatetime.formatDate(commentCreatedTime)}
                         star={item.content.rate}
                         authorImage={item.author.head_image_url}
                         content={item.content.text}></CommentItem>

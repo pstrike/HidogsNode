@@ -11,7 +11,7 @@ var _orderList = [];
 var _orderListData = [];
 var _order = {};
 var _verifyMsg = [];
-var _status = Constants.VENDOR_ORDER_LIST;
+var _status = "";
 
 // Store actions
 
@@ -24,6 +24,8 @@ function loadOrderListSuccessful(orderList) {
             _orderList.push(item);
         }
     })
+
+    _status = Constants.VENDOR_ORDER_LIST;
 
     Store.emitChange();
 };

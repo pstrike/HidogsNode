@@ -39,8 +39,8 @@
         "node-jsx": "~0.2.0"
     },
     "scripts": {
-        "start": "watchify -o public/js/adminApp.js -v -d app/Admin/app.js",
-        "build": "uglifyjs public/js/adminApp.js -mo public/js/adminApp.min.js"
+        "start": "watchify -o public/js/vendorProductApp.js -v -d app/VendorProduct/app.js",
+        "build": "uglifyjs public/js/vendorProductApp.js -mo public/js/vendorProductApp.min.js"
     },
     "browserify": {
         "transform": [

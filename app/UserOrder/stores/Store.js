@@ -76,7 +76,7 @@ function detailTrigerOrderList() {
 function loadOrderDetailSuccessful(order) {
     _order = order;
 
-    console.log(_order);
+    //console.log(_order);
 
     Store.emitChange();
 };
@@ -100,8 +100,8 @@ function loadVendorSuccessful(vendor) {
 function loadCouponSuccessful(couponList) {
     _couponList = couponList;
 
-    // if the order is tbpaid, to check whether the coupon is already used or not
-    if(_order.status == 'tbpaid') {
+    // if the order is tbpaid and have coupon, to check whether the coupon is already used or not
+    if(_order.status == 'tbpaid' && _order.price.coupon.coupon_id) {
         var isCouponValid = false;
         for(var i=0; i<_couponList.length; i++) {
             if(_couponList[i].coupon_id == _order.price.coupon.coupon_id) {

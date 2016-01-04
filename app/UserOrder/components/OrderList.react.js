@@ -29,6 +29,13 @@ var app = React.createClass({
         this.props.orderList.forEach(function(item) {
             orderListItemContent.push(<OrderListItem order={item}></OrderListItem>);
         })
+        if(orderListItemContent.length == 0) {
+            orderListItemContent.push(
+                <div className="text-center voffset50">
+                    <h4><i className="fa fa-exclamation-circle roffset5"></i>暂无订单</h4>
+                </div>
+            );
+        }
 
         return (
             <div className="container">

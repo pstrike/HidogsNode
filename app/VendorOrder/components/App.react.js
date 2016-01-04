@@ -3,9 +3,11 @@
 var React = require('react');
 var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
+var Loading = require('../../Common/components/Loading.react');
+var BecomeVendorInfo = require('../../Common/components/BecomeVendorInfo.react');
+var HGStore = require('../../Common/stores/session');
 
 var Store = require('../stores/Store');
-var HGStore = require('../../Common/stores/session');
 var Actions = require('../actions/Actions');
 var Constants = require('../constants/Constants');
 var OrderList = require('./OrderList.react');
@@ -63,6 +65,12 @@ var app = React.createClass({
                 content = <OrderReject order={this.state.order} verifyMsg={this.state.verifyMsg}></OrderReject>;
                 break;
 
+            default:
+                content = <Loading></Loading>
+        }
+
+        if(this.state.session.status && this.state.session.status != "approved") {
+            content = <BecomeVendorInfo></BecomeVendorInfo>
         }
 
         return (

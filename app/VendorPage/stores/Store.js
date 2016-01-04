@@ -9,9 +9,11 @@ var CHANGE_EVENT = 'change';
 var _vendor = {};
 var _user = {};
 var _productList = [];
-var _status = "";
+var _commentList = [];
+var _status = Constants.STATE_VENDOR_PAGE;
 
 // Store actions
+// Init
 function initLoadVendor(vendor) {
     _vendor = vendor;
     //console.log(_vendor);
@@ -24,6 +26,40 @@ function initLoadProductList(productList) {
     Store.emitChange();
 };
 
+function loadUserSuccessful(user) {
+    _user = user;
+    Store.emitChange();
+};
+
+// Main
+function triggerCommentFromMain() {
+    _commentList = [];
+
+    if(_vendor.role) {
+        _vendor.role.forEach(function(roleItem) {
+            // vendor comment
+            if(roleItem.comment && roleItem.comment.created_time) {
+                _commentList.push(roleItem.comment);
+            }
+        })
+    }
+
+    _status = Constants.STATE_COMMENT;
+    Store.emitChange();
+};
+
+// Comment
+function triggerMainFromComment() {
+    _status = Constants.STATE_VENDOR_PAGE;
+    Store.emitChange();
+};
+
+function loadCommentListSuccessful(commentList){
+    _commentList = commentList;
+    Store.emitChange();
+};
+
+// Fav
 function updateUserFav(user) {
     _user = user;
     Store.emitChange();
@@ -31,11 +67,6 @@ function updateUserFav(user) {
 
 function updateUserFavSuccessful() {
     // do nothing
-};
-
-function loadUserSuccessful(user) {
-    _user = user;
-    Store.emitChange();
 };
 
 // Err Handling
@@ -53,6 +84,10 @@ var Store = assign({}, EventEmitter.prototype, {
 
     getProductList: function() {
         return _productList;
+    },
+
+    getCommentList: function() {
+        return _commentList;
     },
 
     getStatus: function() {
@@ -86,6 +121,7 @@ var Store = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
 
     switch (action.actionType) {
+        // Init
         case Constants.INIT_LOAD_VENDOR_SUCCESSFUL:
             var vendor = JSON.parse(action.payload.response);
             initLoadVendor(vendor);
@@ -96,6 +132,11 @@ AppDispatcher.register(function(action) {
             initLoadProductList(productList);
             break;
 
+        case Constants.ACTION_PRODUCT_LOAD_USER_SUCCESSFUL:
+            loadUserSuccessful(JSON.parse(action.payload.response));
+            break;
+
+        // Fav
         case Constants.ACTION_PRODUCT_FAV_FAKE:
             updateUserFav(action.user);
             break;
@@ -104,8 +145,18 @@ AppDispatcher.register(function(action) {
             updateUserFavSuccessful();
             break;
 
-        case Constants.ACTION_PRODUCT_LOAD_USER_SUCCESSFUL:
-            loadUserSuccessful(JSON.parse(action.payload.response));
+        // Main
+        case Constants.ACTION_TRIGGER_COMMENT_FROM_MAIN:
+            triggerCommentFromMain();
+            break;
+
+        //Comment
+        case Constants.ACTION_TRIGGER_MAIN_FROM_COMMENT:
+            triggerMainFromComment();
+            break;
+
+        case Constants.ACTION_LOAD_COMMENT_SUCCESSFUL:
+            loadCommentListSuccessful(JSON.parse(action.payload.response));
             break;
 
         // HG Actions
@@ -116,6 +167,7 @@ AppDispatcher.register(function(action) {
         // Err Handling
         case Constants.INIT_FAIL:
         case Constants.ACTION_PRODUCT_LOAD_USER_FAIL:
+        case Constants.ACTION_LOAD_COMMENT_FAIL:
             err(action.actionType);
             break;
 

@@ -4,9 +4,9 @@ exports.formatTime = function (date) {
 
 exports.formatDate = function (date, breaker) {
     if(breaker) {
-        return date.getFullYear() + breaker + (date.getMonth()+1) + breaker + date.getDate();
+        return date.getFullYear() + breaker + checkTime((date.getMonth()+1)) + breaker + checkTime(date.getDate());
     }
-    return date.getFullYear() + "/" + (date.getMonth()+1) + "/" + date.getDate();
+    return date.getFullYear() + "/" + checkTime((date.getMonth()+1)) + "/" + checkTime(date.getDate());
 }
 
 function checkTime(i)

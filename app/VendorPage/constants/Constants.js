@@ -13,8 +13,13 @@ module.exports = keyMirror({
     ACTION_PRODUCT_LOAD_USER_SUCCESSFUL: null,
     ACTION_PRODUCT_LOAD_USER_FAIL: null,
 
-    // states
-    VENDOR_ORDER_STORE_STATE_LIST: null,
+    ACTION_TRIGGER_COMMENT_FROM_MAIN: null,
+    ACTION_TRIGGER_MAIN_FROM_COMMENT: null,
+    ACTION_LOAD_COMMENT_SUCCESSFUL: null,
+    ACTION_LOAD_COMMENT_FAIL: null,
 
+    // states
+    STATE_VENDOR_PAGE: null,
+    STATE_COMMENT: null,
 
 });

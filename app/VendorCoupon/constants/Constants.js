@@ -6,5 +6,5 @@ module.exports = keyMirror({
     ACTION_INIT_FAIL: null,
 
     // states
-
+    STATE_COUPON_LIST: null,
 });

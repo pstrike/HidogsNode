@@ -56,8 +56,8 @@ var app = React.createClass({
                                 <td>{item.gender}</td>
                                 <td>{item.address}</td>
                                 <td>{item.mobile}</td>
-                                <td>{item.referal_name}</td>
-                                <td>{item.referal_mobile}</td>
+                                <td>{item.refer_name}</td>
+                                <td>{item.refer_mobile}</td>
                             </tr>;
                         },this)}
                         </tbody>

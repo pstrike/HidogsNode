@@ -38,6 +38,7 @@ var app = React.createClass({
                 if(!this.props.order.isOnSite && minDistance > 15) {
                     status = "待使用";
                     labelStyle += "label-success"
+                    foorterBtn = [];
                     foorterBtn.push(<button className="btn btn-hd-blue text-muted" onClick={this._detailTriggerCode}>使用码</button>);
                 }
 

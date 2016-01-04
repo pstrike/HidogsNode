@@ -8,7 +8,12 @@ var Header = React.createClass({
 
         var headerContent = "";
         if(this.props.modal == "true") {
-            headerContent = <nav className="navbar navbar-default navbar-fixed-top bg-white">
+            var navStyle = "navbar navbar-default navbar-fixed-top bg-white";
+            if(this.props.hgstyle) {
+                navStyle = "navbar navbar-default navbar-fixed-top "+this.props.hgstyle;
+            }
+
+            headerContent = <nav className={navStyle}>
                 <div className="container-fluid">
                     <div className="navbar-header text-center">
                         <p className="navbar-text"><strong>{this.props.subtitle}</strong></p>

@@ -52,6 +52,31 @@ var Actions = {
         });
     },
 
+    // Main
+    triggerCommentFromMain: function(vendorId) {
+        AppDispatcher.dispatch({
+            actionType: Constants.ACTION_TRIGGER_COMMENT_FROM_MAIN,
+        });
+
+        RC.getCommentListPromise(vendorId).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_LOAD_COMMENT_SUCCESSFUL,
+                payload: payload,
+            });
+        }, function (err) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_LOAD_COMMENT_FAIL,
+            });
+        });
+    },
+
+    // Comment
+    triggerMainFromComment: function(vendorId) {
+        AppDispatcher.dispatch({
+            actionType: Constants.ACTION_TRIGGER_MAIN_FROM_COMMENT,
+        });
+    },
+
     // Fav
     updateUserFav: function(user) {
         AppDispatcher.dispatch({

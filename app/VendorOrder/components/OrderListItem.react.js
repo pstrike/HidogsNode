@@ -16,7 +16,7 @@ var app = React.createClass({
 
     render: function() {
         var status = "";
-        var labelStyle = "label ";
+        var labelStyle = "";
         switch (this.props.order.status) {
 
             case "tbconfirmed":
@@ -26,29 +26,29 @@ var app = React.createClass({
                 var minDistance = parseInt(Math.abs(today-orderCreatedTime)/1000/60);
 
                 status = "待确认";
-                labelStyle += "label-warning"
+                labelStyle = "label label-warning"
 
                 // if the order is onsite order, then need vendor to confirm
                 if(!this.props.order.isOnSite && minDistance > 15) {
                     status = "待使用";
-                    labelStyle += "label-success"
+                    labelStyle = "label label-success"
                 }
 
                 break;
 
             case "tbserviced":
                 status = "待使用";
-                labelStyle += "label-success"
+                labelStyle = "label label-success"
                 break;
 
             case "tbcommented":
                 status = "完成";
-                labelStyle += "label-primary"
+                labelStyle = "label label-primary"
                 break;
 
             case "completed":
                 status = "完成";
-                labelStyle += "label-primary"
+                labelStyle = "label label-primary"
                 break;
 
         }

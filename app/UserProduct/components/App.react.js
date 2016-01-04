@@ -4,15 +4,18 @@ var React = require('react');
 var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var HGStore = require('../../Common/stores/session');
+var CommentItem = require('../../Common/components/CommentItem.react');
+var RatingStar = require('../../Common/components/RatingStar.react');
 
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
 var Constants = require('../constants/Constants');
 var Header = require('./../../Common/components/Header.react.js');
-var CommentItem = require('./../components/CommentItem.react');
 var ExitPolicyModal = require('./../components/ExitPolicyModal.react');
+var CommentList = require('./../components/CommentList.react');
 
 var mapconvertor = require('../../../util/mapconverter');
+var formatdatetime = require('../../../util/formatdatetime');
 
 
 function getAppState() {
@@ -222,46 +225,39 @@ var app = React.createClass({
 
         // Product Comment
         var commentContent = {};
-        var commentItemContent = [];
-        if(this.state.product.comment_list) {
-            if(this.state.product.comment_list.length > 0) {
-                this.state.product.comment_list.forEach(function(item, index) {
-                    var commentCreatedTime = new Date(item.created_time);
+        var commentItemContent = "";
 
-                    if(index == 0){
-                        commentItemContent.push(<li>
-                            <CommentItem
-                                author={item.author.nick_name}
-                                createdTime={commentCreatedTime.toLocaleDateString()}
-                                star={item.content.rate}
-                                authorImage={item.author.head_image_url}
-                                content={item.content.text}></CommentItem>
-                        </li>);
-                    }
+        if(this.state.product.comment_show && this.state.product.comment_show.created_time) {
+            var commentCreatedTime = new Date(this.state.product.comment_show.created_time);
+            commentItemContent = <li>
+                <CommentItem
+                    author={this.state.product.comment_show.author.nick_name}
+                    createdTime={formatdatetime.formatDate(commentCreatedTime)}
+                    star={this.state.product.comment_show.content.rate}
+                    authorImage={this.state.product.comment_show.author.head_image_url}
+                    content={this.state.product.comment_show.content.text}></CommentItem>
+            </li>;
 
-                })
+            commentContent = <div>
+                <div className="row text-center voffset50">
+                    <i className="fa fa-commenting-o hg-session-header-icon"></i>
 
-                commentContent = <div>
-                    <div className="row text-center voffset50">
-                        <i className="fa fa-commenting-o hg-session-header-icon"></i>
+                    <div className="hg-session-header-title voffset5">{this.state.product.rate ? this.state.product.rate.no : 0}条评价</div>
+                </div>
 
-                        <div className="hg-session-header-title voffset5">{this.state.product.comment_list.length}条评价</div>
-                    </div>
-
-                    <div className="row voffset15">
-                        <div className="container">
-                            <ul className="list-unstyled">
-                                {commentItemContent}
-                            </ul>
-                            <div className="text-center">
-                                <button className="btn btn-hd-blue">更多</button>
-                            </div>
+                <div className="row voffset15">
+                    <div className="container">
+                        <ul className="list-unstyled">
+                            {commentItemContent}
+                        </ul>
+                        <div className="text-center">
+                            <button className="btn btn-hd-blue" onClick={this._triggerComment}>更多</button>
                         </div>
                     </div>
+                </div>
 
-                    <hr/>
-                </div>;
-            }
+                <hr/>
+            </div>;
         }
 
         // Product Image
@@ -378,61 +374,33 @@ var app = React.createClass({
         var ratingContent = [];
         var overallStarContent = [];
         if(this.state.vendor.role) {
-            var overallSum = 0;
-            var overallNo = 0;
-            var overallStarCount = 0;
+            var overallRate = 0;
 
             this.state.vendor.role.forEach(function(item) {
-                var starContent = []
-                var starCount = 0;
+                var rate = 0;
                 if(item.rate && item.rate.no) {
-                    starCount = parseInt(item.rate.sum) / parseInt(item.rate.no);
-                    overallSum += item.rate.sum;
-                    overallNo += item.rate.no;
-                }
-                for(var i = 0; i<5; i++) {
-                    if(i<starCount) {
-                        starContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
-                    }
-                    else {
-                        starContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
-                    }
+                    rate = parseFloat(item.rate.sum) / parseFloat(item.rate.no);
+                    overallRate += rate;
                 }
 
                 ratingContent.push(<tr>
                     <td className="text-center">{item.name}</td>
                     <td className="hg-td-60pt">
-                        {starContent}
+                        <RatingStar rate={rate} total="5"></RatingStar>
                     </td>
                 </tr>);
             })
 
-            overallStarCount = overallSum / overallNo;
-            for(var i = 0; i<5; i++) {
-                if(i<overallStarCount) {
-                    overallStarContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
-                }
-                else {
-                    overallStarContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
-                }
-            }
+            // not use at this moment, as there is only one role
+            overallStarContent = <RatingStar rate={overallRate} total="5"></RatingStar>;
         }
 
         // product rating
-        var productRatingContent = [];
-        var productRatingStarCount = 0;
+        var productRate = 0;
+        if(this.state.product.rate && this.state.product.rate.no > 0) {
+            productRate = parseFloat(this.state.product.rate.sum) / parseFloat(this.state.product.rate.no);
+        }
 
-        if(this.state.product.rate && this.state.product.rate.no) {
-            productRatingStarCount = parseInt(this.state.product.rate.sum) / parseInt(this.state.product.rate.no);
-        }
-        for(var i = 0; i<5; i++) {
-            if(i<productRatingStarCount) {
-                productRatingContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
-            }
-            else {
-                productRatingContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
-            }
-        }
 
         // vendor certificate
         var certificateContent = [];
@@ -459,26 +427,35 @@ var app = React.createClass({
 
         // footer
         var footerContent = "";
-        var favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._favProduct.bind(this,this.state.product.product_id)}>收藏</button>;
-        if(this.state.user.fav_list) {
-            for(var i=0; i<this.state.user.fav_list.product.length; i++) {
-                if(this.state.user.fav_list.product[i] == this.state.product.product_id) {
-                    favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._unFavProduct.bind(this,this.state.product.product_id)}>取消收藏</button>;
-                    break;
+        var favBtnContent = "";
+
+        if(this.state.product.vendor &&
+            this.state.product.vendor.vendor_id &&
+            this.state.product.vendor.vendor_id == "hg1") {
+            footerContent == "";
+        }
+        else {
+            favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._favProduct.bind(this,this.state.product.product_id)}>收藏</button>;
+            if(this.state.user.fav_list) {
+                for(var i=0; i<this.state.user.fav_list.product.length; i++) {
+                    if(this.state.user.fav_list.product[i] == this.state.product.product_id) {
+                        favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._unFavProduct.bind(this,this.state.product.product_id)}>取消收藏</button>;
+                        break;
+                    }
                 }
             }
-        }
-        if(this.props.isUser && this.state.product.status == 'published') {
-            footerContent = <footer className="footer">
-                <div className="container">
-                    <div className="row text-right">
-                        <div className="col-xs-12">
-                            {favBtnContent}
-                            <button className="btn btn-hd-blue text-muted" onClick={this._redirectToOrderCreation.bind(this,this.state.product.product_id)}>预订</button>
+            if(this.props.isUser && this.state.product.status == 'published') {
+                footerContent = <footer className="footer">
+                    <div className="container">
+                        <div className="row text-right">
+                            <div className="col-xs-12">
+                                {favBtnContent}
+                                <button className="btn btn-hd-blue text-muted" onClick={this._redirectToOrderCreation.bind(this,this.state.product.product_id)}>预订</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </footer>;
+                </footer>;
+            }
         }
 
         // qr code
@@ -515,6 +492,10 @@ var app = React.createClass({
                 }
                 break;
 
+            case Constants.STATE_COMMENT:
+                modalContent.push(<CommentList commentList={this.state.product.comment_list}></CommentList>);
+                break;
+
             default:
 
         }
@@ -531,7 +512,7 @@ var app = React.createClass({
                     <h4>{categoryContent}</h4>
 
                     <div className="row text-center">
-                        {productRatingContent}
+                        <RatingStar rate={productRate} total="5"></RatingStar>
                     </div>
 
                     <h2 className="voffset0"><strong>{this.state.product.title}</strong></h2>
@@ -717,6 +698,10 @@ var app = React.createClass({
             }
         }
         Actions.updateUserFav(newUser);
+    },
+
+    _triggerComment: function() {
+        Actions.triggerProductToComment();
     },
 
 });

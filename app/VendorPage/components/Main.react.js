@@ -6,18 +6,20 @@ var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
+var Constants = require('../constants/Constants');
 
 var Header = require('./../../Common/components/Header.react');
-var CommentItem = require('./../components/CommentItem.react');
+var CommentItem = require('../../Common/components/CommentItem.react');
+var RatingStar = require('../../Common/components/RatingStar.react');
 
 var mapconvertor = require('../../../util/mapconverter');
 
 var app = React.createClass({
 
-    getInitialState: function() {
-        return {
+    componentDidMount: function() {
+        this.setState({
             genQcode: true,
-        };
+        });
     },
 
     componentDidUpdate: function () {
@@ -42,8 +44,7 @@ var app = React.createClass({
         });
 
          // qr code
-
-        if(this.state.genQcode) {
+        if(this.state.genQcode && this.props.vendor.vendor_id) {
             $('#qrcode').qrcode({width: 150,height: 150,text: "http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorpageprecheck?vendor="+this.props.vendor.vendor_id+"_user"});
             this.state.genQcode = false;
         }
@@ -95,10 +96,24 @@ var app = React.createClass({
                 priceContent = smallPrice + '-' + bigPrice;
             }
 
+            // is on site
+            var isOnSiteStatus = "";
+            if(item.tag_list) {
+                for(var i=0; i<item.tag_list.length; i++) {
+                    if(item.tag_list[i] == "上门服务") {
+                        isOnSiteStatus = <span className="label btn-hd-blue btn-hd-active">上门服务</span>;
+                        break;
+                    }
+                }
+            }
+
             productListItemContent.push(
                 <li>
                     <div className="row">
-                        <div className="col-xs-6 text-left">{categoryContent}</div>
+                        <div className="col-xs-12 text-left">
+                            <span className="roffset5">{categoryContent}</span>
+                            {isOnSiteStatus}
+                        </div>
                     </div>
                     <div className="row text-left">
                         <div className="col-xs-9">
@@ -144,24 +159,15 @@ var app = React.createClass({
             this.props.vendor.role.forEach(function(roleItem) {
 
                 // vendor rating
-                var starContent = [];
-                var starCount = 0;
+                var rate = 0;
                 if(roleItem.rate && roleItem.rate.no && roleItem.rate.no > 0) {
-                    starCount = parseInt(roleItem.rate.sum) / parseInt(roleItem.rate.no);
-                }
-                for(var i = 0; i<5; i++) {
-                    if(i<starCount) {
-                        starContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
-                    }
-                    else {
-                        starContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
-                    }
+                    rate = parseFloat(roleItem.rate.sum) / parseFloat(roleItem.rate.no);
                 }
 
                 ratingContent.push(<tr>
                     <td className="text-center">{roleItem.name}</td>
                     <td className="hg-td-60pt">
-                        {starContent}
+                        <RatingStar rate={rate} total="5"></RatingStar>
                     </td>
                 </tr>);
 
@@ -228,7 +234,7 @@ var app = React.createClass({
                                 {commentItemContent}
                             </ul>
                             <div className="text-center">
-                                <button className="btn btn-hd-blue btn-sm">更多</button>
+                                <button className="btn btn-hd-blue btn-sm" onClick={this._triggerComment}>更多</button>
                             </div>
                         </div>
                     </div>
@@ -351,25 +357,34 @@ var app = React.createClass({
 
         // footer
         var footerContent = "";
-        var favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._favProduct.bind(this,this.props.vendor.vendor_id)}>收藏</button>;
-        if(this.props.user.fav_list) {
-            for(var i=0; i<this.props.user.fav_list.vendor.length; i++) {
-                if(this.props.user.fav_list.vendor[i] == this.props.vendor.vendor_id) {
-                    favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._unFavProduct}>取消收藏</button>;
-                    break;
+        var favBtnContent = "";
+
+        if(this.props.vendor &&
+            this.props.vendor.vendor_id &&
+            this.props.vendor.vendor_id == "hg1") {
+            footerContent == "";
+        }
+        else {
+            favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._favProduct.bind(this,this.props.vendor.vendor_id)}>收藏</button>;
+            if(this.props.user.fav_list) {
+                for(var i=0; i<this.props.user.fav_list.vendor.length; i++) {
+                    if(this.props.user.fav_list.vendor[i] == this.props.vendor.vendor_id) {
+                        favBtnContent = <button className="btn btn-hd-blue text-muted roffset5" onClick={this._unFavProduct}>取消收藏</button>;
+                        break;
+                    }
                 }
             }
-        }
-        if(this.props.isUser) {
-            footerContent = <footer className="footer">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-xs-12 text-right">
-                            {favBtnContent}
+            if(this.props.isUser) {
+                footerContent = <footer className="footer">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-xs-12 text-right">
+                                {favBtnContent}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </footer>;
+                </footer>;
+            }
         }
 
         return (
@@ -458,6 +473,10 @@ var app = React.createClass({
             }
         }
         Actions.updateUserFav(newUser);
+    },
+
+    _triggerComment: function() {
+        Actions.triggerCommentFromMain(this.props.vendor.vendor_id);
     },
 
 });

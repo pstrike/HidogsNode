@@ -1,22 +1,11 @@
 /** @jsx React.DOM */
 
 var React = require('react');
-var Actions = require('../actions/Actions');
+var RatingStar = require('./RatingStar.react');
 
 var app = React.createClass({
 
     render: function () {
-
-        var starContent = [];
-        var starCount = parseInt(this.props.star);
-        for(var i = 0; i<5; i++) {
-            if(i<starCount) {
-                starContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
-            }
-            else {
-                starContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
-            }
-        }
 
         return (
             <div>
@@ -29,7 +18,7 @@ var app = React.createClass({
                     <div className="col-xs-9">
                         <div className="row">
                             <div className="col-xs-6 text-left">
-                                {starContent}
+                                <RatingStar rate={this.props.star} total="5"></RatingStar>
                             </div>
                             <div className="col-xs-6 text-right">{this.props.createdTime}</div>
                         </div>
@@ -44,9 +33,6 @@ var app = React.createClass({
         );
     },
 
-    _onCancel: function () {
-        alert("return");
-    },
 });
 
 module.exports = app;

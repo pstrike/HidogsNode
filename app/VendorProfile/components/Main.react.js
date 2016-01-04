@@ -90,7 +90,7 @@ var app = React.createClass({
                         <label for="vendorMobile">个人主页图片</label>
                         {this.props.vendor.image_url_list ? this.props.vendor.image_url_list.map(function(item){
                             if(item.name == "" && item.image_url == "") {
-                                return "无内容";
+                                return <div>尚未设置图片</div>;
                             }
                             else {
                                 return <div>

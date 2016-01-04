@@ -209,7 +209,14 @@ var app = React.createClass({
                 Actions.triggerDetailFromNew(this.state.editCoupon);
             }
             else {
-                Actions.triggerDetaiSubmitFromEdit(this.state.editCoupon);
+                if(this.state.editCoupon.status == "deleted") {
+                    if(confirm("您确定要删除该优惠码吗?")) {
+                        Actions.triggerDetaiSubmitFromEdit(this.state.editCoupon);
+                    }
+                }
+                else {
+                    Actions.triggerDetaiSubmitFromEdit(this.state.editCoupon);
+                }
             }
         }
         else {

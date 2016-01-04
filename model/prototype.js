@@ -128,7 +128,7 @@ var Model = {
                 type: "",
             },
             tag_list: [],
-            duration: "",
+            duration: "0",
             address: {
                 country: "",
                 province: "",
@@ -146,7 +146,7 @@ var Model = {
             notice: "",
             exit_policy: {},
             status: "",
-            is_active: "",
+            is_active: true,
             image_url_list: [
                 {name: '', image_url: ''}
             ],
@@ -158,7 +158,7 @@ var Model = {
             commision_rate: "",
             sale_no: 0,
             variants: [],
-            comment_list: [],
+            //comment_list: [],
             comment_show: {},
             rate: {
                 sum: 0,
@@ -223,6 +223,7 @@ var Model = {
             },
             isOnSite: false,
             remark: "",
+            is_active: true,
             created_time: "",
             paid_time: "",
             confirmed_time: "",

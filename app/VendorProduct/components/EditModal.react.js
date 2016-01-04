@@ -58,9 +58,9 @@ var app = React.createClass({
         window.onpopstate = this._triggerCancel;
 
         // Set duation default option
-        if(!this.state.editProduct.duration) {
-            $("#durationDefaultOption").prop("selected", true)
-        }
+        //if(!this.state.editProduct.duration) {
+        //    $("#durationDefaultOption").prop("selected", true)
+        //}
 
         // handle bd auto complete
         var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
@@ -215,10 +215,10 @@ var app = React.createClass({
 
                 priceBasicContent.push(
                     <div className="row voffset10">
-                        <div className="col-xs-3 right-padding0"><input type="text" className="form-control simple-input" placeholder={unit} name={lowerName} value={item.lower} onChange={this.handleChange}/></div>
+                        <div className="col-xs-3 right-padding0"><input type="number" pattern="[0-9]*" className="form-control simple-input" placeholder={unit} name={lowerName} value={item.lower} onChange={this.handleChange}/></div>
                         <div className="col-xs-1 vcenter34 text-center left-padding0 right-padding0">至</div>
-                        <div className="col-xs-3 left-padding0"><input type="text" className="form-control simple-input" placeholder={unit} name={upperName} value={item.upper} onChange={this.handleChange}/></div>
-                        <div className="col-xs-5"><input type="text" className="form-control simple-input" placeholder="价格" name={priceName} value={item.price} onChange={this.handleChange}/></div>
+                        <div className="col-xs-3 left-padding0"><input type="number" pattern="[0-9]*" className="form-control simple-input" placeholder={unit} name={upperName} value={item.upper} onChange={this.handleChange}/></div>
+                        <div className="col-xs-5"><input type="number" pattern="[0-9]*" className="form-control simple-input" placeholder="价格" name={priceName} value={item.price} onChange={this.handleChange}/></div>
                     </div>
                 );
 
@@ -911,11 +911,18 @@ var app = React.createClass({
                 if(!priceReg.test(item.lower.trim())) {
                     isRangeNoInvalid = true;
                 }
+
+                // ensure upper > lower
+                if(priceReg.test(item.upper.trim()) && priceReg.test(item.lower.trim())) {
+                    if(parseFloat(item.upper) < parseFloat(item.lower)) {
+                        isRangeNoInvalid = true;
+                    }
+                }
             }
 
         })
         this.state.editProduct.price.additional.forEach(function(item){
-            if(!priceReg.test(item.price.trim())) {
+            if(item.price && !priceReg.test(item.price.trim())) {
                 isPriceInvalid = true;
             }
         })

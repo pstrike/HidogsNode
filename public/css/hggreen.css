@@ -33,6 +33,9 @@ body {
     color: #20af74;
 }
 
+.hg-navbar .navbar-text {
+    color: #20af74;
+}
 
 .blue-background-decoration {
     background: linear-gradient(to bottom,rgba(32,175,116,.15),rgba(237,255,248,0));

@@ -47,6 +47,12 @@ function triggerProductToExitPolicy() {
     Store.emitChange();
 };
 
+function triggerCommentFromProduct() {
+    _status = Constants.STATE_COMMENT;
+
+    Store.emitChange();
+}
+
 function updateUserFav(user) {
     _user = user;
     Store.emitChange();
@@ -58,6 +64,12 @@ function updateUserFavSuccessful() {
 
 function loadUserSuccessful(user) {
     _user = user;
+    Store.emitChange();
+};
+
+// Comment
+function triggerProductFromComment() {
+    _status = Constants.STATE_PRODUCT;
     Store.emitChange();
 };
 
@@ -149,7 +161,7 @@ AppDispatcher.register(function(action) {
             getMetaSuccess(meta);
             break;
         case Constants.ACTION_PRODUCT_TO_COMMENT:
-
+            triggerCommentFromProduct();
             break;
         case Constants.ACTION_PRODUCT_TO_AVAILABILITY:
 
@@ -178,7 +190,7 @@ AppDispatcher.register(function(action) {
 
         // Comment
         case Constants.ACTION_COMMENT_TO_PRODUCT:
-
+            triggerProductFromComment();
             break;
 
         // Availability

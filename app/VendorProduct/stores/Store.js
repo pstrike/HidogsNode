@@ -211,7 +211,7 @@ function triggerSettingToSettingEdit() {
 
 function saveRejectFlag(vendor) {
     _vendorProfile.setting.reject_today_flag = vendor.setting.reject_today_flag;
-    _vendorProfile.setting.reject_in_progress_flag = false;
+    //_vendorProfile.setting.reject_in_progress_flag = false;
 
     Store.emitChange();
 };

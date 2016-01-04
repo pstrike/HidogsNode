@@ -87,7 +87,7 @@ function triggerListFromDetail() {
 };
 
 function triggerEditFromDetail() {
-    _editCoupon = _coupon;
+    _editCoupon = JSON.parse(JSON.stringify(_coupon));
     _status = Constants.STATE_EDIT;
     _verifyMsg = [];
     Store.emitChange();
@@ -95,14 +95,29 @@ function triggerEditFromDetail() {
 
 // Edit
 function triggerDetailSubmitFromEdit(coupon) {
-    for(var i=0; i<_couponList.length; i++) {
-        if(_couponList[i].coupon_id == coupon.coupon_id) {
-            _couponList[i].code = coupon.code;
-            break;
+
+    if(coupon.status == "deleted") {
+        for(var i=0; i<_couponList.length; i++) {
+            if(_couponList[i].coupon_id == coupon.coupon_id) {
+                _couponList.splice(i,1);
+                break;
+            }
+
+            _coupon = {};
+            _status = Constants.STATE_LIST;
         }
     }
-    _coupon = coupon;
-    _status = Constants.STATE_DETAIL;
+    else {
+        for(var i=0; i<_couponList.length; i++) {
+            if(_couponList[i].coupon_id == coupon.coupon_id) {
+                _couponList[i].code = coupon.code;
+                break;
+            }
+        }
+        _coupon = coupon;
+        _status = Constants.STATE_DETAIL;
+    }
+
     Store.emitChange();
 };
 

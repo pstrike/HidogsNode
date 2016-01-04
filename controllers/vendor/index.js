@@ -179,3 +179,29 @@ exports.page = function(req, res, next){
             next();
     }
 };
+
+exports.otherget = function(req, res, next){
+    var type = req.params.vendor_id;
+
+    switch(type) {
+        case "comment":
+            var vendorId = req.query.vendorid;
+            var filter = {
+                'vendor.vendor_id': vendorId,
+                'status': 'completed',
+            }
+
+            operation.getObjectList(operation.getCollectionList().order, filter, req.projection, function(objectList) {
+                var commentList = objectList.map(function(item) {
+                    return item.comment;
+                });
+
+                res.send(commentList);
+            })
+
+            break;
+
+        default:
+            next();
+    }
+};

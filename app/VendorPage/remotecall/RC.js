@@ -23,7 +23,7 @@ var RemoteCall = {
 
     getProductList: function (vendorId) {
         var promise = new Promise(function(resolve, reject){
-            var url = APIUtils.makeUrl("/products?filter=vendor.vendor_id,"+vendorId+"&projection=product_id,title,category,price,sale_no");
+            var url = APIUtils.makeUrl("/products?filter=status,published,vendor.vendor_id,"+vendorId+"&projection=product_id,title,category,price,sale_no,tag_list");
             APIUtils.get(url, function(result) {
                 if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
@@ -42,6 +42,24 @@ var RemoteCall = {
     getUserPromise: function(id) {
         var promise = new Promise(function(resolve, reject){
             var url = APIUtils.makeUrl("/user/"+id+"?projection=user_id,fav_list");
+            APIUtils.get(url, function(result) {
+                if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
+                    reject(Error(result));
+                }
+                else {
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    },
+
+    getCommentListPromise: function(vendorId) {
+        var promise = new Promise(function(resolve, reject){
+            var url = APIUtils.makeUrl("/vendor/other/comment?vendorid="+vendorId);
             APIUtils.get(url, function(result) {
                 if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND

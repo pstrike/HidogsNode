@@ -12,6 +12,7 @@ var _status = "";
 // Store actions
 function initLoadCouponListSuccessful(couponList) {
     _couponList = couponList;
+    _status = Constants.STATE_COUPON_LIST;
     Store.emitChange();
 };
 

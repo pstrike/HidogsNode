@@ -3,6 +3,7 @@
 var React = require('react');
 var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
+var RatingStar = require('../../Common/components/RatingStar.react');
 
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
@@ -47,18 +48,9 @@ var app = React.createClass({
         }
 
         // product rating
-        var starContent = [];
-        var starCount = 0;
+        var rate = 0;
         if(this.props.product.rate && this.props.product.rate.no) {
-            starCount = parseInt(this.props.product.rate.sum) / parseInt(this.props.product.rate.no);
-        }
-        for(var i = 0; i<5; i++) {
-            if(i<starCount) {
-                starContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
-            }
-            else {
-                starContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
-            }
+            rate = parseFloat(this.props.product.rate.sum) / parseFloat(this.props.product.rate.no);
         }
 
         var distanceContent = "";
@@ -93,7 +85,7 @@ var app = React.createClass({
                     <div className="text-center">
                         <h3>{this.props.product.title}</h3>
                         <div className="row text-center voffset0">
-                            {starContent}
+                            <RatingStar rate={rate} total="5"></RatingStar>
                         </div>
                     </div>
                     <div className="voffset10">

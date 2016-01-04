@@ -32,8 +32,9 @@ var app = React.createClass({
         var tabs = $('.star-comment');
 
         tabs.click(function() {
-            tabs.removeClass('glyphicon-star');
-            tabs.removeClass('glyphicon-star-empty');
+            tabs.removeClass('fa-star');
+            tabs.removeClass('fa-star-o');
+            tabs.removeClass('star-yellow');
             var el = $(this);
 
 
@@ -43,10 +44,11 @@ var app = React.createClass({
                 var starId = "#star" + (i+1);
 
                 if(i > starNo-1) {
-                    $(starId).addClass('glyphicon-star-empty');
+                    $(starId).addClass('fa-star-o');
                 }
                 else {
-                    $(starId).addClass('glyphicon-star');
+                    $(starId).addClass('fa-star');
+                    $(starId).addClass('star-yellow');
                 }
 
             }
@@ -74,7 +76,7 @@ var app = React.createClass({
         if(this.props.verifyMsg.length > 0) {
             verifyMsgContent = <div className="text-right">
                 <p className="bg-danger text-danger verification-msg voffset30">
-                    <strong>请根据以下提示, 补充订单内容:</strong><br/>
+                    <strong>请根据以下提示, 修改/补充内容:</strong><br/>
                     {this.props.verifyMsg.map(function(item) {
                         return <span>{item}<br/></span>;
                     })}
@@ -96,11 +98,11 @@ var app = React.createClass({
                     <div className="form-group">
                         <label>您会给服务几颗星?(越多星代表越满意)</label>
                         <div className="row voffset15">
-                            <div className="col-xs-offset-1 col-xs-2"><span id="star1" className="glyphicon glyphicon-star-empty star-yellow star-comment text-center" aria-hidden="true" onClick={this._handleChange}></span></div>
-                            <div className="col-xs-2"><span id="star2" className="glyphicon glyphicon-star-empty star-yellow star-comment text-center" aria-hidden="true" onClick={this._handleChange}></span></div>
-                            <div className="col-xs-2"><span id="star3" className="glyphicon glyphicon-star-empty star-yellow star-comment text-center" aria-hidden="true" onClick={this._handleChange}></span></div>
-                            <div className="col-xs-2"><span id="star4" className="glyphicon glyphicon-star-empty star-yellow star-comment text-center" aria-hidden="true" onClick={this._handleChange}></span></div>
-                            <div className="col-xs-2"><span id="star5" className="glyphicon glyphicon-star-empty star-yellow star-comment text-center" aria-hidden="true" onClick={this._handleChange}></span></div>
+                            <div className="col-xs-offset-1 col-xs-2"><i id="star1" className="fa fa-star-o fa-3x star-comment" onClick={this._handleChange}></i></div>
+                            <div className="col-xs-2"><i id="star2" className="fa fa-star-o fa-3x star-comment" onClick={this._handleChange}></i></div>
+                            <div className="col-xs-2"><i id="star3" className="fa fa-star-o fa-3x star-comment" onClick={this._handleChange}></i></div>
+                            <div className="col-xs-2"><i id="star4" className="fa fa-star-o fa-3x star-comment" onClick={this._handleChange}></i></div>
+                            <div className="col-xs-2"><i id="star5" className="fa fa-star-o fa-3x star-comment" onClick={this._handleChange}></i></div>
                         </div>
                     </div>
 

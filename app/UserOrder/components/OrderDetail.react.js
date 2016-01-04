@@ -3,6 +3,8 @@
 var React = require('react');
 var HidogsConstants = require('../../Common/constants/HidogsConstants');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
+var RatingStar = require('../../Common/components/RatingStar.react');
+var CommentItem = require('../../Common/components/CommentItem.react');
 
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
@@ -237,67 +239,58 @@ var app = React.createClass({
         // Order Vendor
         var vendorRoleContent = [];
         var vendorRoleSummaryContent = [];
+        var vendorCertificateContent = [];
         if(this.props.vendor.role) {
             var roleCount = 0;
             var totalRate = 0;
 
             this.props.vendor.role.forEach(function(item) {
                 roleCount++;
-                totalRate += parseInt(item.rate ? item.rate : 0);
+                totalRate += item.rate.no ? parseFloat(item.rate.sum) / parseFloat(item.rate.no) : 0;
 
-                var starContent = [];
-                var starCount = parseInt(item.rate ? item.rate : 0);
-                for(var i = 0; i<5; i++) {
-                    if(i<starCount) {
-                        starContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
-                    }
-                    else {
-                        starContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
-                    }
+                var rate = 0;
+                if(item.rate && item.rate.no && item.rate.no > 0) {
+                    rate = parseFloat(item.rate.sum) / parseFloat(item.rate.no);
                 }
 
                 vendorRoleContent.push(<tr>
                     <td className="text-center">{item.name}</td>
                     <td className="hg-td-60pt">
-                        {starContent}
+                        <RatingStar rate={rate} total="5"></RatingStar>
                     </td>
                 </tr>);
+
+                item.certificate_list.forEach(function(certificateItem) {
+                    if(certificateItem.name) {
+                        if(vendorCertificateContent.length == 0) {
+                            vendorCertificateContent.push(<tr>
+                                <td className="text-center">专业认证</td>
+                                <td className="hg-td-60pt">{certificateItem.name}</td>
+                            </tr>);
+                        }
+                        else {
+                            vendorCertificateContent.push(<tr>
+                                <td className="text-center"></td>
+                                <td className="hg-td-60pt">{certificateItem.name}</td>
+                            </tr>);
+                        }
+                    }
+                })
             })
 
-            var summaryStarContent = [];
-            var summaryStarCount = parseInt(totalRate / roleCount);
-            for(var i = 0; i<5; i++) {
-                if(i<summaryStarCount) {
-                    summaryStarContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
-                }
-                else {
-                    summaryStarContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
-                }
-            }
-            vendorRoleSummaryContent.push(<tr>
-                <td className="text-center">综合</td>
-                <td className="hg-td-60pt">
-                    {summaryStarContent}
-                </td>
-            </tr>);
+            //vendorRoleSummaryContent.push(<tr>
+            //    <td className="text-center">综合</td>
+            //    <td className="hg-td-60pt">
+            //        <RatingStar rate={totalRate} total="5"></RatingStar>
+            //    </td>
+            //</tr>);
         }
 
         // Product Comment
         var productCommentContent = "";
         if (this.props.order.comment) {
             var comment = this.props.order.comment;
-            var comment_created_time = new Date(comment.created_time);
-
-            var starContent = [];
-            var starCount = parseInt(comment.content.rate);
-            for (var i = 0; i < 5; i++) {
-                if (i < starCount) {
-                    starContent.push(<span className="glyphicon glyphicon-star star-yellow"></span>);
-                }
-                else {
-                    starContent.push(<span className="glyphicon glyphicon-star-empty star-yellow"></span>);
-                }
-            }
+            var commentCreatedTime = new Date(comment.created_time);
 
             productCommentContent = <div>
                 <div className="row text-center voffset30">
@@ -308,29 +301,12 @@ var app = React.createClass({
 
                 <div className="row voffset15">
                     <div className="container">
-
-                        <div className="row">
-                            <div className="col-xs-3 text-center">
-                                <img className="user-icon-small img-circle"
-                                     src={comment.author.head_image_url}/>
-
-                                <p>{comment.author.nick_name}</p>
-                            </div>
-                            <div className="col-xs-9">
-                                <div className="row">
-                                    <div className="col-xs-6 text-left">
-                                        {starContent}
-                                    </div>
-                                    <div
-                                        className="col-xs-6 text-right">{comment_created_time.toLocaleDateString()}</div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-xs-12 text-left">
-                                        <p>{comment.content.text ? comment.content.text : "无评论"}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <CommentItem
+                            author={comment.author.nick_name}
+                            createdTime={formatdatetime.formatDate(commentCreatedTime)}
+                            star={comment.content.rate}
+                            authorImage={comment.author.head_image_url}
+                            content={comment.content.text}></CommentItem>
 
                     </div>
                 </div>
@@ -338,12 +314,21 @@ var app = React.createClass({
         }
 
         // Coupon
-        var couponContent = "";
+        var couponContent = [];
         if(this.props.order.price.coupon && this.props.order.price.coupon.title) {
-                couponContent = <tr>
+                couponContent.push(<tr>
                     <td>优惠码</td>
                     <td colSpan="2">{this.props.order.price.coupon.title}</td>
-                </tr>;
+                </tr>);
+        }
+
+        // Remark
+        var remarkContent = [];
+        if(this.props.order.remark && this.props.order.remark) {
+            remarkContent.push(<tr>
+                <td>备注</td>
+                <td colSpan="2">{this.props.order.remark}</td>
+            </tr>);
         }
 
         // On Site Flag
@@ -382,7 +367,7 @@ var app = React.createClass({
                         </tbody>
                     </table>
 
-                    <button className="btn btn-hd-blue btn-long voffset15">查看</button>
+                    <button className="btn btn-hd-blue btn-long voffset15" onClick={this._navToProductPage}>查看</button>
 
                     <hr className="voffset30"/>
 
@@ -402,10 +387,7 @@ var app = React.createClass({
                                 <tbody>
                                 {vendorRoleSummaryContent}
                                 {vendorRoleContent}
-                                <tr>
-                                    <td className="text-center">专业认证</td>
-                                    <td className="hg-td-60pt">CKU A级美容师</td>
-                                </tr>
+                                {vendorCertificateContent}
                                 <tr>
                                     <td></td>
                                     <td></td>
@@ -413,7 +395,7 @@ var app = React.createClass({
                                 </tbody>
                             </table>
                             <div className="text-center voffset15">
-                                <button className="btn btn-hd-blue btn-long">查看</button>
+                                <button className="btn btn-hd-blue btn-long" onClick={this._navToVendorPage}>查看</button>
                             </div>
                         </div>
                     </div>
@@ -435,6 +417,7 @@ var app = React.createClass({
                                     <td colSpan="2">{GenOrderNo.orderno(this.props.order.order_id, this.props.order.created_time)}</td>
                                 </tr>
                                 {couponContent}
+                                {remarkContent}
                                 {basicPriceContent}
                                 {additionalPriceContent}
                                 <tr>
@@ -523,6 +506,14 @@ var app = React.createClass({
             Actions.refundOrder();
         }
 
+    },
+
+    _navToVendorPage: function(vendorId) {
+        window.location = "http://www.hidogs.cn/vendor/view/vendorpageprecheck?vendor="+this.props.order.vendor.vendor_id;
+    },
+
+    _navToProductPage: function(productId) {
+        window.location = "http://www.hidogs.cn/product/view/userproductprecheck?product="+this.props.product.product_id;
     },
 
 });

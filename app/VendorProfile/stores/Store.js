@@ -10,12 +10,13 @@ var APVTO = require('../../../util/assignpathvaluetoobject');
 var _vendor = {};
 var _editVendor = {};
 var _verifyMsg = [];
-var _status = Constants.STATE_VIEW;
+var _status = "";
 var _wxSign = {};
 
 // Store actions
 function initVendor(vendor) {
     _vendor = vendor;
+    _status = Constants.STATE_VIEW;
 
     Store.emitChange();
 };
