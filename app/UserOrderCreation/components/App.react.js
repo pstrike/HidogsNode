@@ -342,7 +342,7 @@ var app = React.createClass({
                             <label>服务达人</label><br/>
                             <img src={this.state.product.vendor ? this.state.product.vendor.head_image_url : ""}
                                  className="img-circle user-icon-normal roffset5"/>
-                            <span>{this.state.product.vendor ? this.state.product.vendor.vendor_name : ""}</span>
+                            <span>{this.state.product.vendor ? this.state.product.vendor.nick_name : ""}</span>
                         </div>
                     </div>
 

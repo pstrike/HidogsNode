@@ -152,7 +152,7 @@ var Model = {
             ],
             vendor: {
                 vendor_id: "",
-                vendor_name: "",
+                nick_name: "",
                 head_image_url: "",
             },
             commision_rate: "",
@@ -176,8 +176,8 @@ var Model = {
             order_id: "",
             product: {
                 product_id: "",
-                product_title: "",
-                product_category: {
+                title: "",
+                category: {
                     product_meta_category_id: "",
                     name: "",
                     slug: "",
@@ -187,13 +187,13 @@ var Model = {
             },
             user: {
                 user_id: "",
-                user_name: "",
-                user_head_image_url: "",
+                nick_name: "",
+                head_image_url: "",
             },
             vendor: {
                 vendor_id: "",
-                vendor_name: "",
-                vendor_head_image_url: "",
+                nick_name: "",
+                head_image_url: "",
             },
             status: "tbpaid",
             price: {
@@ -220,6 +220,7 @@ var Model = {
                 start_time: "",
                 end_time: "",
                 booked_date: "",
+                is_rescheduled: false,
             },
             isOnSite: false,
             remark: "",

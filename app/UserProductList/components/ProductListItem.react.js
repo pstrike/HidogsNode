@@ -81,7 +81,7 @@ var app = React.createClass({
         return (
                 <div className="text-center">
                     <img src={this.props.product.vendor.head_image_url} className="center-block img-responsive img-circle user-icon-header voffset10"/>
-                    <div className="text-center voffset2">{this.props.product.vendor.vendor_name}</div>
+                    <div className="text-center voffset2">{this.props.product.vendor.nick_name}</div>
                     <div className="text-center">
                         <h3>{this.props.product.title}</h3>
                         <div className="row text-center voffset0">

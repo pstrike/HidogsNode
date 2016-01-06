@@ -19,15 +19,40 @@ var _status = "";
 function loadOrderListSuccessful(orderList) {
     _orderListData = orderList;
 
-    _orderListData.forEach(function(item) {
-        if(item.status != 'tbpaid' && item.status != 'cancelled' && item.status != 'refund') {
-            _orderList.push(item);
-        }
-    })
+    _orderList = sortAndFilterOrderList(_orderListData);
 
     _status = Constants.VENDOR_ORDER_LIST;
 
     Store.emitChange();
+};
+
+// Util
+function sortAndFilterOrderList(orderList) {
+    var lowOrderList = [];
+    var highOrderList = [];
+    var resultList = [];
+
+    orderList.forEach(function(order) {
+        order.sort_time = new Date(order.booked_time.start_time);
+
+        if(order.status == 'completed'
+            || order.status == 'tbcommented') {
+            lowOrderList.push(order);
+        }
+        else if(order.status == 'tbconfirmed'
+            || order.status == 'tbserviced'){
+            highOrderList.push(order);
+        }
+    })
+
+    lowOrderList.sort(function(a,b){return a.sort_time<b.sort_time?1:-1});
+    highOrderList.sort(function(a,b){return a.sort_time>b.sort_time?1:-1});
+
+    resultList = highOrderList.concat(lowOrderList);
+
+    console.log(resultList);
+
+    return resultList;
 };
 
 // List
@@ -155,6 +180,13 @@ function codeSubmitSuccessful(order) {
 
 function codeProductUpdateSuccessful(order, product) {
     //do nothing
+}
+
+function codeInvalid(){
+    _verifyMsg = [];
+    _verifyMsg.push("-抱歉, 您输入的优惠码有误.");
+
+    Store.emitChange();
 }
 
 // Reject
@@ -307,6 +339,10 @@ AppDispatcher.register(function(action) {
 
         case Constants.CODE_PRODUCT_UPDATE_SUCCESSFUL:
             codeProductUpdateSuccessful(action.order, action.product);
+            break;
+
+        case Constants.CODE_INVALID:
+            codeInvalid();
             break;
 
         // Reject

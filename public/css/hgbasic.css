@@ -145,7 +145,11 @@ textarea {
 }
 
 .white_text {
-    color: white;
+    color: whi;
+}
+
+.green_text {
+    color: #20af74;
 }
 
 .light_text {

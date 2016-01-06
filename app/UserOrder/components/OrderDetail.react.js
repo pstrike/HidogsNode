@@ -30,6 +30,16 @@ var app = React.createClass({
 
     render: function() {
 
+        // Order Date
+        var orderDate = new Date(this.props.order.booked_time.booked_date);
+        var orderStartTime = new Date(this.props.order.booked_time.start_time);
+        var orderEndTime = new Date(this.props.order.booked_time.end_time);
+        var bookedTimeContent = formatdatetime.formatDate(orderDate) + " "
+            + formatdatetime.formatTime(orderStartTime)
+            + "-"
+            + formatdatetime.formatTime(orderEndTime);
+
+        // status feature
         var tint = "";
         var status = "";
         var icon = "";
@@ -57,35 +67,28 @@ var app = React.createClass({
                 }
                 break;
 
-            case "tbconfirmed":
-                status = "待使用";
-                tint = "hg-green-section";
-                icon = <span className="glyphicon glyphicon-ok"></span>;
-                footerLeftBtnContent.push(<button className="btn btn-hd-blue text-muted roffset5" onClick={this._refundOrder}>申请退款</button>);
-                orderCodeContent = <div>
-                    <hr className="voffset30"/>
-
-                    <div className="row text-center voffset30">
-                        <span className="glyphicon glyphicon-tag hg-session-header-icon"></span>
-                        <div className="hg-session-header-title">订单使用码</div>
-                    </div>
-                    <table className="hg-table voffset15">
-                        <tbody>
-                        <tr>
-                            <td>
-                                <strong>{this.props.order.order_id.substring(0,8)}</strong><br/>
-                                <i><small>(使用服务时,请向达人出示该使用码.请勿在其它场合泄漏.)</small></i>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div>;
+            case "tbpaidconfirmed":
+                status = "支付进行中";
+                tint = "hg-yellow-section";
+                icon = <span className="glyphicon glyphicon-share-alt"></span>;
+                vendorMobileContent = "";
                 break;
 
+            case "payfail":
+                status = "支付失败";
+                tint = "hg-yellow-section";
+                icon = <span className="glyphicon glyphicon-warning-sign"></span>;
+                vendorMobileContent = "";
+                footerLeftBtnContent.push(<button className="btn btn-hd-blue text-muted roffset5" onClick={this._cancelOrder}>取消订单</button>);
+                if(this.props.order.tmp_show_reschedule_btn) {
+                    footerBtnContent.push(<button id='rescheduleBtn' className="btn btn-hd-blue text-muted" onClick={this._reschedule}>调整预订时间</button>);
+                }
+                else {
+                    footerBtnContent.push(<button id="paybtn" className="btn btn-hd-blue text-muted" onClick={this._payOrder}>支付</button>);
+                }
+                break;
+
+            case "tbconfirmed":
             case "tbserviced":
                 status = "待使用";
                 tint = "hg-green-section";
@@ -102,7 +105,7 @@ var app = React.createClass({
                         <tbody>
                         <tr>
                             <td>
-                                <strong>{this.props.order.order_id.substring(0,8)}</strong><br/>
+                                <strong>{this.props.order.code ? this.props.order.code : ""}</strong><br/>
                                 <i><small>(使用服务时,请向达人出示该使用码.请勿在其它场合泄漏.)</small></i>
                             </td>
                         </tr>
@@ -114,6 +117,22 @@ var app = React.createClass({
                     </table>
                 </div>
 
+                break;
+
+            case "overdue":
+                status = "已过期";
+                tint = "hg-red-section";
+                icon = <span className="glyphicon glyphicon-time"></span>;
+                footerLeftBtnContent.push(<button className="btn btn-hd-blue text-muted roffset5" onClick={this._refundOrder}>申请退款</button>);
+
+                if(!this.props.order.booked_time.is_rescheduled) {
+                    footerBtnContent.push(<button id='rescheduleBtn' className="btn btn-hd-blue text-muted" onClick={this._reschedule}>调整预订时间</button>);
+                }
+                else {
+                    rejectReasonContent = <div>
+                        <small><i>订单再次过期(已修改过预约时间),订单失效. 您可申请退款.</i></small><br/>
+                    </div>;
+                }
                 break;
 
             case "tbcommented":
@@ -155,20 +174,20 @@ var app = React.createClass({
 
         // product category
         var categoryContent = "";
-        var categoryList = this.props.order.product.product_category.path_name.split(",");
+        var categoryList = this.props.order.product.category.path_name.split(",");
         categoryList.forEach(function(category, index) {
             if(index > 1) {
                 categoryContent = categoryContent + category + ">";
             }
         })
-        categoryContent = categoryContent.substring(0,categoryContent.length-1) + this.props.order.product.product_category.name;
+        categoryContent = categoryContent.substring(0,categoryContent.length-1) + this.props.order.product.category.name;
 
         // order basic price
         var basicPriceContent = [];
         this.props.order.price.basic.forEach(function(item, index){
             if(index == 0) {
                 basicPriceContent.push(<tr>
-                    <td>{this.props.order.product.product_category.name}</td>
+                    <td>{this.props.order.product.category.name}</td>
                     <td>{item.name}</td>
                     <td>{item.price}元</td>
                 </tr>);
@@ -200,15 +219,6 @@ var app = React.createClass({
                 </tr>);
             }
         }.bind(this))
-
-        // Order Date
-        var orderDate = new Date(this.props.order.booked_time.booked_date);
-        var orderStartTime = new Date(this.props.order.booked_time.start_time);
-        var orderEndTime = new Date(this.props.order.booked_time.end_time);
-        var bookedTimeContent = formatdatetime.formatDate(orderDate) + " "
-                                + formatdatetime.formatTime(orderStartTime)
-                                + "-"
-                                + formatdatetime.formatTime(orderEndTime);
 
         // product address
         var addressContent = "";
@@ -351,7 +361,7 @@ var app = React.createClass({
                     <span className="glyphicon glyphicon-certificate hg-session-header-icon"></span>
 
                     <div className="hg-session-header-title">服务项目</div>
-                    <h3>{this.props.order.product.product_title}</h3>
+                    <h3>{this.props.order.product.title}</h3>
 
                     <p>{categoryContent} {onSiteFlag}</p>
                     <table className="hg-table text-left voffset15">

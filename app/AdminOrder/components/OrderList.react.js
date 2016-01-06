@@ -65,9 +65,9 @@ var app = React.createClass({
                             return <tr>
                                 <td>{GenOrderNo.orderno(item.order_id, item.created_time)}</td>
                                 <td>{orderDateContent}</td>
-                                <td>{item.product.product_title}</td>
-                                <td>{item.vendor.vendor_name}</td>
-                                <td>{item.user.user_name}</td>
+                                <td>{item.product.title}</td>
+                                <td>{item.vendor.nick_name}</td>
+                                <td>{item.user.nick_name}</td>
                                 <td>{item.price.total}</td>
                                 <td>{item.status}</td>
                             </tr>;

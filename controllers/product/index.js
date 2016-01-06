@@ -9,28 +9,20 @@ var React = require('react'),
 exports.engine = 'ejs';
 
 exports.show = function(req, res, next){
-    /*
-    db.get().collection('product').find({"_id":req.params.product_id}, req.projection).toArray(function(err, docs) {
-        var availability = [
-            {begin: "201010100900", end: "201010101000"},
-            {begin: "201010101000", end: "201010101100"},
-            {begin: "201010101100", end: "201010101200"},
-        ];
-        docs[0].availability = availability;
-        res.send(docs[0]);
-    });
-    */
-    operation.getObject(operation.getCollectionList().product, req.params.product_id, req.projection, function(object) {
-        res.send(object);
+    operation.getObject(operation.getCollectionList().product, req.params.product_id, req.projection, function(product) {
+        if(product) {
+            supplementVendorRefValue([product], function(updatedProductList) {
+                res.send(updatedProductList[0]);
+            })
+        }
+        else {
+            next();
+        }
+
     })
 };
 
 exports.list = function(req, res, next){
-    /*
-    db.get().collection('product').find(req.filter, req.projection).toArray(function(err, docs) {
-        res.send(docs);
-    });
-    */
 
     var filter = {};
     if(req.filter) {
@@ -52,30 +44,14 @@ exports.list = function(req, res, next){
         filter['$or'] = orList;
     }
 
-    operation.getObjectList(operation.getCollectionList().product, filter, req.projection, function(objectList) {
-        res.send(objectList);
+    operation.getObjectList(operation.getCollectionList().product, filter, req.projection, function(productList) {
+        supplementVendorRefValue(productList, function(updatedProductList) {
+            res.send(updatedProductList);
+        })
     })
 };
 
 exports.update = function(req, res, next){
-    /*
-    if(req.body) {
-        db.get().collection('product').updateOne(
-            {"_id": req.body._id},
-            {
-                $set: req.body,
-                $currentDate: { "modified_time": true }
-            }, function (err, result) {
-                if(err) {
-                    console.log("[DB Err]"+err);
-                    next(err);
-                }
-                else {
-                    res.send({result: "success"});
-                }
-        });
-    }
-    */
 
     if(req.body) {
         operation.updateObject(operation.getCollectionList().product, req.body, function(result) {
@@ -88,20 +64,6 @@ exports.update = function(req, res, next){
 };
 
 exports.insert = function (req, res, next) {
-    /*
-    if (req.body) {
-        db.get().collection('product').insertOne(req.body, function (err, result) {
-            if (err) {
-                console.log("[DB Err]" + err);
-                next(err);
-            }
-            else {
-                console.log("Inserted a document " + req.body.name + " into the product collection.");
-                res.send(result.ops[0]);
-            }
-        });
-    }
-    */
 
     if(req.body) {
         operation.insertObject(operation.getCollectionList().product, req.body, function(result) {
@@ -122,15 +84,6 @@ exports.page = function(req, res, next){
             //var reactHtml = React.renderToString(VendorProduct({}));
             // Output html rendered by react
             //res.render('vendorproduct.ejs', {reactOutput: reactHtml});
-
-            // for local testing
-            //req.session.current_user = {
-            //    vendor_id: "d18c4e5c-6f49-7f82-7d49-db362c64cb03",
-            //    role: "grooming",
-            //    head_image_url: "http://wx.qlogo.cn/mmopen/ajNVdqHZLLAKwztbcTspbibFnCLP5D5eToEsia8SZXvjHu0swsd455HIcl5hxzK3jREKYhEqykVFYYhZZI7FZOgg/0",
-            //    nick_name: "one_pan",
-            //    status: "approved"
-            //};
 
             res.render('vendorproduct.ejs');
             //res.render('index.ejs');
@@ -397,7 +350,7 @@ exports.otherget = function(req, res, next){
                             operation.getObjectList(operation.getCollectionList().order, {
                                     'vendor.vendor_id': inputVendorId,
                                     'booked_time.start_time': {$gte: inputCheckStartTime, $lte: inputCheckEndTime},
-                                    $or: [ { status: "tbconfirmed" }, { status: "tbserviced" }, { status: "tbcommented" }, { status: "completed" } ],
+                                    $or: [ { status: "tbconfirmed" }, { status: "tbserviced" }, { status: "tbcommented" }, { status: "completed" }, { status: "tbpaidconfirmed" } ],
                                 }, {}, function(orderList) {
 
                                 inputOrderList = orderList;
@@ -582,6 +535,7 @@ exports.otherget = function(req, res, next){
                             }
                         },
                         'category.product_meta_category_id': category,
+                        'vendor.vendor_id':{$ne: 'hg1'}, // exlcude admin vendor product
                     }
 
                     operation.getObjectList(operation.getCollectionList().product, filter, req.projection, function(objectList) {
@@ -595,12 +549,14 @@ exports.otherget = function(req, res, next){
                         }
                     })},
                 function(){
-                    var result = {
-                        distance: distance,
-                        productList: productList,
-                    };
+                    supplementVendorRefValue(productList, function(updatedProductList) {
+                        var result = {
+                            distance: distance,
+                            productList: updatedProductList,
+                        };
 
-                    res.send(result);
+                        res.send(result);
+                    });
                 }
             );
 
@@ -638,20 +594,50 @@ exports.otherget = function(req, res, next){
                     return {product_id: item.product_id}
                 })
 
-                filter = {
-                    $or: orList,
+                if(orList.length > 0) {
+                    filter = {
+                        $or: orList,
+                    }
+
+                    operation.getObjectList(operation.getCollectionList().product, filter, req.projection, function(productList) {
+
+                        supplementVendorRefValue(productList, function(updatedProductList) {
+                            var result = {
+                                distance: 0,
+                                productList: updatedProductList,
+                            };
+
+                            res.send(result);
+                        });
+
+                    })
                 }
-
-                operation.getObjectList(operation.getCollectionList().product, filter, req.projection, function(objectList) {
-
+                else {
                     var result = {
                         distance: 0,
-                        productList: objectList,
+                        productList: [],
                     };
 
                     res.send(result);
-                })
+                }
 
+            })
+
+            break;
+
+        case "comment":
+            var productId = req.query.productid;
+            var filter = {
+                'product.product_id': productId,
+                'status': 'completed',
+            }
+
+            operation.getObjectList(operation.getCollectionList().order, filter, req.projection, function(objectList) {
+                var commentList = objectList.map(function(item) {
+                    return item.comment;
+                });
+
+                res.send(commentList);
             })
 
             break;
@@ -678,4 +664,60 @@ function _formatDateToString(date) {
     }
 
     return dateItemString
+};
+
+function supplementVendorRefValue(productList, callback) {
+
+    var index = 0;
+    var isVendorReady;
+    var isCategoryReady;
+    var i;
+
+    if (productList.length > 0 && (productList[0].vendor || productList[0].category)) {
+
+        asyncloop.asyncLoop(productList.length, function (loop) {
+                i = index++;
+
+                // init flag
+                productList[i].vendor ? isVendorReady = false : isVendorReady = true;
+                productList[i].category ? isCategoryReady = false : isCategoryReady = true;
+
+                if(!isVendorReady) {
+                    operation.getObject(operation.getCollectionList().vendor, productList[i].vendor.vendor_id, {}, function (vendor) {
+                        for (var key in productList[i].vendor) {
+                            productList[i].vendor[key] = vendor[key];
+                        }
+
+                        isVendorReady = true;
+
+                        if(isVendorReady && isCategoryReady) {
+                            loop.next()
+                        }
+                    })
+                }
+
+                if(!isCategoryReady) {
+                    operation.getObject(operation.getCollectionList().product_meta_category, productList[i].category.product_meta_category_id, {}, function (category) {
+                        for (var key in productList[i].category) {
+                            productList[i].category[key] = category[key];
+                        }
+
+                        isCategoryReady = true;
+
+                        if(isVendorReady && isCategoryReady) {
+                            loop.next()
+                        }
+                    })
+                }
+
+            },
+            function () {
+                callback(productList);
+            }
+        );
+    }
+    else {
+        callback(productList);
+    }
+
 };

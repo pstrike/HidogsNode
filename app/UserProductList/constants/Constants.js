@@ -7,6 +7,10 @@ module.exports = keyMirror({
     INIT_FAIL: null,
     INIT_LOCATION: null,
 
+    TRIGGER_MODIFY_LOCATION: null,
+    SUBMIT_MODIFY_LOCATION: null,
+    CANCEL_MODIFY_LOCATION: null,
+
     // sort
     SORT_SCORE: null,
     SORT_SALE_NO: null,
@@ -18,8 +22,9 @@ module.exports = keyMirror({
     ACTION_GET_WX_SIGNATURE_FAIL: null,
 
     // states
-    STATE_INIT_LOCATION: null,
-    STATE_INIT_PRODUCT_LIST: null,
+    //STATE_INIT_LOCATION: null,
+    //STATE_INIT_PRODUCT_LIST: null,
     STATE_PRODUCT_LIST: null,
+    STATE_MODIFY_LOCATION: null,
 
 });

@@ -50,6 +50,25 @@ var Actions = {
         });
     },
 
+    // Modify Location
+    triggerModifyLocationFromList: function() {
+        AppDispatcher.dispatch({
+            actionType: Constants.TRIGGER_MODIFY_LOCATION,
+        });
+    },
+
+    submitModifyLocation: function() {
+        AppDispatcher.dispatch({
+            actionType: Constants.SUBMIT_MODIFY_LOCATION,
+        });
+    },
+
+    cancelModifyLocation: function() {
+        AppDispatcher.dispatch({
+            actionType: Constants.CANCEL_MODIFY_LOCATION,
+        });
+    },
+
     // Sort
     sortByScore: function() {
         AppDispatcher.dispatch({

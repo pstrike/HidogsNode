@@ -7,9 +7,20 @@ var RC = require('../remotecall/RC');
 var Actions = {
 
     // Product
-    triggerProductToComment: function() {
+    triggerProductToComment: function(productId) {
         AppDispatcher.dispatch({
             actionType: Constants.ACTION_PRODUCT_TO_COMMENT,
+        });
+
+        RC.getCommentListPromise(productId).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_COMMENT_LOAD_COMMENT_SUCCSSFUL,
+                payload: payload,
+            });
+        }, function (err) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_COMMENT_LOAD_COMMENT_FAIL,
+            });
         });
     },
 
@@ -57,6 +68,13 @@ var Actions = {
         }).then(function (payload) { // load product meta
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_PRODUCT_LOAD_META_SUCCESSFUL,
+                payload: payload,
+            });
+
+            return RC.getProductAvailabilityPromise(productId);
+        }).then(function (payload) { // load product availability
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_PRODUCT_LOAD_AVAILABILITY_SUCCESSFUL,
                 payload: payload,
             });
         }, function (err) {

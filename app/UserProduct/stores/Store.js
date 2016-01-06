@@ -7,11 +7,12 @@ var CHANGE_EVENT = 'change';
 
 // Store State
 var _product = {};
-var _availability = {};
 var _vendor = {};
 var _productMeta = [];
 var _status = "";
 var _user = {};
+var _commentList = [];
+var _availabilityList = [];
 
 // Product
 function getProductSuccess(product) {
@@ -48,10 +49,18 @@ function triggerProductToExitPolicy() {
 };
 
 function triggerCommentFromProduct() {
+    _commentList = [];
+    _commentList.push(_product.comment_show);
     _status = Constants.STATE_COMMENT;
 
     Store.emitChange();
-}
+};
+
+function triggerAvailabilityFromProduct() {
+    _status = Constants.STATE_AVAILABILITY;
+
+    Store.emitChange();
+};
 
 function updateUserFav(user) {
     _user = user;
@@ -70,6 +79,22 @@ function loadUserSuccessful(user) {
 // Comment
 function triggerProductFromComment() {
     _status = Constants.STATE_PRODUCT;
+    Store.emitChange();
+};
+
+function loadCommentSuccessful(commentList) {
+    _commentList = commentList;
+    Store.emitChange();
+};
+
+// Availability
+function triggerProductFromAvailability() {
+    _status = Constants.STATE_PRODUCT;
+    Store.emitChange();
+};
+
+function loadAvailabilitySuccessful(availabilityList) {
+    _availabilityList = availabilityList;
     Store.emitChange();
 };
 
@@ -103,10 +128,6 @@ var Store = assign({}, EventEmitter.prototype, {
         return _status;
     },
 
-    getAvailability: function() {
-        return _availability;
-    },
-
     getVendor: function() {
         return _vendor;
     },
@@ -117,6 +138,14 @@ var Store = assign({}, EventEmitter.prototype, {
 
     getUser: function() {
         return _user;
+    },
+
+    getCommentList: function() {
+        return _commentList;
+    },
+
+    getAvailabilityList: function() {
+        return _availabilityList;
     },
 
     emitChange: function() {
@@ -164,7 +193,7 @@ AppDispatcher.register(function(action) {
             triggerCommentFromProduct();
             break;
         case Constants.ACTION_PRODUCT_TO_AVAILABILITY:
-
+            triggerAvailabilityFromProduct();
             break;
         case Constants.ACTION_PRODUCT_TO_ORDER_CREATION:
 
@@ -193,9 +222,17 @@ AppDispatcher.register(function(action) {
             triggerProductFromComment();
             break;
 
-        // Availability
-        case Constants.ACTION_AVAILABILITY_TO_PRODUCT:
+        case Constants.ACTION_COMMENT_LOAD_COMMENT_SUCCSSFUL:
+            loadCommentSuccessful(JSON.parse(action.payload.response));
+            break;
 
+        // Availability
+        case Constants.ACTION_PRODUCT_LOAD_AVAILABILITY_SUCCESSFUL:
+            loadAvailabilitySuccessful(JSON.parse(action.payload.response));
+            break;
+
+        case Constants.ACTION_AVAILABILITY_TO_PRODUCT:
+            triggerProductFromAvailability();
             break;
 
         // Order Creation

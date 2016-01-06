@@ -49,7 +49,7 @@ var app = React.createClass({
                 <div className="container">
                     <div className="row">
                         <div className="col-xs-12 text-right">
-                            <button className="btn btn-hd-blue text-muted roffset5">更改地点</button>
+                            <button className="btn btn-hd-blue text-muted roffset5" onClick={this.modifyLocation}>更改地点</button>
                         </div>
                     </div>
                 </div>
@@ -109,6 +109,10 @@ var app = React.createClass({
 
     sortByPrice: function() {
         Actions.sortByPrice();
+    },
+
+    modifyLocation: function() {
+        Actions.triggerModifyLocationFromList();
     },
 
 });

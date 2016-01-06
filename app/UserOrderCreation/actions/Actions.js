@@ -115,7 +115,17 @@ var Actions = {
             //alert("send notice fail");
             callback();
         });
-    }
+    },
+
+    updateOrderTbpaidconfirmed: function(order, callback) {
+        RC.updateOrderTbpaidconfirmed(order).then(function (payload) {
+            callback();
+        }, function (err) {
+            callback();
+        });
+    },
+
+
 };
 
 module.exports = Actions;

@@ -10,7 +10,7 @@ var gju = require('geojson-utils')
 var _address = "";
 var _location = {};
 var _productList = [];
-var _status = "";
+var _status = Constants.STATE_PRODUCT_LIST;
 var _wxSign = {};
 
 // Store actions
@@ -71,6 +71,22 @@ function initAddress(address) {
 
 function initLocation(location) {
     _location = location;
+    Store.emitChange();
+};
+
+// Modify Location
+function triggerModifyLocation() {
+    _status = Constants.STATE_MODIFY_LOCATION;
+    Store.emitChange();
+};
+
+function submitModifyLocation(location) {
+    _status = Constants.STATE_PRODUCT_LIST;
+    Store.emitChange();
+};
+
+function cancelModifyLocation() {
+    _status = Constants.STATE_PRODUCT_LIST;
     Store.emitChange();
 }
 
@@ -171,6 +187,19 @@ AppDispatcher.register(function(action) {
 
         case Constants.INIT_LOCATION:
             initLocation(action.location);
+            break;
+
+        // modify location
+        case Constants.TRIGGER_MODIFY_LOCATION:
+            triggerModifyLocation();
+            break;
+
+        case Constants.SUBMIT_MODIFY_LOCATION:
+            submitModifyLocation();
+            break;
+
+        case Constants.CANCEL_MODIFY_LOCATION:
+            cancelModifyLocation();
             break;
 
         // sort

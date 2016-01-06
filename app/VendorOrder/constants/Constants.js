@@ -25,6 +25,7 @@ module.exports = keyMirror({
     CODE_SUBMIT_SUCCESSFUL: null,
     CODE_PRODUCT_UPDATE_SUCCESSFUL: null,
     CODE_SUBMIT_FAIL: null,
+    CODE_INVALID: null,
 
     // Reject
     REJECT_TRIGGER_DETAIL: null,

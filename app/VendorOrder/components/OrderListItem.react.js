@@ -42,10 +42,6 @@ var app = React.createClass({
                 break;
 
             case "tbcommented":
-                status = "完成";
-                labelStyle = "label label-primary"
-                break;
-
             case "completed":
                 status = "完成";
                 labelStyle = "label label-primary"
@@ -69,20 +65,20 @@ var app = React.createClass({
         return (
             <li>
                 <div className="row grey_text">
-                    <div className="col-xs-6 text-left">{orderDateContent}</div>
-                    <div className="col-xs-6 text-right">
+                    <div className="col-xs-8 text-left">{orderDateContent}</div>
+                    <div className="col-xs-4 text-right">
                         {onSiteFlag}
                         <span className={labelStyle}>{status}</span>
                     </div>
                 </div>
                 <div className="row text-left voffset15">
                     <div className="col-xs-12 small grey_text">订单号: {GenOrderNo.orderno(this.props.order.order_id, this.props.order.created_time)}</div>
-                    <div className="col-xs-12 hg-header-24">{this.props.order.product.product_title}</div>
+                    <div className="col-xs-12 hg-header-24">{this.props.order.product.title}</div>
                 </div>
                 <div className="row grey_text voffset15">
                     <div className="col-xs-4 text-left">
-                        <img className="user-icon-small30 img-circle roffset5" src={this.props.order.user.user_head_image_url}/>
-                        <span>{this.props.order.user.user_name}</span>
+                        <img className="user-icon-small30 img-circle roffset5" src={this.props.order.user.head_image_url}/>
+                        <span>{this.props.order.user.nick_name}</span>
                     </div>
 
                     <div className="col-xs-4 text-center vcenter30">¥{this.props.order.price.total}</div>

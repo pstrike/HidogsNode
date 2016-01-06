@@ -16,6 +16,13 @@ var app = React.createClass({
 
     render: function() {
 
+        var orderDate = new Date(this.props.order.booked_time.booked_date);
+        var orderDateContent = formatdatetime.formatDate(orderDate);
+
+        var orderStartTime = new Date(this.props.order.booked_time.start_time);
+        var orderEndTime = new Date(this.props.order.booked_time.end_time);
+        var orderTimeContent = formatdatetime.formatTime(orderStartTime) + "-" + formatdatetime.formatTime(orderEndTime);
+
         var tint = "";
         var status = "";
         var icon = "";
@@ -26,16 +33,29 @@ var app = React.createClass({
                 icon = <span className="glyphicon glyphicon-jpy hg-session-header-icon"></span>;
                 break;
 
+            case "tbpaidconfirmed":
+                status = "支付进行中";
+                tint = "hg-yellow-section";
+                icon = <span className="glyphicon glyphicon-share-alt hg-session-header-icon"></span>;
+                break;
+
+            case "payfail":
+                status = "支付失败";
+                tint = "hg-yellow-section";
+                icon = <span className="glyphicon glyphicon-warning-sign hg-session-header-icon"></span>;
+                break;
+
             case "tbconfirmed":
+            case "tbserviced":
                 status = "待使用";
                 tint = "hg-green-section";
                 icon = <span className="glyphicon glyphicon-ok hg-session-header-icon"></span>;
                 break;
 
-            case "tbserviced":
-                status = "待使用";
-                tint = "hg-green-section";
-                icon = <span className="glyphicon glyphicon-ok hg-session-header-icon"></span>;
+            case "overdue":
+                status = "已过期"
+                tint = "hg-red-section";
+                icon = <span className="glyphicon glyphicon-time hg-session-header-icon"></span>;
                 break;
 
             case "tbcommented":
@@ -64,13 +84,6 @@ var app = React.createClass({
         }
         var hgStyle = "text-center voffset50 " + tint;
 
-        var orderDate = new Date(this.props.order.booked_time.booked_date);
-        var orderDateContent = formatdatetime.formatDate(orderDate);
-
-        var orderStartTime = new Date(this.props.order.booked_time.start_time);
-        var orderEndTime = new Date(this.props.order.booked_time.end_time);
-        var orderTimeContent = formatdatetime.formatTime(orderStartTime) + "-" + formatdatetime.formatTime(orderEndTime);
-
         var onSiteFlag = "";
         if(this.props.order.isOnSite) {
             onSiteFlag = <span className="label hg-label">上门服务</span>;
@@ -80,7 +93,7 @@ var app = React.createClass({
             <div className={hgStyle}>
                 {icon}
                 <p>{status}</p>
-                <div className="hg-header-24">{this.props.order.product.product_title}</div>
+                <div className="hg-header-24">{this.props.order.product.title}</div>
                 <span className="small roffset5">订单号: {GenOrderNo.orderno(this.props.order.order_id, this.props.order.created_time)}</span>
                 {onSiteFlag}
                 <div className="container voffset15">
@@ -90,8 +103,8 @@ var app = React.createClass({
                             <span>{orderTimeContent}</span>
                         </div>
                         <div className="col-xs-5">
-                            <img src={this.props.order.vendor.vendor_head_image_url} className="img-circle user-icon-normal roffset2"/>
-                            <span>{this.props.order.vendor.vendor_name}</span>
+                            <img src={this.props.order.vendor.head_image_url} className="img-circle user-icon-normal roffset2"/>
+                            <span>{this.props.order.vendor.nick_name}</span>
                         </div>
                         <div className="col-xs-3 vcenter45">
                             <span>¥{gettbpaidprice.cal(this.props.order.price.total, this.props.order.price.discount)}</span>

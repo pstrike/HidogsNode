@@ -72,6 +72,13 @@ var Actions = {
                 actionType: Constants.DETAIL_LOAD_COUPON_SUCCESFUL,
                 payload: payload,
             });
+
+            return RC.orderCode(order);
+        }).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: Constants.DETAIL_LOAD_CODE_SUCCESFUL,
+                payload: payload,
+            });
         }, function(err) {
             AppDispatcher.dispatch({
                 actionType: Constants.DETAIL_LOAD_ORDER_DETAIL_FAIL,
@@ -160,6 +167,20 @@ var Actions = {
     refundOrder: function() {
         AppDispatcher.dispatch({
             actionType: Constants.DETAIL_REFUND_ORDER,
+        });
+    },
+
+    updateOrderTbpaidconfirmed: function(order, callback) {
+        RC.updateOrderTbpaidconfirmed(order).then(function (payload) {
+            //AppDispatcher.dispatch({
+            //    actionType: Constants.DETAIL_UPDATE_ORDER_TBPAIDCONFIRMED_SUCCESSFUL,
+            //    payload: payload,
+            //});
+            callback();
+        }, function (err) {
+            AppDispatcher.dispatch({
+                actionType: Constants.DETAIL_UPDATE_ORDER_TBPAIDCONFIRMED_FAIL,
+            });
         });
     },
 

@@ -205,6 +205,24 @@ var RemoteCall = {
         return promise;
     },
 
+    getCommentListPromise: function(productId) {
+        var promise = new Promise(function(resolve, reject){
+            var url = APIUtils.makeUrl("/product/other/h1?type=comment&productid="+productId);
+            APIUtils.get(url, function(result) {
+                if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
+                    reject(Error(result));
+                }
+                else {
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    },
+
 
 };
 

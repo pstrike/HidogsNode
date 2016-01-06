@@ -254,6 +254,42 @@ var RemoteCall = {
 
         return promise;
     },
+
+    updateOrderTbpaidconfirmed: function (object) {
+        var promise = new Promise(function(resolve, reject){
+            var url = APIUtils.makeUrl("/order/other/updatetbpaidconfirmed");
+            APIUtils.post(url, object, function(result) {
+                if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
+                    reject(Error(result));
+                }
+                else {
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    },
+
+    orderCode: function (object) {
+        var promise = new Promise(function(resolve, reject){
+            var url = APIUtils.makeUrl("/order/other/ordercode");
+            APIUtils.post(url, object, function(result) {
+                if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
+                    reject(Error(result));
+                }
+                else {
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    },
 };
 
 module.exports = RemoteCall;

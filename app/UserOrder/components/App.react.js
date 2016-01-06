@@ -61,13 +61,12 @@ var app = React.createClass({
                 if(this.state.order.status) {
                     switch (this.state.order.status) {
                         case "tbpaid":
+                        case "tbpaidconfirmed":
+                        case "payfail":
                             tint = "hg-yellow-section";
                             break;
 
                         case "tbconfirmed":
-                            tint = "hg-green-section";
-                            break;
-
                         case "tbserviced":
                             tint = "hg-green-section";
                             break;
@@ -81,13 +80,15 @@ var app = React.createClass({
                             break;
 
                         case "refund":
+                        case "overdue":
                             tint = "hg-red-section";
                             break;
 
                         case "cancelled":
-
                             break;
+
                     }
+
                 }
                 break;
 

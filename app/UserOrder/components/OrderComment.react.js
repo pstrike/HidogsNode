@@ -146,8 +146,8 @@ var app = React.createClass({
 
             var newProduct = {};
             newProduct.product_id = this.props.product.product_id;
-            newProduct.comment_list = (this.props.product.comment_list ? this.props.product.comment_list : []);
-            newProduct.comment_list.push(this.state.comment);
+            //newProduct.comment_list = (this.props.product.comment_list ? this.props.product.comment_list : []);
+            //newProduct.comment_list.push(this.state.comment);
             newProduct.comment_show = this.state.comment;
             newProduct.rate = {};
             if(this.props.product.rate) {

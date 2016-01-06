@@ -1,7 +1,6 @@
 //var pingpp = require('pingpp')('sk_test_0qDqTOWzvzjDDuzf9KPaDqvL');
 var pingpp = require('pingpp')('sk_live_LeTSqLernfnTTGyHa9zr9CqP');
 var operation = require('../../model/operation');
-var uuid = require('../../util/genuuid');
 var genorderid = require('../../util/genorderno');
 var gettbpaidprice = require('../../util/gettbpaidprice');
 var wechat = require('../../controllers/wechat');
@@ -18,12 +17,12 @@ exports.insert = function (req, res, next) {
         //console.log(order);
 
         var timestamp = new Date();
-        var orderNo = uuid.uuid().replace(/-/g, "");
+        var orderNo = genorderid.orderno(order.order_id, order.created_time);
         var clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
         var couponId = order.price.coupon.coupon_id ? order.price.coupon.coupon_id : "null";
         var body = order.order_id;
-        var description = timestamp.toLocaleString() + "/" + order.user.user_id + "/" + order.product.product_title + "/" +order.price.total + "," + order.price.discount + "," + order.price.coupon.off_percentage +"/"+genorderid.orderno(order.order_id, order.created_time)+"/"+order.vendor.vendor_id+"/"+couponId;
-        var subject = "预订服务:" + order.product.product_title;
+        var description = timestamp.toLocaleString() + "/" + order.user.user_id + "/" + order.product.title + "/" +order.price.total + "," + order.price.discount + "," + order.price.coupon.off_percentage +"/"+genorderid.orderno(order.order_id, order.created_time)+"/"+order.vendor.vendor_id+"/"+couponId;
+        var subject = "预订服务:" + order.product.title;
 
         pingpp.charges.create({
             order_no: orderNo,
@@ -39,7 +38,7 @@ exports.insert = function (req, res, next) {
 
         }, function(err, charge) {
             if (err) {
-                console.log("[Payment Err]");
+                console.log("[Payment Trigger Err]");
                 console.log(err);
                 next(err);
             }
@@ -57,6 +56,7 @@ exports.otherpost = function(req, res, next){
     switch (type) {
 
         case 'webhook':
+        //case 'test':
             var payload = req.body;
 
             //console.log(payload);
@@ -77,7 +77,7 @@ exports.otherpost = function(req, res, next){
                 operation.getObject(operation.getCollectionList().order, orderId, {order_id:1, price:1}, function(object) {
                     var order = object;
 
-                    console.log(order);
+                    //console.log(order);
 
                     order.status = "tbconfirmed";
                     order.paid_time = new Date();
@@ -87,8 +87,7 @@ exports.otherpost = function(req, res, next){
                         };
                         order.price.discount = 0.0;
                     }
-
-                    console.log(order);
+                    //console.log(order);
 
                     operation.updateObject(operation.getCollectionList().order, order, function(result) {
                         if(result.status == 'fail') {
@@ -205,6 +204,8 @@ exports.otherpost = function(req, res, next){
                 })
             }
             else {
+                console.log("[Ping++ Webhooks: payment fail]")
+                console.log(payload);
                 res.send("received");
             }
             break;

@@ -101,7 +101,7 @@ var app = React.createClass({
 
                             return <tr>
                                 <td><a href={productLink} target="_blank">{item.title}</a></td>
-                                <td>{item.vendor.vendor_name}</td>
+                                <td>{item.vendor.nick_name}</td>
                                 <td>{categoryContent}</td>
                                 <td>{item.status}</td>
                                 <td>{priceContent}</td>

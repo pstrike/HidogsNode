@@ -2,6 +2,7 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var AppDispatcher = require('../../Common/dispatcher/AppDispatcher');
 var Constants = require('../constants/Constants');
+var Actions = require('../actions/Actions');
 var CHANGE_EVENT = 'change';
 
 // Store State
@@ -30,7 +31,7 @@ function initSession(session) {
 
 function initOrderList(orderList) {
     _orderListData = orderList;
-    _orderList = orderList;
+    _orderList = sortOrderList(orderList);
 
     //console.log(_orderList);
 
@@ -54,6 +55,8 @@ function filterOrderList(filter) {
         })
     }
 
+    _orderList = sortOrderList(_orderList);
+
     Store.emitChange();
 };
 
@@ -68,13 +71,29 @@ function listTriggerOrderDetail(order) {
 function detailTrigerOrderList() {
     _status = Constants.ORDER_LIST;
     _order = {};
-    _orderList = _orderListData;
+    _orderList = sortOrderList(_orderListData);
 
     Store.emitChange();
 };
 
 function loadOrderDetailSuccessful(order) {
     _order = order;
+
+    for(var i=0; i<_orderList.length; i++) {
+        if(_order.order_id == _orderList[i].order_id) {
+            _orderList[i] = _order;
+
+            break;
+        }
+    }
+
+    for(var i=0; i<_orderListData.length; i++) {
+        if(_order.order_id == _orderListData[i].order_id) {
+            _orderListData[i] = _order;
+
+            break;
+        }
+    }
 
     //console.log(_order);
 
@@ -122,6 +141,13 @@ function loadCouponSuccessful(couponList) {
     Store.emitChange();
 }
 
+function loadCodeSuccessful(response) {
+    if(response.result == "ok") {
+        _order.code = response.code;
+        Store.emitChange();
+    }
+}
+
 function showNoAvailableTimeSlot() {
     _order.tmp_show_reschedule_btn = true;
 
@@ -136,31 +162,45 @@ function paySuccessful(charge) {
             // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的 wap 支付结果都是在 extra 中对应的 URL 跳转。
             //alert("支付成功");
 
-            _order.status = "tbconfirmed";
+            //_order.status = "tbpaidconfirmed";
+            //
+            //for(var i=0; i<_orderList.length; i++) {
+            //    if(_order.order_id == _orderList[i].order_id) {
+            //        _orderList[i].status = _order.status;
+            //
+            //        break;
+            //    }
+            //}
+            //
+            //for(var i=0; i<_orderListData.length; i++) {
+            //    if(_order.order_id == _orderListData[i].order_id) {
+            //        _orderListData[i].status = _order.status;
+            //
+            //        break;
+            //    }
+            //}
+            //
+            //_status = Constants.ORDER_DETAIL;
+            //
+            //Store.emitChange();
+            //
+            //// update order status to tbpaidconfirmed
+            //var newOrder = {
+            //    order_id: _order.order_id,
+            //};
+            //Actions.updateOrderTbpaidconfirmed(newOrder);
 
-            for(var i=0; i<_orderList.length; i++) {
-                if(_order.order_id == _orderList[i].order_id) {
-                    _orderList[i].status = _order.status;
+            var newOrder = {
+                order_id: _order.order_id,
+            };
 
-                    break;
-                }
-            }
-
-            for(var i=0; i<_orderListData.length; i++) {
-                if(_order.order_id == _orderListData[i].order_id) {
-                    _orderListData[i].status = _order.status;
-
-                    break;
-                }
-            }
-
-            _status = Constants.ORDER_DETAIL;
-
-            Store.emitChange();
+            Actions.updateOrderTbpaidconfirmed(newOrder, function() {
+                window.location = "http://www.hidogs.cn/order/view/userordercreationdone?productid="+_product.product_id+"&orderid="+_order.order_id;
+            })
 
         } else if (result == "fail") {
             // charge 不正确或者微信公众账号支付失败时会在此处返回
-            //alert("支付失败");
+            alert("支付失败,请确保您有足够的余额");
         } else if (result == "cancel") {
             // 微信公众账号支付取消支付
             //alert("支付取消");
@@ -216,6 +256,30 @@ function refundOrder() {
     Store.emitChange();
 };
 
+function updateOrderTbpaidConfirmedSuccessful(status) {
+
+    if(status == 'tbconfirmed') {
+        _order.status = 'tbconfirmed';
+
+        for(var i=0; i<_orderList.length; i++) {
+            if(_order.order_id == _orderList[i].order_id) {
+                _orderList[i].status = _order.status;
+
+                break;
+            }
+        }
+
+        for(var i=0; i<_orderListData.length; i++) {
+            if(_order.order_id == _orderListData[i].order_id) {
+                _orderListData[i].status = _order.status;
+
+                break;
+            }
+        }
+    }
+
+    Store.emitChange();
+};
 
 // Reschedule
 function loadAvailabilitySuccessful(availability) {
@@ -347,6 +411,43 @@ function err(msg) {
     alert("好像出了点问题,请刷新页面重试一下.抱歉.");
 };
 
+// Util
+function sortOrderList(orderList) {
+    var lowOrderList = [];
+    var mediumOrderList = [];
+    var highOrderList = [];
+    var resultList = [];
+
+    orderList.forEach(function(order) {
+        order.sort_time = new Date(order.booked_time.start_time);
+
+        if(order.status == 'completed'
+            || order.status == 'cancelled') {
+            lowOrderList.push(order);
+        }
+        else if (order.status == 'tbcommented'
+            || order.status == 'refund') {
+            mediumOrderList.push(order);
+        }
+        else if(order.status == 'tbpaid'
+            || order.status == 'tbpaidconfirmed'
+            || order.status == 'tbconfirmed'
+            || order.status == 'tbserviced'
+            || order.status == 'overdue'
+            || order.status == 'payfail'){
+            highOrderList.push(order);
+        }
+    })
+
+    lowOrderList.sort(function(a,b){return a.sort_time<b.sort_time?1:-1});
+    mediumOrderList.sort(function(a,b){return a.sort_time>b.sort_time?1:-1});
+    highOrderList.sort(function(a,b){return a.sort_time>b.sort_time?1:-1});
+
+    resultList = highOrderList.concat(mediumOrderList, lowOrderList);
+
+    return resultList;
+};
+
 // Store definition
 var Store = assign({}, EventEmitter.prototype, {
 
@@ -462,6 +563,10 @@ AppDispatcher.register(function(action) {
             loadCouponSuccessful(JSON.parse(action.payload.response));
             break;
 
+        case Constants.DETAIL_LOAD_CODE_SUCCESFUL:
+            loadCodeSuccessful(JSON.parse(action.payload.response));
+            break;
+
         case Constants.DETAIL_NO_AVAILABLE_TIMESLOT:
             showNoAvailableTimeSlot();
             break;
@@ -489,6 +594,10 @@ AppDispatcher.register(function(action) {
 
         case Constants.DETAIL_REFUND_ORDER:
             refundOrder();
+            break;
+
+        case Constants.DETAIL_UPDATE_ORDER_TBPAIDCONFIRMED_SUCCESSFUL:
+            updateOrderTbpaidConfirmedSuccessful(action.payload.response);
             break;
 
         // Reschedule
@@ -562,6 +671,7 @@ AppDispatcher.register(function(action) {
         case Constants.DETAIL_CANCEL_ORDER_SUBMIT_FAIL:
         case Constants.REFUND_SUBMIT_FAIL:
         case Constants.DETAIL_LOAD_ORDER_DETAIL_FAIL:
+        case Constants.DETAIL_UPDATE_ORDER_TBPAIDCONFIRMED_FAIL:
             err(action.actionType);
             break;
 

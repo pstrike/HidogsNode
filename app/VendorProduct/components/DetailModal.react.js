@@ -637,6 +637,18 @@ var app = React.createClass({
             verifyMsg.push("-请上传服务相关的图片让用户更好的了解您的服务");
         }
 
+        // ensure could only publish when setting is done (at least business time is set)
+        var isSettingReady = false;
+        if(this.state.vendorProfile
+            && this.state.vendorProfile.setting
+            && this.state.vendorProfile.setting.business_time_list[0].start_time
+            && this.state.vendorProfile.setting.business_time_list[0].end_time) {
+            isSettingReady = true;
+        }
+        if(!isSettingReady) {
+            verifyMsg.push('-请返回上一级菜单,在"设置"中设置您的服务时间再进行发布');
+        }
+
         return verifyMsg;
     },
 

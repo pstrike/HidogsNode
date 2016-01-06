@@ -215,6 +215,7 @@ var app = React.createClass({
     _approveVendor: function() {
         var vendor = this.props.vendor;
         vendor.status = "approved";
+        vendor.role[0].status = "approved";
         Actions.vendorApproveVendor(vendor);
     },
 

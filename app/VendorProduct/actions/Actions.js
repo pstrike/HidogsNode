@@ -79,6 +79,13 @@ var Actions = {
                 actionType: Constants.ACTION_VENDOR_PRODUCT_DETAIL_LOAD_DETAIL_SUCCESSFUL,
                 payload: payload,
             });
+
+            return RC.getCommentListPromise(productId);
+        }).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_VENDOR_PRODUCT_COMMENT_LOAD_DATA_SUCCESSFUL,
+                payload: payload,
+            });
         }, function (err) {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_VENDOR_PRODUCT_DETAIL_LOAD_DETAIL_FAIL,

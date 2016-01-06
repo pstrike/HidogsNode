@@ -133,12 +133,20 @@ var app = React.createClass({
             newOrder.openid = this.props.order.openid;
             newOrder.price = this.props.order.price;
             newOrder.product = this.props.order.product;
+            newOrder.code = this.refs["code"].getDOMNode().value;
+
+            this.refs["code"].getDOMNode().value = ""; // reset after submit
 
             var saleNo = this.props.order.product.sale_no ? this.props.order.product.sale_no : 0;
             var newProduct = {
                 product_id: this.props.order.product.product_id,
                 sale_no: saleNo + 1,
             };
+
+            // let err msg could show
+            this.setState(
+                {isScrollToErrMsg: true}
+            );
 
             Actions.codeSubmit(newOrder, newProduct);
         }
@@ -155,11 +163,8 @@ var app = React.createClass({
     _verify: function() {
         var verifyMsg = [];
 
-        var inputCode = this.refs["code"].getDOMNode().value;
-        var code = this.props.order.order_id.split("-")[0];
-
-        if(inputCode != code) {
-            verifyMsg.push("-订单使用码错误,请重新输入");
+        if(!this.refs["code"].getDOMNode().value) {
+            verifyMsg.push("-请输入订单使用码");
         }
 
         return verifyMsg;

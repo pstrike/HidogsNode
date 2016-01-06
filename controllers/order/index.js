@@ -1,20 +1,28 @@
 var React = require('react'),
-    operation = require('../../model/operation');
+    operation = require('../../model/operation'),
+    asyncloop = require('../../util/asyncloop'),
+    genordercode = require('../../util/genordercode');
 
 exports.engine = 'ejs';
 
 exports.show = function(req, res, next){
-    operation.getObject(operation.getCollectionList().order, req.params.order_id, req.projection, function(object) {
-        res.send(object);
+    operation.getObject(operation.getCollectionList().order, req.params.order_id, req.projection, function(order) {
+
+        supplementOrderRefValue([order], function(updatedOrderList) {
+            res.send(updatedOrderList[0]);
+        });
     })
 };
 
 exports.list = function(req, res, next){
 
-    operation.getObjectList(operation.getCollectionList().order, req.filter, req.projection, function(objectList) {
-        objectList.sort(function(a,b){return a.created_time<b.created_time?1:-1}); //sort from latest to oldest
+    operation.getObjectList(operation.getCollectionList().order, req.filter, req.projection, function(orderList) {
 
-        res.send(objectList);
+        supplementOrderRefValue(orderList, function(updatedOrderList) {
+            updatedOrderList.sort(function(a,b){return a.created_time<b.created_time?1:-1}); //sort from latest to oldest
+
+            res.send(updatedOrderList);
+        });
     })
 };
 
@@ -206,7 +214,8 @@ exports.otherget = function(req, res, next){
                     {$or: [ { status: "tbconfirmed" },
                             { status: "tbserviced" },
                             { status: "tbcommented" },
-                            { status: "completed" }
+                            { status: "completed" },
+                            { status: "tbpaidconfirmed" },
                     ]},
                     {$or: [
                             {$and: [{'booked_time.start_time': {$lt: startTime}}, {'booked_time.end_time': {$gt: endTime}}]},
@@ -230,35 +239,129 @@ exports.otherget = function(req, res, next){
 };
 
 exports.otherpost = function(req, res, next){
-    var type = req.query.type;
-    var id = req.params.order_id;
+    var type = req.params.order_id;
 
     switch (type) {
 
-        case 'webhook':
-            var payload = req.body;
-            var orderId = payload.data.object.order_no;
+        case 'updatetbpaidconfirmed':
+            if(req.body) {
 
-            db.get().collection('order').updateOne(
-                {"_id": orderId},
-                {
-                    $set: {status: "paid"},
-                    $currentDate: { "modified_time": true }
-                }, function (err, result) {
-                    if(err) {
-                        console.log("[DB Err]"+err);
-                        next(err);
+                var order = req.body;
+
+                operation.getObject(operation.getCollectionList().order, order.order_id, {}, function(existingOrder) {
+                    if(existingOrder && existingOrder.status == "tbpaid") {
+                        var newOrder = {
+                            order_id: order.order_id,
+                            status: 'tbpaidconfirmed'
+                        }
+
+                        operation.updateObject(operation.getCollectionList().order, newOrder, function(result) {
+                            if(result.status == 'fail') {
+                                next(result.err);
+                            }
+
+                            res.send(result);
+                        })
                     }
                     else {
-                        console.log("order "+orderId+" paid");
-                        res.send("received");
+                        res.send('tbconfirmed');
                     }
+                })
+            }
+            else {
+                next();
+            }
+            break;
+
+        case 'checkordercode':
+            if(req.body) {
+                var order = req.body;
+
+                if(order.code == genordercode.ordercode(order.order_id)) {
+                    res.send({result: "ok"})
+                }
+                else {
+                    res.send({result: "invalid"})
+                }
+            }
+            else {
+                res.send({result: "invalid"})
+            }
+
+            break;
+
+        case 'ordercode':
+            if(req.body) {
+                var order = req.body;
+                res.send({
+                    result: "ok",
+                    code: genordercode.ordercode(order.order_id)
                 });
+            }
+            else {
+                res.send({result: "invalid"})
+            }
+
             break;
 
         default:
             next();
     }
 
-
 };
+
+function supplementOrderRefValue(orderList, callback) {
+    var index = 0;
+    var isVendorReady;
+    var isUserReady;
+    var i;
+
+    if(orderList.length > 0 && (orderList[0].vendor || orderList[0].user)) {
+        asyncloop.asyncLoop(orderList.length, function(loop) {
+
+                i = index++;
+
+                // init flag
+                orderList[i].vendor ? isVendorReady = false : isVendorReady = true;
+                orderList[i].user ? isUserReady = false : isUserReady = true;
+
+                // load vendor value
+                if(!isVendorReady) {
+                    operation.getObject(operation.getCollectionList().vendor, orderList[i].vendor.vendor_id, {}, function(vendor) {
+                        for(var key in orderList[i].vendor) {
+                            orderList[i].vendor[key] = vendor[key];
+                        }
+
+                        isVendorReady = true;
+
+                        if(isVendorReady && isUserReady) {
+                            loop.next()
+                        }
+                    })
+                }
+
+                // load user value
+                if(!isUserReady) {
+                    operation.getObject(operation.getCollectionList().user, orderList[i].user.user_id, {}, function(user) {
+                        for(var key in orderList[i].user) {
+                            orderList[i].user[key] = user[key];
+                        }
+
+                        isUserReady = true;
+
+                        if(isVendorReady && isUserReady) {
+                            loop.next()
+                        }
+                    })
+                }
+
+            },
+            function() {
+                callback(orderList);
+            }
+        );
+    }
+    else{
+        callback(orderList);
+    }
+}

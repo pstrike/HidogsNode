@@ -10,6 +10,7 @@ var Constants = require('../constants/Constants');
 var Header = require('./../../Common/components/Header.react.js');
 var WXSign = require('./../../Common/components/WXSign');
 var Main = require('../components/Main.react');
+var ModifyLocation = require('../components/ModifyLocation.react');
 
 var mapconverter = require('../../../util/mapconverter');
 
@@ -43,21 +44,37 @@ var app = React.createClass({
     },
 
     componentDidUpdate: function() {
-        switch (this.state.status) {
-            case Constants.STATE_INIT_LOCATION:
-                break;
-
-            case Constants.STATE_INIT_PRODUCT_LIST:
-                Actions.initProductList()
-                break;
-
-            case Constants.STATE_PRODUCT_LIST:
-                break;
-
-        }
+        //switch (this.state.status) {
+        //    case Constants.STATE_INIT_LOCATION:
+        //        break;
+        //
+        //    case Constants.STATE_INIT_PRODUCT_LIST:
+        //        Actions.initProductList()
+        //        break;
+        //
+        //    case Constants.STATE_PRODUCT_LIST:
+        //        break;
+        //
+        //}
     },
 
     render: function() {
+
+        var content = "";
+        switch (this.state.status) {
+            case Constants.STATE_PRODUCT_LIST:
+                content = <Main productList={this.state.productList}
+                                address={this.state.address}
+                                category={this.props.category}
+                                type={this.props.type}></Main>;
+                break;
+
+            case Constants.STATE_MODIFY_LOCATION:
+                content = <ModifyLocation address={this.state.address}
+                                          categoryId={this.props.categoryId}
+                                          keyword={this.props.keyword}></ModifyLocation>
+                break;
+        }
 
         return (
             <div>
@@ -67,7 +84,7 @@ var app = React.createClass({
                         callback = {this._getLocation}>
                 </WXSign>
 
-                <Main productList={this.state.productList} address={this.state.address} category={this.props.category} type={this.props.type}></Main>
+                {content}
             </div>
         );
     },
@@ -86,8 +103,8 @@ var app = React.createClass({
             success: function (res) {
                 var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
                 var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                var speed = res.speed; // 速度，以米/每秒计
-                var accuracy = res.accuracy; // 位置精度
+                //var speed = res.speed; // 速度，以米/每秒计
+                //var accuracy = res.accuracy; // 位置精度
                 var location = {
                     type: "Point",
                     coordinates: [

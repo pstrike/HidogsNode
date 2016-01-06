@@ -148,27 +148,44 @@ var Actions = {
             order_id: order.order_id,
             status: order.status,
         };
+        var isCodeValid = false;
 
-        RC.updateOrder(plainOrder).then(function (payload) {
-            AppDispatcher.dispatch({
-                actionType: Constants.CODE_SUBMIT_SUCCESSFUL,
-                order: plainOrder,
-            });
+        RC.checkOrderCode(order).then(function (payload) {
+            var response = JSON.parse(payload.response);
 
-            RC.updateProduct(product);
+            if(response.result == "ok") {
+                isCodeValid = true;
+                return RC.updateOrder(plainOrder);
+            }
+            else {
+                AppDispatcher.dispatch({
+                    actionType: Constants.CODE_INVALID,
+                });
+            }
         }).then(function (payload) {
-            AppDispatcher.dispatch({
-                actionType: Constants.CODE_PRODUCT_UPDATE_SUCCESSFUL,
-                order: plainOrder,
-                product: product,
-            });
+            if(isCodeValid) {
+                AppDispatcher.dispatch({
+                    actionType: Constants.CODE_SUBMIT_SUCCESSFUL,
+                    order: plainOrder,
+                });
 
-            var notice = {
-                type: "user",
-                order: order,
-                template: HidogsConstants.USER_TBCOMMENTED,
-            };
-            return RC.sendWXNotice(notice);
+                return RC.updateProduct(product);
+            }
+        }).then(function (payload) {
+            if(isCodeValid) {
+                AppDispatcher.dispatch({
+                    actionType: Constants.CODE_PRODUCT_UPDATE_SUCCESSFUL,
+                    order: plainOrder,
+                    product: product,
+                });
+
+                var notice = {
+                    type: "user",
+                    order: order,
+                    template: HidogsConstants.USER_TBCOMMENTED,
+                };
+                return RC.sendWXNotice(notice);
+            }
         }).then(function (payload) {
             // do nothing
         }, function(err) {

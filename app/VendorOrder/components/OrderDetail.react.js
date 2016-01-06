@@ -51,10 +51,6 @@ var app = React.createClass({
                 break;
 
             case "tbcommented":
-                status = "完成";
-                labelStyle += "label-primary"
-                break;
-
             case "completed":
                 status = "完成";
                 labelStyle += "label-primary"
@@ -64,13 +60,13 @@ var app = React.createClass({
 
         // product category
         var categoryContent = "";
-        var categoryList = this.props.order.product.category ? this.props.order.product.category.path_name.split(",") : this.props.order.product.product_category.path_name.split(",");
+        var categoryList = this.props.order.product.category ? this.props.order.product.category.path_name.split(",") : [];
         categoryList.forEach(function(category, index) {
             if(index > 1) {
                 categoryContent = categoryContent + category + ">";
             }
         })
-        categoryContent = categoryContent.substring(0,categoryContent.length-1) + (this.props.order.product.category ? this.props.order.product.category.name : this.props.order.product.product_category.name);
+        categoryContent = categoryContent.substring(0,categoryContent.length-1) + (this.props.order.product.category ? this.props.order.product.category.name : "");
 
         // Additional Price Content
         var additionalPriceItemContent = [];
@@ -233,7 +229,7 @@ var app = React.createClass({
 
                     <div className="form-group">
                         <label>标题</label>
-                        <input type="text" className="form-control no-border" placeholder="标题" value={this.props.order.product.title ? this.props.order.product.title : this.props.order.product.product_title} disabled/>
+                        <input type="text" className="form-control no-border" placeholder="标题" value={this.props.order.product.title ? this.props.order.product.title : ""} disabled/>
                     </div>
                     <div className="form-group">
                         <label>订单号</label>
@@ -250,9 +246,9 @@ var app = React.createClass({
 
                     <h3 className="voffset60">用户信息</h3>
                     <div className="text-center">
-                        <img className="center-block img-responsive img-circle user-icon-header voffset10" src={this.props.order.user.head_image_url ? this.props.order.user.head_image_url : this.props.order.user.user_head_image_url}/>
+                        <img className="center-block img-responsive img-circle user-icon-header voffset10" src={this.props.order.user.head_image_url ? this.props.order.user.head_image_url : ""}/>
 
-                        <div className="hg-session-header-title voffset5">{this.props.order.user.nick_name ? this.props.order.user.nick_name : this.props.order.user.user_name}</div>
+                        <div className="hg-session-header-title voffset5">{this.props.order.user.nick_name ? this.props.order.user.nick_name : ""}</div>
                     </div>
                     {userProfileContent}
 

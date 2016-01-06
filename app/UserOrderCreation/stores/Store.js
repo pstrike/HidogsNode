@@ -21,12 +21,19 @@ var _status = "";
 function payOrderSuccessful(charge) {
     pingpp.createPayment(charge, function(result, error){
         if (result == "success") {
-            // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的 wap 支付结果都是在 extra 中对应的 URL 跳转。
-            window.location = "http://www.hidogs.cn/order/view/userordercreationdone?productid="+_product.product_id+"&orderid="+_order.order_id;
+
+            var newOrder = {
+                order_id: _order.order_id,
+            };
+
+            Actions.updateOrderTbpaidconfirmed(newOrder, function() {
+                // 只有微信公众账号 wx_pub 支付成功的结果会在这里返回，其他的 wap 支付结果都是在 extra 中对应的 URL 跳转。
+                window.location = "http://www.hidogs.cn/order/view/userordercreationdone?productid="+_product.product_id+"&orderid="+_order.order_id;
+            })
 
         } else if (result == "fail") {
             // charge 不正确或者微信公众账号支付失败时会在此处返回
-            alert("支付失败");
+            alert("支付失败,请确保您有足够的余额");
 
             cancelOrder();
 
@@ -47,16 +54,16 @@ function loadProductSuccessful(product) {
     _product = product;
 
     _order.product.product_id = _product.product_id;
-    _order.product.product_title = _product.title;
-    _order.product.product_category.product_meta_category_id = _product.category.product_meta_category_id;
-    _order.product.product_category.name = _product.category.name;
-    _order.product.product_category.slug = _product.category.slug;
-    _order.product.product_category.path_name = _product.category.path_name;
-    _order.product.product_category.path_slug = _product.category.path_slug;
+    _order.product.title = _product.title;
+    _order.product.category.product_meta_category_id = _product.category.product_meta_category_id;
+    _order.product.category.name = _product.category.name;
+    _order.product.category.slug = _product.category.slug;
+    _order.product.category.path_name = _product.category.path_name;
+    _order.product.category.path_slug = _product.category.path_slug;
 
     _order.vendor.vendor_id = _product.vendor.vendor_id;
-    _order.vendor.vendor_name = _product.vendor.vendor_name;
-    _order.vendor.vendor_head_image_url = _product.vendor.head_image_url;
+    _order.vendor.nick_name = _product.vendor.nick_name;
+    _order.vendor.head_image_url = _product.vendor.head_image_url;
 
     _order.address = _product.address;
     _order.location = _product.location;
@@ -73,8 +80,8 @@ function loadSessionSuccessful(session) {
 
     _order.order_id = Uudi.uuid();
     _order.user.user_id = _session.user_id;
-    _order.user.user_name = _session.nick_name;
-    _order.user.user_head_image_url = _session.head_image_url;
+    _order.user.nick_name = _session.nick_name;
+    _order.user.head_image_url = _session.head_image_url;
 
     //console.log("load session");
     //console.log(_session);

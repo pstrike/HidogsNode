@@ -61,3 +61,7 @@ body.hg-modal-open {
     width: 100%;
     z-index: 1980;
 }
+
+.hg-modal .hg-table, .hg-modal .hg-table td {
+    border-color: #ccc;
+}

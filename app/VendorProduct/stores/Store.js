@@ -314,8 +314,15 @@ function withdrawProduct(tmpProduct) {
 
 // Comment Actions
 function triggerCommentToDetail() {
-    _status = Constants.STATE_VENDOR_PRODUCT_DETAIL;
+    //_product.commentList = [];
+    //_product.commentList.push(_product.comment_show);
+    //_status = Constants.STATE_VENDOR_PRODUCT_DETAIL;
+    //
+    //Store.emitChange();
+};
 
+function loadCommentListSuccessful(commentList) {
+    _product.comment_list = commentList;
     Store.emitChange();
 };
 
@@ -684,6 +691,10 @@ AppDispatcher.register(function(action) {
             triggerCommentToDetail();
             break;
 
+        case Constants.ACTION_VENDOR_PRODUCT_COMMENT_LOAD_DATA_SUCCESSFUL:
+            loadCommentListSuccessful(JSON.parse(action.payload.response));
+            break;
+
         // Agreement Actions
         case Constants.ACTION_VENDOR_PRODUCT_AGREEMENT_AGREE_TRIGGER_LIST:
             triggerAgreementAgreeToList();
@@ -742,6 +753,8 @@ AppDispatcher.register(function(action) {
 
         case Constants.ACTION_GET_WX_SIGNATURE_FAIL:
         case Constants.ACTION_GET_WX_MEDIA_FAIL:
+
+        case Constants.ACTION_VENDOR_PRODUCT_COMMENT_LOAD_DATA_FAIL:
             err(action.actionType);
             break;
 

@@ -13,6 +13,7 @@ var Constants = require('../constants/Constants');
 var Header = require('./../../Common/components/Header.react.js');
 var ExitPolicyModal = require('./../components/ExitPolicyModal.react');
 var CommentList = require('./../components/CommentList.react');
+var ProductAvailability = require('./../components/ProductAvailability.react');
 
 var mapconvertor = require('../../../util/mapconverter');
 var formatdatetime = require('../../../util/formatdatetime');
@@ -26,6 +27,8 @@ function getAppState() {
         vendor: Store.getVendor(),
         productMeta: Store.getProductMeta(),
         user: Store.getUser(),
+        commentList: Store.getCommentList(),
+        availabilityList: Store.getAvailabilityList(),
     };
 }
 
@@ -480,6 +483,79 @@ var app = React.createClass({
             }
         }
 
+        // availability
+        var availabilityItem = [];
+        var isAvailable = false;
+        var dateText = "";
+        if(this.state.availabilityList.length > 0) {
+            for(var i=0; i<3; i++) {
+                switch (i) {
+                    case 0:
+                        dateText = "今天";
+                        break;
+
+                    case 1:
+                        dateText = "明天";
+                        break;
+
+                    case 2:
+                        dateText = "后天";
+                        break;
+                }
+
+                this.state.availabilityList[i].timeslot.forEach(function(timeslot) {
+                    if(timeslot.isAvailable) {
+                        isAvailable = true;
+                    }
+                })
+
+                if(isAvailable) {
+                    availabilityItem.push(
+                        <tr>
+                            <td>{dateText}</td>
+                            <td>可预订</td>
+                        </tr>
+                    );
+                }
+                else {
+                    availabilityItem.push(
+                        <tr>
+                            <td>{dateText}</td>
+                            <td>已订满</td>
+                        </tr>
+                    );
+                }
+
+                isAvailable = false; // reset
+            }
+        }
+        var availabilityContent = "";
+        if(availabilityItem.length > 0) {
+            availabilityContent = <div>
+                <div className="row text-center voffset60">
+                    <span className="glyphicon glyphicon-time hg-session-header-icon"></span>
+
+                    <div className="hg-session-header-title voffset5">可预订时间</div>
+                </div>
+                <div className="row voffset15">
+                    <div className="container">
+                        <table className="hg-table text-center">
+                            <tbody>
+                            {availabilityItem}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div className="text-center">
+                            <button className="btn btn-hd-blue" onClick={this._triggerAvailability}>更多</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
         var modalContent = [];
         switch (this.state.status) {
             case Constants.STATE_PRODUCT:
@@ -493,7 +569,11 @@ var app = React.createClass({
                 break;
 
             case Constants.STATE_COMMENT:
-                modalContent.push(<CommentList commentList={this.state.product.comment_list}></CommentList>);
+                modalContent.push(<CommentList commentList={this.state.commentList}></CommentList>);
+                break;
+
+            case Constants.STATE_AVAILABILITY:
+                modalContent.push(<ProductAvailability availabilityList={this.state.availabilityList}></ProductAvailability>);
                 break;
 
             default:
@@ -519,7 +599,7 @@ var app = React.createClass({
 
                     <img src={this.state.product.vendor ? this.state.product.vendor.head_image_url : ""}
                          className="center-block img-responsive img-circle user-icon-header voffset10"/>
-                    <h4 className="text-center voffset5">{this.state.product.vendor ? this.state.product.vendor.vendor_name : ""}</h4>
+                    <h4 className="text-center voffset5">{this.state.product.vendor ? this.state.product.vendor.nick_name : ""}</h4>
                 </div>
 
                 <hr/>
@@ -554,38 +634,7 @@ var app = React.createClass({
 
                 {showCaseImageB}
 
-                <div className="row text-center voffset60">
-                    <span className="glyphicon glyphicon-time hg-session-header-icon"></span>
-
-                    <div className="hg-session-header-title voffset5">可预订时间</div>
-                </div>
-                <div className="row voffset15">
-                    <div className="container">
-                        <table className="hg-table text-center">
-                            <tbody>
-                            <tr>
-                                <td>今天</td>
-                                <td>可预订</td>
-                            </tr>
-                            <tr>
-                                <td>明天</td>
-                                <td>可预订</td>
-                            </tr>
-                            <tr>
-                                <td>后天</td>
-                                <td>可预订</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <div className="text-center">
-                            <button className="btn btn-hd-blue">更多</button>
-                        </div>
-                    </div>
-                </div>
+                {availabilityContent}
 
                 {showCaseImageC}
 
@@ -631,7 +680,7 @@ var app = React.createClass({
                 <div className="row text-center voffset60">
                     <img src={this.state.product.vendor ? this.state.product.vendor.head_image_url : ""} className="center-block img-responsive img-circle user-icon-header voffset10"/>
 
-                    <div className="hg-session-header-title voffset5">{this.state.product.vendor ? this.state.product.vendor.vendor_name : ""}</div>
+                    <div className="hg-session-header-title voffset5">{this.state.product.vendor ? this.state.product.vendor.nick_name : ""}</div>
                 </div>
                 <div className="row voffset30">
                     <div className="container">
@@ -701,7 +750,11 @@ var app = React.createClass({
     },
 
     _triggerComment: function() {
-        Actions.triggerProductToComment();
+        Actions.triggerProductToComment(this.state.product.product_id);
+    },
+
+    _triggerAvailability: function() {
+        Actions.triggerProductToAvailability();
     },
 
 });

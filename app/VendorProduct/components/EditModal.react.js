@@ -601,8 +601,8 @@ var app = React.createClass({
             if(this.props.type == 'new') {
                 product.commision_rate = this.state.productMeta.other[0].value;
                 product.vendor.vendor_id = this.state.vendorProfile.vendorId;
-                product.vendor.vendor_name = this.state.vendorProfile.vendorNickname;
-                product.vendor.head_image_url = this.state.vendorProfile.vendorHeadImageUrl;
+                //product.vendor.name = this.state.vendorProfile.vendorNickname;
+                //product.vendor.head_image_url = this.state.vendorProfile.vendorHeadImageUrl;
                 product.product_id = Uudi.uuid();
 
                 Actions.triggerNewSaveToDetail(product);

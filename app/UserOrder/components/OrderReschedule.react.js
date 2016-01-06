@@ -182,6 +182,12 @@ var app = React.createClass({
             newOrder.order_id = this.props.order.order_id;
             newOrder.booked_time = this.state.order.booked_time;
 
+            var orderStartTime = new Date(this.props.order.booked_time.start_time);
+            var current = new Date();
+            if(current > orderStartTime) {
+                newOrder.booked_time.is_rescheduled = true;
+            }
+
             console.log(newOrder);
 
             Actions.submitRescheduleTriggerDetail(newOrder);
