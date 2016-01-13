@@ -1,0 +1,154 @@
+body {
+    margin-bottom: 120px;
+}
+
+.hg-navbar {
+    background: rgba(254,242,244,1);
+    border-color: rgba(232,44,75,0.25);
+}
+
+.hg-love .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 120px;
+    border-top: solid;
+    border-top-width: 1px;
+    background: rgba(252,224,228,0.95);
+    border-color: rgba(232,44,75,0.25);
+}
+
+.hg-love .footer.love-profile {
+    background: rgba(255,242,244,0.95);
+    height: 60px;
+}
+
+.hg-love .hg-navbar.love-profile {
+    background: rgba(252,224,228,0.95);
+}
+
+.hg-love .hg-like-btn {
+    font-size: 40px;
+    border-radius: 71px;
+    width: 85px;
+    height: 85px;
+    transition: all 0.2s ease 0s;
+}
+
+.hg-love .hg-like-btn:active {
+    background-color: #e82c4b;
+    color: rgba(255,255,255,0.9);
+}
+
+.vcenter71 {
+    line-height: 71px;
+}
+
+.vcenter40 {
+    line-height: 40px;
+}
+
+#react_body.hg-love > .container {
+    padding: 50px 15px 0;
+}
+
+/* 1 */
+
+.hg-love .bg-img {
+    background: url(../img/daren3.jpg) no-repeat center center fixed;
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: auto 85%;
+    height: 480px;
+}
+
+.hg-love .love-header {
+    font-size: 50px;
+}
+
+.hg-love .grey-bg {
+    background-color: rgba(0,0,0,0.15);
+}
+
+.hg-love .love-owner-name {
+    margin: 2px 0 0 0;
+}
+
+
+
+
+/* 2 */
+
+.hg-love .love-img11,
+.hg-love .love-img12,
+.hg-love .love-img13,
+.hg-love .love-img21,
+.hg-love .love-img22,
+.hg-love .love-img23,
+.hg-love .love-img
+{
+    /* lt ie8 */
+    -ms-background-position-x: center;
+    -ms-background-position-y: center;
+    background-position: center center;
+
+    /* scale bg image proportionately */
+    background-size: cover;
+}
+
+.hg-love .love-header2 {
+    font-size: 28px;
+}
+
+.hg-love .love-type {
+    font-size: 20px;
+}
+
+.hg-love .love-type2 {
+    font-size: 13px;
+}
+
+.hg-love .love-type3 {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+}
+
+.hg-love .love-statement {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.hg-love .love-statement2 {
+    height: 40px;
+}
+
+.hg-love .love-content {
+    height: 110px;
+    background-color: rgba(224,113,131,1);
+    padding-top: 5px;
+}
+
+.hg-love .love-img-container {
+    width: auto;
+    height: 360px;
+}
+
+.hg-love .big-text {
+    font-size: 36px;
+    line-height: 40px;
+}
+
+.hg-love .sub-title-text {
+    font-size: 14px;
+}
+
+.hg-love .hg-table, .hg-love .hg-table td {
+    border-width: 0px;
+    padding-top: 15px;
+}
+
+.hg-love .hg-header {
+    margin-top: -25px;
+}

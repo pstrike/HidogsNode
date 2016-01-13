@@ -15,6 +15,7 @@ var WXSign = React.createClass({
     },
 
     componentDidUpdate: function() {
+
         if(this.props.signature.signature  && !this.state.isInit) {
 
             wx.config({
@@ -27,10 +28,6 @@ var WXSign = React.createClass({
             });
 
             wx.ready(function() {
-                this.setState({
-                    isInit: true,
-                });
-
                 if(this.props.callback) {
                     this.props.callback();
                 }
@@ -38,6 +35,10 @@ var WXSign = React.createClass({
 
             wx.error(function(res) {
                 alert('好像出了点问题, 请您重新打开一次页面.');
+            });
+
+            this.setState({
+                isInit: true,
             });
 
         }

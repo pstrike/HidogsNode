@@ -2,6 +2,23 @@
 
 var React = require('react');
 
+/*
+
+ <WXPicUploader textName='ignore'
+ imageName='pet.image_url_list.[0]'
+ text='狗狗美照1'
+ imageUrl={this.state.editUser.pet ? this.state.editUser.pet.image_url_list[0] : ""}
+ onChange={this._handleChange}
+ delete='false'
+ onDelete={this._removeCertificate.bind(this, i)}
+ add='false'
+ onAdd={this._addNewCertificate}
+ disabled='false'
+ getMedia={this._getWXPicMedia}
+ hideName='true'/>
+
+ */
+
 var WXPicUploader = React.createClass({
 
     getInitialState: function() {
@@ -52,13 +69,20 @@ var WXPicUploader = React.createClass({
                                   value={this.props.text} name={this.props.textName} onChange={this.props.onChange}/>;
         }
 
+
+        var nameContent = <div className="row">
+            <div className="col-xs-2"><label className="vcenter34"
+                                             for="vendorCertificateName1">名称</label></div>
+            <div className="col-xs-10">{inputContent}</div>
+        </div>;
+
+        if(this.props.hideName == 'true') {
+            nameContent = "";
+        }
+
         return (
             <div>
-                <div className="row">
-                    <div className="col-xs-2"><label className="vcenter34"
-                                                     for="vendorCertificateName1">名称</label></div>
-                    <div className="col-xs-10">{inputContent}</div>
-                </div>
+                {nameContent}
                 <div className="row">
                     <div className="col-xs-2"><label className="vcenter34"
                                                      for="vendorCertificatePic1">图片</label></div>

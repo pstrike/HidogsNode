@@ -148,27 +148,27 @@ var app = React.createClass({
                 </div>
             );
         }
-        if(this.props.order.user.pet_name) {
+        if(this.props.order.user.pet && this.props.order.user.pet.name) {
             userProfileContent.push(
                 <div className="form-group">
                     <label>宠物名称</label>
-                    <input type="text" className="form-control no-border" placeholder="宠物名称" value={this.props.order.user.pet_name} disabled/>
+                    <input type="text" className="form-control no-border" placeholder="宠物名称" value={this.props.order.user.pet.name} disabled/>
                 </div>
             );
         }
-        if(this.props.order.user.pet_name) {
+        if(this.props.order.user.pet && this.props.order.user.pet.type) {
             userProfileContent.push(
                 <div className="form-group">
                     <label>宠物品种</label>
-                    <input type="text" className="form-control no-border" placeholder="宠物品种" value={this.props.order.user.pet_type} disabled/>
+                    <input type="text" className="form-control no-border" placeholder="宠物品种" value={this.props.order.user.pet.type} disabled/>
                 </div>
             );
         }
-        if(this.props.order.user.pet_name) {
+        if(this.props.order.user.pet && this.props.order.user.pet.age) {
             userProfileContent.push(
                 <div className="form-group">
                     <label>宠物年龄</label>
-                    <input type="text" className="form-control no-border" placeholder="宠物年龄" value={this.props.order.user.pet_age} disabled/>
+                    <input type="text" className="form-control no-border" placeholder="宠物年龄" value={this.props.order.user.pet.age} disabled/>
                 </div>
             );
         }

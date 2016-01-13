@@ -174,15 +174,15 @@ var app = React.createClass({
 
                         <div className="form-group">
                             <label>宠物的名字</label>
-                            <input type="text" className="form-control simple-input" placeholder="宠物名字" value={this.state.user.pet_name ? this.state.user.pet_name : ""} name="pet_name" onChange={this._handleChange}/>
+                            <input type="text" className="form-control simple-input" placeholder="宠物名字" value={this.state.user.pet ? this.state.user.pet.name : ""} name="pet.name" onChange={this._handleChange}/>
                         </div>
                         <div className="form-group">
                             <label>宠物的品种</label>
-                            <input type="text" className="form-control simple-input" placeholder="宠物品种" value={this.state.user.pet_type ? this.state.user.pet_type : ""} name="pet_type" onChange={this._handleChange}/>
+                            <input type="text" className="form-control simple-input" placeholder="宠物品种" value={this.state.user.pet ? this.state.user.pet.type : ""} name="pet.type" onChange={this._handleChange}/>
                         </div>
                         <div className="form-group">
                             <label>宠物的年龄</label>
-                            <input type="number" pattern="[0-9]*" className="form-control simple-input" placeholder="宠物年龄" value={this.state.user.pet_age ? this.state.user.pet_age : ""} name="pet_age" onChange={this._handleChange}/>
+                            <input type="number" pattern="[0-9]*" className="form-control simple-input" placeholder="宠物年龄" value={this.state.user.pet ? this.state.user.pet.age : ""} name="pet.age" onChange={this._handleChange}/>
                         </div>
 
                         <div className="form-group">

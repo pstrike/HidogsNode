@@ -145,7 +145,7 @@ textarea {
 }
 
 .white_text {
-    color: whi;
+    color: white;
 }
 
 .green_text {
@@ -510,4 +510,22 @@ h3.hg-session {
 
 .grey-border {
     border-color: #e5e5e5;
+}
+
+
+.hg-qcode {
+    width: 129px;
+    height: 129px;
+    background-image: url('../img/qcode.png');
+    margin-left: auto;
+    margin-right: auto;
+
+    /* lt ie8 */
+    -ms-background-position-x: center;
+    -ms-background-position-y: bottom;
+    background-position: center bottom;
+
+    /* scale bg image proportionately */
+    background-size: cover;
+
 }

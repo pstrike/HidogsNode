@@ -5,7 +5,7 @@ var url = 'mongodb://hidogs:Huanchong888888@120.25.105.129:27017/hidogs';
 //var url = 'mongodb://localhost:27017/hidogs';
 //var shopData = require('./db/db_shop');
 //var vendorData = require('./db/db_vendor');
-var type = "admin"
+var type = "user"
 var data = require('./db/db_'+type);
 
 var insertDocument = function(db, data, callback) {

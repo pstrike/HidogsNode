@@ -10,6 +10,10 @@ module.exports = keyMirror({
     HIDOGS_SESSION_LOAD_SUCCESSFUL: null,
     HIDOGS_SESSION_LOAD_FAIL: null,
 
+    // WX Sign
+    HIDOGS_WX_SIGN_LOAD_SUCCEFFUL: null,
+    HIDOGS_WX_SIGN_LOAD_FAIL: null,
+
     // Web Utilities
     WEB_UTILS_REQUEST_TIMEOUT: null,
     WEB_UTILS_REQUEST_ERROR: null,

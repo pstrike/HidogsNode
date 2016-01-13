@@ -55,7 +55,11 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
                 "7.[用户功能]收藏: uf\n" +
                 "8.[用户功能]优惠码: uc\n" +
                 "9.[管理者功能]欢宠小Q服务管理: vpq\n" +
-                "10.[管理者功能]管理者后台: ad\n"
+                "10.[管理者功能]管理者后台: ad\n" +
+                "11.[相亲大战]单身狗资料: dp\n" +
+                "12.[相亲大战]Tinder: td\n" +
+                "13.[相亲大战]个人主页: lp\n" +
+                "14.[相亲大战]微信号录入&配对联系方式: ll\n";
             break;
         case "vj":
             msg = "http://www.hidogs.cn/wechat/auth?destination=001vendor1view1vendorjoin_vendor";
@@ -86,6 +90,18 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
             break;
         case "ad":
             msg = "http://www.hidogs.cn/admin/view/vendor(请在电脑登录)";
+            break;
+        case "dp":
+            msg = "http://www.hidogs.cn/love/view/profile";
+            break;
+        case "td":
+            msg = "http://www.hidogs.cn/love/view/tinder";
+            break;
+        case "ll":
+            msg = "http://www.hidogs.cn/love/view/match";
+            break;
+        case "lp":
+            msg = "http://www.hidogs.cn/love/view/showoff?userid=de4d9ae3-e2fe-9f6d-e297-e8aa8d97c816";
             break;
         case "hgopenid":
             msg = message.FromUserName;
@@ -300,6 +316,11 @@ exports.show = function(req, res, next){
                                 newAccount.address.country = oauth_user.country;
                                 newAccount.address.province = oauth_user.province;
                                 newAccount.address.city = oauth_user.city;
+                                newAccount.source = "talent";
+
+                                if(destination.indexOf("love")) {
+                                    newAccount.source = "love";
+                                }
 
                                 operation.insertObject(operation.getCollectionList()[target], newAccount, function (result) {
                                     if (result.status == "fail") {
@@ -408,8 +429,47 @@ exports.show = function(req, res, next){
             });
             break;
 
+        case 'subscribe':
+            /*
+            openid: the openid to be queried
+            account: is either user or vendor
+             */
+            var openid = req.query.openid;
+            var account = req.query.account;
+            var api;
+
+            switch (account) {
+                case "user":
+                    api = apiUser;
+                    break;
+
+                case "vendor":
+                    api = apiVendor;
+                    break;
+
+                default:
+                    next();
+            }
+
+            api.getUser({openid: openid, lang: 'zh_CN'}, function(err, result) {
+                if(err) {
+                    console.log(err);
+                    next(new Error("微信认证失败. 请授权并重试."));
+                }
+                else {
+                    if(result && result.subscribe) {
+                        res.send({subscribe: 1,});
+                    }
+                    else {
+                        res.send({subscribe: 0,});
+                    }
+                }
+            });
+
+            break;
+
         default:
-            // op
+            next();
     };
 };
 
