@@ -40,7 +40,7 @@
     },
     "scripts": {
         "start": "watchify -o public/js/love/tinderApp.js -v -d app_love/Tinder/app.js",
-        "build": "uglifyjs public/js/vendorOrderApp.js -mo public/js/vendorOrderApp.min.js"
+        "build": "uglifyjs public/js/love/tinderApp.js -mo public/js/love/tinderApp.min.js"
     },
     "browserify": {
         "transform": [

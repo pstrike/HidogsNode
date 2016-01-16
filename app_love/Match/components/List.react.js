@@ -12,7 +12,7 @@ var app = React.createClass({
     render: function() {
 
         var content = <div className="text-center">
-            <h5>暂无相互喜欢的用户</h5>
+            <h5>暂无互相喜欢的用户</h5>
         </div>;
         if(this.props.userList.length > 0) {
             content = <table className="hg-table text-center">
@@ -46,7 +46,7 @@ var app = React.createClass({
             <div className="hg-love" id="react_body">
                 <div className="container blue-background-decoration"></div>
 
-                <Header subtitle="解救单身狗" hgstyle="love-profile hg-navbar"/>
+                <Header subtitle="解救单身狗 - 萌宠相亲活动" hgstyle="love-profile hg-navbar"/>
 
                 <div className="container text-center">
 

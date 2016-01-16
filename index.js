@@ -12,7 +12,7 @@ var schedulers = require('./schedulers/index');
 //var wechatvalidation = require('./util/wechatvalidation');
 
 var app = module.exports = express();
-var config = require('./config')('staging');
+var config = require('./config')('production');
 
 // Make sure to include the JSX transpiler
 require("node-jsx").install();
@@ -32,10 +32,10 @@ if (!module.parent) app.use(logger('dev'));
 app.use(express.static(__dirname + '/public'));
 
 // setup session with expiration is 600s
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 600000 }}))
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}))
 
 // parse request bodies (req.body)
-//app.use(tokenverifiction.verify);
+app.use(tokenverifiction.verify);
 app.use(filterprojectionparser.parse);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

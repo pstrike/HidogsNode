@@ -10,7 +10,7 @@ var app = React.createClass({
 
         return (
             <div className="hg-love" id="react_body">
-                <Header subtitle="解救单身狗" hgstyle="love-profile hg-navbar"/>
+                <Header subtitle="解救单身狗 - 萌宠相亲活动" hgstyle="love-profile hg-navbar"/>
 
                 <div className="container text-center">
 

@@ -4,8 +4,10 @@ var React = require('react');
 
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
+var Constants = require('../constants/Constants');
 var Tinder = require('./Tinder.react');
 var Message = require('./Message.react');
+var Guide = require('./Guide.react');
 var Loading = require('./../../../app/Common/components/Loading.react');
 var HGSessionStore = require('../../../app/Common/stores/session');
 var WXSign = require('../../../app/Common/components/WXSign');
@@ -50,8 +52,13 @@ var app = React.createClass({
         var content = <Loading></Loading>;
 
         if(this.state.userList.length > 0) {
-            content = <Tinder session={this.state.session} userList={this.state.userList} status={this.state.status}></Tinder>
+            content = <Guide></Guide>
         }
+
+        if(this.state.status == Constants.STATE_TINDER) {
+            content = <Tinder userList={this.state.userList} status={this.state.status} user={this.state.user}></Tinder>
+        }
+
 
         if(this.state.user && this.state.user.user_id) {
             if(!this.state.user.pet.name) {

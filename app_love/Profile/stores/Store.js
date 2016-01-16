@@ -14,7 +14,7 @@ var _status = Constants.STATE_FORM;
 // Store actions
 function initLoadUser(user, subscribe) {
     _user = user;
-    _editUser = user;
+    _editUser = JSON.parse(JSON.stringify(user));
 
     if(subscribe.subscribe == 1) {
         _user.isSubscribe = true;
@@ -27,8 +27,12 @@ function initLoadUser(user, subscribe) {
 };
 
 function updateProfile(user) {
+
+    var isSubscribe = _user.isSubscribe;
+
     _editUser = user;
-    _user = user;
+    _user = JSON.parse(JSON.stringify(user));
+    _user.isSubscribe = isSubscribe;
     _status = Constants.STATE_SAVE_IN_PROGRESS;
     Store.emitChange();
 };

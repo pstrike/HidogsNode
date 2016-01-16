@@ -64,11 +64,11 @@ exports.do = function () {
 function genNotice(matchNo, time) {
     return {
         "first": {
-            "value":'您在"解救单身狗"的活动中有新的配对',
+            "value":'您在欢宠"解救单身狗"活动中有新的配对',
             "color":"#173177"
         },
         "keyword1":{
-            "value":"有新的"+matchNo+"位用户也同时喜欢了您家狗狗",
+            "value":"共有"+matchNo+"对新的配对",
             "color":"#173177"
         },
         "keyword2": {
@@ -76,7 +76,7 @@ function genNotice(matchNo, time) {
             "color":"#173177"
         },
         "remark":{
-            "value":"点击该消息即可看到最新配对结果",
+            "value":"点击该消息,查看最新配对结果",
             "color":"#173177"
         }
     }

@@ -12,6 +12,8 @@ module.exports = keyMirror({
     ACTION_LOAD_USER_OK: null,
     ACTION_LOAD_USER_FAIL: null,
 
+    ACTION_TRIGGER_TINDER: null,
+
     // states
     STATE_TINDER: null,
     STATE_DONE: null,

@@ -1,5 +1,6 @@
 var operation = require('../../model/operation');
 var prototype = require('../../model/prototype');
+var formatdatetime = require('../../util/formatdatetime');
 
 var commonType = [
     "贵宾(泰迪)",
@@ -37,6 +38,10 @@ var weightTallConversion = [
     },
 ]
 
+var resultBasicNo = 15;
+var resultCredit = 5;
+var resulCreditPerCommentNo = 10;
+
 exports.page = function(req, res, next){
     var page = req.params.love_id;
     var access = req.query.access;
@@ -44,11 +49,20 @@ exports.page = function(req, res, next){
 
     switch (page) {
         case 'profile':
+            var isappinstalled = req.query.isappinstalled; // when share in wx friend line, the req have this param
 
             var userAgent = req.headers['user-agent'];
             if(userAgent.indexOf('MicroMessenger') > -1 || access == token) {
                 if(req.session['current_user'] && req.session['current_user'].user_id) {
-                    res.render('love.ejs',{loveapp: 'profileApp'});
+                    if(isappinstalled) {
+                        // to ensure url is the same even after share in wx
+                        res.redirect("http://www.hidogs.cn/love/view/profile");
+                    }
+                    else {
+                        visitCount(req.session['current_user'].user_id, function() {
+                            res.render('love.ejs',{loveapp: 'profileApp'});
+                        });
+                    }
                 }
                 else {
                     var url = "http://www.hidogs.cn/wechat/auth?destination=001love1view1profile_user";
@@ -69,9 +83,12 @@ exports.page = function(req, res, next){
                     if(isappinstalled) {
                         // to ensure url is the same even after share in wx
                         res.redirect("http://www.hidogs.cn/love/view/tinder");
+
                     }
                     else {
-                        res.render('tinder.ejs',{loveapp: 'tinderApp'});
+                        visitCount(req.session['current_user'].user_id, function() {
+                            res.render('tinder.ejs',{loveapp: 'tinderApp'});
+                        });
                     }
                 }
                 else {
@@ -96,7 +113,9 @@ exports.page = function(req, res, next){
                         res.redirect("http://www.hidogs.cn/love/view/showoff?userid="+userId);
                     }
                     else {
-                        res.render('showoff.ejs',{loveapp: 'showOffApp', userid: userId, iswx: 'true'});
+                        visitCount(req.session['current_user'].user_id, function() {
+                            res.render('showoff.ejs',{loveapp: 'showOffApp', userid: userId, iswx: 'true'});
+                        });
                     }
                 }
                 else {
@@ -118,9 +137,12 @@ exports.page = function(req, res, next){
                     if(isappinstalled) {
                         // to ensure url is the same even after share in wx
                         res.redirect("http://www.hidogs.cn/love/view/match");
+
                     }
                     else {
-                        res.render('love.ejs',{loveapp: 'matchApp'});
+                        visitCount(req.session['current_user'].user_id, function() {
+                            res.render('love.ejs',{loveapp: 'matchApp'});
+                        });
                     }
                 }
                 else {
@@ -133,6 +155,34 @@ exports.page = function(req, res, next){
             }
 
             break;
+
+        case 'top':
+            var isappinstalled = req.query.isappinstalled; // when share in wx friend line, the req have this param
+
+            var userAgent = req.headers['user-agent'];
+            if(userAgent.indexOf('MicroMessenger') > -1 || access == token) {
+                if(req.session['current_user'] && req.session['current_user'].user_id) {
+                    if(isappinstalled) {
+                        // to ensure url is the same even after share in wx
+                        res.redirect("http://www.hidogs.cn/love/view/top");
+                    }
+                    else {
+                        visitCount(req.session['current_user'].user_id, function() {
+                            res.render('love.ejs',{loveapp: 'topApp'});
+                        });
+                    }
+                }
+                else {
+                    var url = "http://www.hidogs.cn/wechat/auth?destination=001love1view1top_user";
+                    res.redirect(url);
+                }
+            }
+            else {
+                res.render('err.ejs');
+            }
+
+            break;
+
         default:
             next();
     }
@@ -155,10 +205,18 @@ exports.otherget = function(req, res, next){
                     }
                 }
 
+                var city = "其它";
+                if(user.address.city.indexOf('广州') > -1
+                ||user.address.city.indexOf('深圳') > -1
+                ||user.address.city.indexOf('上海') > -1
+                ||user.address.city.indexOf('北京') > -1) {
+                    city = "主要";
+                }
+
                 var filter;
                 if(isCommonType) {
                     filter = {
-                        'address.city': user.address.city,
+                        'address.city': { $in: [ user.address.city, city ] },
                         'pet.gender': user.pet.gender == "1" ? "2" : "1",
                     }
                 }
@@ -182,6 +240,7 @@ exports.otherget = function(req, res, next){
 
                     var isILoved = false;
                     var isIHated = false;
+                    var tmpResult = [];
 
                     tempTargetUserList.forEach(function(tmpTargetUser) {
                         for(var j=0; j<user.love.i_love.length; j++) {
@@ -201,16 +260,34 @@ exports.otherget = function(req, res, next){
                         //console.log("user:"+tmpTargetUser.user_id+" score:"+tmpTargetUser.score)
 
                         if(!isILoved && !isIHated) {
-                            result.push(tmpTargetUser);
+                            tmpResult.push(tmpTargetUser);
                         }
 
                         isILoved = false;
                         isIHated = false;
                     })
 
-                    result = result.sort(function(a,b){return a.score<b.score?1:-1});
+                    tmpResult = tmpResult.sort(function(a,b){return a.score<b.score?1:-1});
 
-                    res.send(result);
+                    // calculate total result no base on user
+                    var resultLimitedNo = resultBasicNo + parseInt(user.love.support.length / resulCreditPerCommentNo) * resultCredit;
+
+                    var resultNo = resultLimitedNo;
+                    var todayDate = new Date();
+                    var latestVisitedDate = user.love.visit_status.date ? new Date(user.love.visit_status.date) : "";
+                    if(latestVisitedDate && formatdatetime.formatDate(todayDate) == formatdatetime.formatDate(latestVisitedDate)) {
+                        resultNo = resultLimitedNo - user.love.visit_status.count;
+                    }
+
+                    for(var i=0; i<(resultNo < tmpResult.length ? resultNo : tmpResult.length); i++) {
+                        result.push(tmpResult[i]);
+                    }
+
+                    res.send({
+                        isLimited: user.love.visit_status.count >= resultLimitedNo ? true : false,
+                        isMore: result.length < tmpResult.length ? true : false,
+                        result: result,
+                    });
                 })
             })
 
@@ -220,7 +297,7 @@ exports.otherget = function(req, res, next){
             var userId = req.query.userid;
             var lovedUserId = req.query.loveduserid;
 
-            console.log(userId + " love " + lovedUserId);
+            //console.log(userId + " love " + lovedUserId);
 
             operation.getObject(operation.getCollectionList().user, userId, {user_id:1, love:1}, function(user) {
                 if(user) {
@@ -232,6 +309,16 @@ exports.otherget = function(req, res, next){
                         newUser.love = prototype.getUserPrototype().love;
                     }
                     newUser.love.i_love.push(lovedUserId);
+
+                    var todayDate = new Date();
+                    var latestVisitedDate = user.love.visit_status.date ? new Date(user.love.visit_status.date) : "";
+                    if(latestVisitedDate && formatdatetime.formatDate(todayDate) == formatdatetime.formatDate(latestVisitedDate)) {
+                        newUser.love.visit_status.count ++;
+                    }
+                    else {
+                        newUser.love.visit_status.date = todayDate;
+                        newUser.love.visit_status.count = 1;
+                    }
 
                     operation.updateObject(operation.getCollectionList().user, newUser, function(result) {
                         if(result.status == 'fail') {
@@ -273,7 +360,7 @@ exports.otherget = function(req, res, next){
             var userId = req.query.userid;
             var hatedUserId = req.query.hateduserid;
 
-            console.log(userId + " hate " + hatedUserId);
+            //console.log(userId + " hate " + hatedUserId);
 
             operation.getObject(operation.getCollectionList().user, userId, {user_id:1, love:1}, function(user) {
                 if(user) {
@@ -284,6 +371,16 @@ exports.otherget = function(req, res, next){
                         newUser.love = prototype.getUserPrototype().love;
                     }
                     newUser.love.i_hate.push(hatedUserId);
+
+                    var todayDate = new Date();
+                    var latestVisitedDate = user.love.visit_status.date ? new Date(user.love.visit_status.date) : "";
+                    if(latestVisitedDate && formatdatetime.formatDate(todayDate) == formatdatetime.formatDate(latestVisitedDate)) {
+                        newUser.love.visit_status.count ++;
+                    }
+                    else {
+                        newUser.love.visit_status.date = todayDate;
+                        newUser.love.visit_status.count = 1;
+                    }
 
                     operation.updateObject(operation.getCollectionList().user, newUser, function(result) {
                         if(result.status == 'fail') {
@@ -323,6 +420,121 @@ exports.otherget = function(req, res, next){
                 else {
                     next();
                 }
+            })
+
+            break;
+
+        case 'top':
+            var result = {
+                fav: {},
+                playdog: {},
+                pop: {},
+                cool: {},
+                lazy: {},
+            };
+            var userList = []
+
+            operation.getObjectList(operation.getCollectionList().user, {}, {user_id:1, pet:1, love:1}, function(objectList) {
+                objectList.forEach(function(user) {
+                    if(user.user_id.indexOf("robot") < 0) {
+                        user.fav = user.love.love_me.length;
+                        user.playdog = user.love.i_love.length;
+                        user.pop = user.love.support.length;
+                        user.cool = user.love.love_me.length > 0 ? user.love.i_love.length / user.love.love_me.length : 0;
+
+                        userList.push(user);
+                    }
+                })
+
+                userList = userList.sort(function(a,b){return a.fav<b.fav?1:-1});
+                for(var j=0; j<userList.length; j++) {
+                    if(userList[j].pet.name)
+                    {
+                        result.fav = userList[j];
+                        break;
+                    }
+                }
+
+                userList = userList.sort(function(a,b){return a.playdog<b.playdog?1:-1});
+                for(var j=0; j<userList.length; j++) {
+                    if(userList[j].pet.name)
+                    {
+                        result.playdog = userList[j];
+                        break;
+                    }
+                }
+
+                userList = userList.sort(function(a,b){return a.pop<b.pop?1:-1});
+                for(var j=0; j<userList.length; j++) {
+                    if(userList[j].pet.name)
+                    {
+                        result.pop = userList[j];
+                        break;
+                    }
+                }
+
+                userList = userList.sort(function(a,b){return a.cool>b.cool?1:-1});
+                for(var i=0; i<userList.length; i++) {
+                    if(userList[i].fav > 20 && userList[j].pet.name)
+                    {
+                        result.cool = userList[i];
+                        break;
+                    }
+                }
+
+                userList = userList.sort(function(a,b){return a.playdog>b.playdog?1:-1});
+                for(var j=0; j<userList.length; j++) {
+                    if(userList[j].pet.name)
+                    {
+                        result.lazy = userList[j];
+                        break;
+                    }
+                }
+
+                res.send(result);
+            })
+
+            break;
+
+        case "random":
+            var favNo = parseInt(req.query.no/3);
+            var popNo = parseInt(req.query.no/3);
+            var playdogNo = parseInt(req.query.no/3) + req.query.no%3;
+            var randomNo;
+
+            var result = [];
+            var userList = [];
+
+            operation.getObjectList(operation.getCollectionList().user, {}, {user_id:1, pet:1, love:1}, function(objectList) {
+                objectList.forEach(function (user) {
+                    if (user.user_id.indexOf("robot") < 0 && user.pet && user.pet.name) {
+                        user.fav = user.love.love_me.length;
+                        user.playdog = user.love.i_love.length;
+                        user.pop = user.love.support.length;
+
+                        userList.push(user);
+                    }
+                })
+
+                userList = userList.sort(function(a,b){return a.fav<b.fav?1:-1});
+                for(var j=0; j<favNo; j++) {
+                    randomNo = parseInt(Math.random() * ((userList.length / favNo)-1), 10) + j * parseInt(userList.length / favNo);
+                    result.push(userList[randomNo]);
+                }
+
+                userList = userList.sort(function(a,b){return a.pop<b.pop?1:-1});
+                for(var j=0; j<popNo; j++) {
+                    randomNo = parseInt(Math.random() * ((userList.length / favNo)-1), 10) + j * parseInt(userList.length / popNo);
+                    result.push(userList[randomNo]);
+                }
+
+                userList = userList.sort(function(a,b){return a.playdog<b.playdog?1:-1});
+                for(var j=0; j<playdogNo; j++) {
+                    randomNo = parseInt(Math.random() * ((userList.length / favNo)-1), 10) + j * parseInt(userList.length / playdogNo);
+                    result.push(userList[randomNo]);
+                }
+
+                res.send(result);
             })
 
             break;
@@ -529,4 +741,34 @@ function isRobot(user) {
     else {
         return false;
     }
+}
+
+function visitCount(userId, callback) {
+    operation.getObject(operation.getCollectionList().user, userId, {user_id:1, visit_count:1}, function(user) {
+        if (user) {
+            var newUser = {};
+            newUser.user_id = user.user_id;
+            if(!user.visit_count) {
+                newUser.visit_count = prototype.getUserPrototype().visit_count;
+            }
+            else {
+                newUser.visit_count = user.visit_count;
+            }
+
+            if(newUser.visit_count['love']) {
+                newUser.visit_count['love']++;
+            }
+            else {
+                newUser.visit_count['love'] = 1;
+            }
+
+            operation.updateObject(operation.getCollectionList().user, newUser, function(result) {
+                if(result.status == 'fail') {
+                    next(result.err);
+                }
+                callback();
+            });
+
+        }
+    })
 }

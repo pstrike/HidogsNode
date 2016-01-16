@@ -36,23 +36,32 @@ var app = React.createClass({
                 }
             }
         }
-        var supportBtn = <button className="btn btn-hd-blue text-muted hg-like-btn text-center" onClick={this._support}>
+        var supportBtn = <div className="col-xs-4"><button className="btn btn-hd-blue text-muted hg-like-btn text-center" onClick={this._support}>
             <span className="glyphicon glyphicon-thumbs-up vcenter71" aria-hidden="true"></span>
-        </button>;
-        var supportInfoContent = <div className="col-xs-6">
-            <div className="big-text voffset25">{this.props.user.love ? this.props.user.love.support.length : 0}</div>
-            <div className="sub-title-text">人支持</div>
-        </div>
+        </button></div>;
+        var supportInfoContent = <div className="col-xs-8">
+            <div className="voffset25"><span className="big-text">{this.props.user.love ? this.props.user.love.support.length : 0}</span>人支持</div>
+            <div className="sub-title-text"><small>(你的支持将提高狗狗相亲曝光的几率)</small></div>
+        </div>;
         if(isSupported) {
-            supportBtn = <button className="btn btn-hd-blue text-muted hg-like-btn text-center" disabled>
-                <span className="glyphicon glyphicon-thumbs-up vcenter71" aria-hidden="true"></span>
-            </button>;
+            supportBtn = <div className="col-xs-4"><button className="btn btn-hd-blue text-muted hg-share-btn text-center" onClick={this._share}>
+                分享
+            </button></div>;
+
+            supportInfoContent = <div className="col-xs-8">
+                <div className="voffset15 love-type4"><strong>感谢支持</strong><small>&nbsp;({this.props.user.love ? this.props.user.love.support.length : 0}人支持)</small></div>
+                <div className="sub-title-text voffset5">分享狗狗的求爱宣言到朋友圈,让更多的异性单身狗可以看到</div>
+            </div>
+        }
+        if(this.props.user.user_id == this.props.sessionId) {
+            supportBtn = <div className="col-xs-6"><button className="btn btn-hd-blue text-muted hg-share-btn text-center" onClick={this._share}>
+                分享
+            </button></div>;
 
             supportInfoContent = <div className="col-xs-6">
-                <div className="big-text voffset15">{this.props.user.love ? this.props.user.love.support.length : 0}</div>
+                <div className="voffset25 big-text">{this.props.user.love ? this.props.user.love.support.length : 0}</div>
                 <div className="sub-title-text">人支持</div>
-                <div><small><i>(感谢您的支持)</i></small></div>
-            </div>
+            </div>;
         }
 
         var labelContent = "";
@@ -117,13 +126,6 @@ var app = React.createClass({
             </div>
         }
 
-        var moreIndContent = "";
-        if(this.props.user.pet && this.props.user.pet.image_url_list.length > 1) {
-            moreIndContent = <div className="text-center love-type3 voffset5">
-                <i className="fa fa-arrow-circle-down"></i>下拉更多图片
-            </div>
-        }
-
         var statementContent = "";
         if(this.props.user.pet && this.props.user.pet.statement) {
             statementContent = this.props.user.pet.statement;
@@ -136,12 +138,16 @@ var app = React.createClass({
 
         return (
             <div className="hg-love" id="react_body">
-                <Header subtitle="解救单身狗" hgstyle="love-profile hg-navbar"/>
+                <Header subtitle="解救单身狗 - 萌宠相亲活动" hgstyle="love-profile hg-navbar"/>
 
                 <div className="container text-center">
 
                     <div className="row text-center">
                         <div className="love-img-container love-img11"></div>
+
+                        <div className="hg-love-icon text-right">
+                            <img src={this.props.user.head_image_url} className="user-icon-normal img-circle white-border"/>
+                        </div>
 
                         <div className="container love-content white_text">
                             <div className="row">
@@ -156,11 +162,30 @@ var app = React.createClass({
                                 </div>
                             </div>
 
-                            {moreIndContent}
+                            <div className="text-center love-type3 voffset5">
+                                <i className="fa fa-arrow-circle-down"></i>下拉更多内容
+                            </div>
 
                         </div>
 
                         {moreImgContent}
+
+                        <div className="voffset60 container">
+                            <h2>欢宠</h2>
+                            <p>
+                                “解救单身狗”萌宠相亲爱心公益活动旨在帮助宠友解决狗狗相亲找对象的老大难问题.解救单身狗的方式:
+                                <ul>
+                                    <li>点赞求爱宣言,让单身狗的相亲推荐排名更靠前</li>
+                                    <li>转发求爱宣言,让更多的异性单身狗有机会看到</li>
+                                    <li>关注欢宠公众号,带着自己的狗狗一起来相亲!</li>
+                                </ul>
+                            </p>
+
+                            <p>长按/识别二维码,关注欢宠公众号,即可参加活动</p>
+                            <img src="../../img/qcode129x.png"/>
+                        </div>
+
+                        <div className="voffset60">&nbsp;</div>
 
                     </div>
 
@@ -170,9 +195,7 @@ var app = React.createClass({
                     <div className="container">
                         <div className="row text-center">
                             {supportInfoContent}
-                            <div className="col-xs-6">
-                                {supportBtn}
-                            </div>
+                            {supportBtn}
                         </div>
                     </div>
                 </footer>
@@ -183,6 +206,10 @@ var app = React.createClass({
 
     _support: function() {
         Actions.supportUser(this.props.user.user_id, this.props.clientId);
+    },
+
+    _share: function() {
+        document.getElementById('mcover').style.display='block';
     },
 
 });

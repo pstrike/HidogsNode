@@ -8,6 +8,7 @@ var sign = require('../../util/wxjssign');
 var fs = require('fs');
 var genuuid = require('../../util/genuuid');
 var genorderno = require('../../util/genorderno');
+var asyncloop = require('../../util/asyncloop');
 var Constants = require('../../app/Common/constants/HidogsConstants');
 
 var configVendor = {
@@ -172,7 +173,7 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
             ];
             break;
         default :
-            msg = "text";
+            msg = "汪";
 
     }
 
@@ -188,7 +189,33 @@ exports.insert = wechat(WXToken).text(function (message, req, res, next) {
 }).link(function (message, req, res, next) {
     res.reply("link");
 }).event(function (message, req, res, next) {
-    res.reply("欢迎关注欢宠. 一起来加入我们, 成为欢宠美容服务伙伴.");
+    if(message.EventKey == "love_showoff") {
+        operation.getObjectList(operation.getCollectionList().user, {openid:message.FromUserName}, {user_id:1,nick_name:1,pet:1}, function(objectList) {
+            if(objectList.length > 0) {
+                var user = objectList[0];
+                res.reply([
+                    {
+                        title: '支持'+user.nick_name+', 解救单身狗 -- 萌犬相亲求支持',
+                        description: user.pet.statement ? user.pet.statement : "",
+                        picurl: user.pet.image_url_list.length>0 ? 'http://www.hidogs.cn'+user.pet.image_url_list[0] : "",
+                        url: 'http://www.hidogs.cn/love/view/showoff?userid='+user.user_id,
+                    }
+                ]);
+            }
+        })
+    }
+    else {
+        res.reply('如何参与“解救单身狗”爱心公益活动：\n' +
+            '1、填写<a href="www.hidogs.cn/love/view/profile">“狗狗资料”</a>，生成狗狗“求爱宣言”;\n' +
+            '2、进入<a href="www.hidogs.cn/love/view/tinder">“相亲配对”</a>，看到智能推荐的相亲对象;\n' +
+            '3、匿名选择“喜欢”的狗狗，如果你们互相喜欢，可以彼此联系;\n' +
+            '4、转发狗狗“求爱宣言”将增加相亲成功率，并让更多人参与活动:\n' +
+            '－点赞,可提高相亲排名\n' +
+            '－转发,吸引异性单身狗\n' +
+            '－带着狗狗来相亲！\n' +
+            '我们代表所有单身狗感谢您,祝福您一个丰盛的2016!');
+    }
+
 }).device_text(function (message, req, res, next) {
     res.reply("device_text");
 }).device_event(function (message, req, res, next) {
@@ -265,8 +292,8 @@ exports.show = function(req, res, next){
                     next(new Error("微信认证失败. 请授权并重试."));
                 }
 
-                //console.log(result);
-                //
+                console.log(result);
+
                 //if(typeof(result) === "undefined") {
                 //    next(new Error("微信认证失败. 请授权并重试."));
                 //}
@@ -388,7 +415,7 @@ exports.show = function(req, res, next){
         case 'wxjssignature':
             var url = req.query.url;
 
-            apiVendor.getTicket(function(err, result) {
+            apiUser.getTicket(function(err, result) {
                 if(err) {
                     next(new Error("微信获取JS SDK失败. 请重试."));
                 }
@@ -400,7 +427,7 @@ exports.show = function(req, res, next){
                 }
 
                 var signature = sign(result.ticket, url);
-                signature.appId = configVendor.appid;
+                signature.appId = configUser.appid;
 
                 res.send(signature);
             })
@@ -411,7 +438,7 @@ exports.show = function(req, res, next){
             var mediaId = req.query.mediaid;
             var path = req.query.path;
 
-            apiVendor.getMedia(mediaId, function(err, result, wxres) {
+            apiUser.getMedia(mediaId, function(err, result, wxres) {
 
                 var contents = wxres.headers['content-disposition'].split('"');
                 var fileName = contents[1];
@@ -785,6 +812,77 @@ exports.otherpost = function(req, res, next) {
             }
 
             break;
+
+        case 'getuserbatch':
+
+        //  {
+        //    "account": "user",
+        //    "user_list": [
+        //      "otvxTs4dckWG7imySrJd6jSi0CWE",
+        //      "otvxTs4dckWG7imySrJd6jSi0CWE",
+        //      ]
+        //  }
+
+                if(req.body) {
+                    var account = req.body.account;
+                    var api;
+
+                    switch (account) {
+                        case "user":
+                            api = apiUser;
+                            break;
+
+                        case "vendor":
+                            api = apiVendor;
+                            break;
+
+                        default:
+                            next();
+                    }
+
+                    var reqNo = parseInt(req.body.user_list.length / 100) + 1;
+                    var resResult = [];
+                    asyncloop.asyncLoop(reqNo, function(loop) {
+
+                            var newOpenidList = [];
+                            if(loop.iteration() == reqNo - 1) {
+                                for(var i=0+loop.iteration()*100; i < req.body.user_list.length; i++){
+                                    newOpenidList.push(req.body.user_list[i]);
+                                }
+                            }
+                            else {
+                                for(var i=0+loop.iteration()*100; i < (loop.iteration()+1)*100; i++){
+                                    newOpenidList.push(req.body.user_list[i]);
+                                }
+                            }
+
+                            api.batchGetUsers(newOpenidList, function(err, result) {
+                                if(err) {
+                                    console.log(err);
+                                    loop.break();
+                                }
+                                else {
+                                    result.user_info_list.forEach(function(user) {
+                                        resResult.push(user);
+                                    })
+                                    loop.next();
+                                }
+                            });
+
+                        },
+                        function(){
+                            res.send(resResult);
+                        }
+                    );
+
+                }
+                else {
+                    next();
+                }
+            break;
+
+        default:
+            next();
 
     }
 

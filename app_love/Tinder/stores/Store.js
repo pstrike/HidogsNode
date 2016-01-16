@@ -11,9 +11,11 @@ var _userList = [];
 var _status = "";
 
 // Store actions
-function loadUserListOk(userList) {
+function loadUserListOk(tinderResult) {
 
-    var originalNo = _userList.length;
+    var userList = tinderResult.result;
+    var isMore = tinderResult.isMore;
+    var isLimited = tinderResult.isLimited;
 
     userList.forEach(function(item) {
         if(item.pet.name) {
@@ -32,8 +34,46 @@ function loadUserListOk(userList) {
         }
     });
 
-    if(originalNo == _userList.length) {
-        _userList.push({user_id:"tmp",pet:{name:'nomoredata'}});
+    if(isMore && isLimited) {
+        _userList.push(
+            {
+                user_id:"tmp",
+                pet:{
+                    name:'limiteddata',image_url_list:[""]
+                }
+            }
+        );
+    }
+    else if (isMore && !isLimited) {
+        // server return all data under limit
+        _userList.push(
+            {
+                user_id:"tmp",
+                pet:{
+                    name:'limiteddata',image_url_list:[""]
+                }
+            }
+        );
+    }
+    else if (!isMore && isLimited) {
+        _userList.push(
+            {
+                user_id:"tmp",
+                pet:{
+                    name:'limiteddata',image_url_list:[""]
+                }
+            }
+        );
+    }
+    else if (!isMore && !isLimited) {
+        _userList.push(
+            {
+                user_id:"tmp",
+                pet:{
+                    name:'nomoredata',image_url_list:[""]
+                }
+            }
+        );
     }
 
     Store.emitChange();
@@ -54,6 +94,11 @@ function loadUserOk(user, subscribe) {
 
 function voteOk() {
 
+};
+
+function triggerTinder() {
+    _status = Constants.STATE_TINDER;
+    Store.emitChange();
 };
 
 
@@ -116,6 +161,10 @@ AppDispatcher.register(function(action) {
 
         case Constants.ACTION_UPDATE_LOCATION:
             // do nothing
+            break;
+
+        case Constants.ACTION_TRIGGER_TINDER:
+            triggerTinder();
             break;
 
         // HG Actions

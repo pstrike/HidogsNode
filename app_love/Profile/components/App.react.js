@@ -67,7 +67,7 @@ var app = React.createClass({
             <div>
                 <WXSign signature = {this.state.wxSign}
                         getSign = {this._getWXSign}
-                        apilist = 'chooseImage,uploadImage,getLocation'
+                        apilist = 'chooseImage,uploadImage,getLocation,onMenuShareTimeline,onMenuShareAppMessage'
                         callback = {this._getLocation}>
                 </WXSign>
 
@@ -107,6 +107,33 @@ var app = React.createClass({
                 }.bind(this));
 
             }.bind(this)
+        });
+
+        wx.onMenuShareTimeline({
+            title: '欢宠解救单身狗 -- 萌犬相亲活动', // 分享标题
+            link: 'http://www.hidogs.cn/love/view/profile', // 分享链接
+            imgUrl: 'http://www.hidogs.cn/img/logo-dog-5.png', // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+
+        wx.onMenuShareAppMessage({
+            title: '欢宠解救单身狗 -- 萌犬相亲活动', // 分享标题
+            desc: '“解救单身狗”萌宠相亲爱心公益活动旨在帮助宠友解决狗狗相亲找对象的老大难问题', // 分享描述
+            link: 'http://www.hidogs.cn/love/view/profile', // 分享链接
+            imgUrl: 'http://www.hidogs.cn/img/logo-dog-5.png', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
         });
     },
 

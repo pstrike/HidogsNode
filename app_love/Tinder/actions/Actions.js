@@ -106,6 +106,12 @@ var Actions = {
         });
     },
 
+    triggerTinder: function() {
+        AppDispatcher.dispatch({
+            actionType: Constants.ACTION_TRIGGER_TINDER,
+        });
+    },
+
 };
 
 module.exports = Actions;

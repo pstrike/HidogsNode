@@ -40,7 +40,7 @@ exports.do = function () {
                             sale_no: 0,
                             score: 0,
                             rate: 0,
-                            category_id: item.product.product_category.product_meta_category_id,
+                            category_id: item.product.category.product_meta_category_id,
                         }
                     }
 

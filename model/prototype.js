@@ -123,12 +123,17 @@ var Model = {
                 love_me: [],
                 support: [],
                 match_no: 0,
+                visit_status: {
+                    date: "",
+                    count: 0,
+                },
             },
             source: "",
             history_locations: [
                 {},{},{},
             ],
             wx_id: "",
+            visit_count:{},
             created_time: "",
             modified_time: "",
         };

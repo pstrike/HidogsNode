@@ -24,10 +24,37 @@ var typeList = [
 ];
 
 var colorList = [
-    "黑色",
-    "白色",
-    "红色",
-    "黄色",
+    {"type": "贵宾(泰迪)", "color": "红棕色"},
+    {"type": "贵宾(泰迪)", "color": "黑色"},
+    {"type": "贵宾(泰迪)", "color": "灰色"},
+    {"type": "贵宾(泰迪)", "color": "白色"},
+    {"type": "贵宾(泰迪)", "color": "巧克力色"},
+    {"type": "贵宾(泰迪)", "color": "奶油色"},
+    {"type": "贵宾(泰迪)", "color": "花色"},
+    {"type": "贵宾(泰迪)", "color": "杏色"},
+    {"type": "比熊", "color": "白色"},
+    {"type": "雪纳瑞", "color": "椒盐色"},
+    {"type": "雪纳瑞", "color": "黑银色"},
+    {"type": "雪纳瑞", "color": "黑色"},
+    {"type": "博美", "color": "黑色"},
+    {"type": "博美", "color": "褐色"},
+    {"type": "博美", "color": "白色"},
+    {"type": "博美", "color": "棕色"},
+    {"type": "博美", "color": "花色"},
+    {"type": "拉布拉多", "color": "黑色"},
+    {"type": "拉布拉多", "color": "奶油色"},
+    {"type": "拉布拉多", "color": "巧克力色"},
+    {"type": "金毛", "color": "棕色"},
+    {"type": "金毛", "color": "杏色"},
+    {"type": "阿拉斯加", "color": "黑色"},
+    {"type": "阿拉斯加", "color": "棕红色"},
+    {"type": "阿拉斯加", "color": "灰色"},
+    {"type": "阿拉斯加", "color": "白色"},
+    {"type": "哈士奇", "color": "黑色"},
+    {"type": "哈士奇", "color": "棕红色"},
+    {"type": "哈士奇", "color": "灰色"},
+    {"type": "哈士奇", "color": "白色"},
+    {"type": "萨摩耶", "color": "白色"}
 ];
 
 
@@ -140,13 +167,26 @@ var app = React.createClass({
             petColorInput = <input type="text" className="form-control simple-input no-border" placeholder="请填写毛色" value={this.state.editUser.pet ? this.state.editUser.pet.color : ""} name="pet.color" onChange={this._handleChange}/>
         }
         else {
-            petColorInput = <select className="form-control simple-input no-border" value={this.state.editUser.pet ? this.state.editUser.pet.color : ""} name="pet.color" onChange={this._handleChange}>
-                <option value="" disabled>请选择狗狗毛色</option>
-                {colorList.map(function(item) {
-                    return <option value={item}>{item}</option>
-                })}
-                <option value=" ">其它(自己填写)</option>
-            </select>;
+            var colorSelectionItem = [];
+            colorList.forEach(function(item) {
+                if(item.type == this.state.editUser.pet.type) {
+                    colorSelectionItem.push(<option value={item.color}>{item.color}</option>);
+                }
+            }.bind(this))
+
+            if(this.state.editUser.pet.type) {
+                petColorInput = <select className="form-control simple-input no-border" value={this.state.editUser.pet ? this.state.editUser.pet.color : ""} name="pet.color" onChange={this._handleChange}>
+                    <option value="" disabled>请选择狗狗毛色</option>
+                    {colorSelectionItem}
+                    <option value=" ">其它(自己填写)</option>
+                </select>;
+            }
+            else {
+                petColorInput = <select className="form-control simple-input no-border" value={this.state.editUser.pet ? this.state.editUser.pet.color : ""} name="pet.color" onChange={this._handleChange}>
+                    <option value="" disabled>请先选择狗狗品种</option>
+                </select>;
+            }
+
         }
 
         // Verify Msg
@@ -167,7 +207,7 @@ var app = React.createClass({
             <div className="hg-love" id="react_body">
                 <div className="container blue-background-decoration"></div>
 
-                <Header subtitle="解救单身狗" hgstyle="love-profile hg-navbar"/>
+                <Header subtitle="解救单身狗 - 萌宠相亲活动" hgstyle="love-profile hg-navbar"/>
 
                 <div className="container">
 
@@ -176,11 +216,10 @@ var app = React.createClass({
                             <h2 className="hg-header">解救单身狗</h2>
                         </div>
                         <div className="voffset30">
-                            <div className="text-center"><span className="glyphicon glyphicon-lock"></span>&nbsp;数据安全保证</div>
                             <ul>
-                                <li><small><i>你的数据将受到欢宠隐私政策的管辖以保证数据安全</i></small></li>
-                                <li><small><i>当您有新的配对时,我们将向您发送消息以通知您</i></small></li>
-                                <li><small><i>打*号的为必填的内容</i></small></li>
+                                <li><small><i>我们将根据您狗狗资料，智能推荐合适的相亲对象</i></small></li>
+                                <li><small><i>当您有新的配对时，我们将向您发送消息通知您</i></small></li>
+                                <li><small><i>打＊号的内容为必填项</i></small></li>
                             </ul>
                         </div>
 
@@ -223,7 +262,7 @@ var app = React.createClass({
                                 <input type="number" pattern="[0-9]*" className="form-control simple-input no-border" placeholder="斤" value={this.state.editUser.pet ? this.state.editUser.pet.weight : ""} name="pet.weight" onChange={this._handleChange}/>
                             </div>
                         </div>
-                        <small><i>*请选填肩高、体重,或者都填</i></small>
+                        <small><i>*请选填肩高／体重,如果都填写将提高配对成功率</i></small>
                     </div>
 
                     <div className="form-group">

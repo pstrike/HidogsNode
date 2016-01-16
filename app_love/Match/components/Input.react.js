@@ -15,21 +15,22 @@ var app = React.createClass({
             <div className="hg-love" id="react_body">
                 <div className="container blue-background-decoration"></div>
 
-                <Header subtitle="解救单身狗" hgstyle="love-profile hg-navbar"/>
+                <Header subtitle="解救单身狗 - 萌宠相亲活动" hgstyle="love-profile hg-navbar"/>
 
                 <div className="container text-center">
 
                     <div className="page-header text-center hg-pageheader">
                         <h5>Match</h5>
-                        <h2 className="voffset10"><strong>配对佳丽</strong></h2>
+                        <h2 className="voffset10"><strong>互相喜欢</strong></h2>
                     </div>
 
                     <hr/>
 
                     <div className="form-group text-left">
-
-                        <input type="text" className="form-control simple-input no-border" placeholder="您的微信号" ref="wxId"/>
-                        <br/><small><i>在查看成功配对的佳丽的联系方式前,请填写您的微信号以方便其他佳丽联系您</i></small>
+                        <div className="text-left"><span className="glyphicon glyphicon-lock"></span>&nbsp;数据安全保证</div>
+                        <br/>
+                        <input type="text" className="form-control simple-input no-border" placeholder="您的微信号/手机号" ref="wxId"/>
+                        <br/><small><i>在查看互相喜欢的狗狗前,请填写您的微信号或者手机号以方便对方联系您</i></small>
                     </div>
 
                 </div>

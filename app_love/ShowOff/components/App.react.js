@@ -4,6 +4,7 @@ var React = require('react');
 var Store = require('../stores/Store');
 var Actions = require('../actions/Actions');
 var Main = require('./Main.react');
+var Statement = require('../constants/Statement');
 
 var WXSign = require('../../../app/Common/components/WXSign');
 var HGSessionStore = require('../../../app/Common/stores/session');
@@ -29,6 +30,10 @@ var app = React.createClass({
 
     getInitialState: function() {
         return getAppState();
+    },
+
+    componentWillMount: function(){
+        React.initializeTouchEvents(true);
     },
 
     componentDidMount: function() {
@@ -64,11 +69,15 @@ var app = React.createClass({
             <div>
                 <WXSign signature = {this.state.wxSign}
                         getSign = {this._getWXSign}
-                        apilist = 'onMenuShareTimeline,getLocation'
+                        apilist = 'onMenuShareTimeline,onMenuShareAppMessage,getLocation'
                         callback = {this._wxCallback}>
                 </WXSign>
 
-                <Main user={this.state.user} clientId={this.state.clientId}></Main>
+                <div id="mcover" style={{'display':'none'}} onClick={this._hideWXShareGuide}>
+                    <img src="../../img/wxshareguide.png"/>
+                </div>
+
+                <Main user={this.state.user} clientId={this.state.clientId} sessionId={this.state.session.user_id}></Main>
             </div>
         );
     },
@@ -110,20 +119,48 @@ var app = React.createClass({
             });
 
             wx.onMenuShareTimeline({
-                title: '一起来帮单身狗的摆脱宿命', // 分享标题
+                title: '支持'+this.state.user.nick_name+', 解救单身狗 -- 萌犬相亲求支持', // 分享标题
                 link: 'http://www.hidogs.cn/love/view/showoff?userid='+this.state.user.user_id, // 分享链接
-                imgUrl: 'http://www.hidogs.cn/img/logo-dog-1.png', // 分享图标
+                imgUrl: 'http://www.hidogs.cn'+this.state.user.pet.image_url_list[0], // 分享图标
                 success: function () {
                     // 用户确认分享后执行的回调函数
                 },
                 cancel: function () {
                     // 用户取消分享后执行的回调函数
-                    alert("分享失败");
+                }
+            });
+
+            var statementContent = "";
+            if(this.state.user.pet && this.state.user.pet.statement) {
+                statementContent = this.state.user.pet.statement;
+            }
+            else if(this.state.user.pet && !this.state.user.pet.statement) {
+                var index = parseInt(Math.random() * Statement.length, 10);
+                this.state.user.pet.statement = Statement[index];
+                statementContent = Statement[index];
+            }
+
+            wx.onMenuShareAppMessage({
+                title: '支持'+this.state.user.nick_name+', 解救单身狗 -- 萌犬相亲求支持', // 分享标题
+                desc: statementContent, // 分享描述
+                link: 'http://www.hidogs.cn/love/view/showoff?userid='+this.state.user.user_id, // 分享链接
+                imgUrl: 'http://www.hidogs.cn'+this.state.user.pet.image_url_list[0], // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
                 }
             });
         }
 
 
+    },
+
+    _hideWXShareGuide: function() {
+        document.getElementById('mcover').style.display='none';
     },
 
 });
