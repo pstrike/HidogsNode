@@ -243,7 +243,32 @@ exports.show = function(req, res, next){
             }
 
             if(client) {
-                var url = client.getAuthorizeURL('http://www.hidogs.cn/wechat/base',destination,'snsapi_userinfo');
+                var url = client.getAuthorizeURL('http://www.hidogs.cn/wechat/base',destination,'snsapi_base');
+                res.redirect(url);
+            }
+            else {
+                next(new Error("微信认证失败."));
+            }
+
+            break;
+
+        case "authuserinfo":
+            var param = req.query.destination.split("_");
+            var target = param[1];
+
+            var client;
+            switch(target) {
+                case "user":
+                    client = clientUser;
+                    break;
+
+                case "vendor":
+                    client = clientVendor;
+                    break;
+            }
+
+            if(client) {
+                var url = client.getAuthorizeURL('http://www.hidogs.cn/wechat/baseuserinfo',destination,'snsapi_userinfo');
                 res.redirect(url);
             }
             else {
@@ -293,6 +318,107 @@ exports.show = function(req, res, next){
                 }
 
                 console.log(result);
+
+                if(result.errcode) {
+                    next(new Error("微信认证失败. 请授权并重试."));
+                }
+
+                //if(typeof(result) === "undefined") {
+                //    next(new Error("微信认证失败. 请授权并重试."));
+                //}
+                //
+                //if(typeof(result.data) === "undefined") {
+                //    next(new Error("微信认证失败. 请授权并重试."));
+                //}
+
+                try {
+                    var accessToken = result.data.access_token;
+                    var openid = result.data.openid;
+                }
+                catch (err) {
+                    console.log("WX Oauth Err");
+                    console.log(err);
+                    next(new Error("微信认证失败. 请授权并重试."));
+                }
+
+                operation.getObjectList(operation.getCollectionList()[target], {openid: openid}, {}, function(objectList){
+                    if(objectList.length == 0) {
+                        res.redirect('http://www.hidogs.cn/wechat/authuserinfo?destination='+req.query.state);
+                    }
+                    else {
+                        switch(target) {
+                            case "user":
+                                req.session.current_user = {
+                                    user_id: objectList[0].user_id,
+                                    head_image_url: objectList[0].head_image_url,
+                                    nick_name: objectList[0].nick_name,
+                                    openid: objectList[0].openid,
+                                };
+                                break;
+
+                            case "vendor":
+                                req.session.current_user = {
+                                    vendor_id: objectList[0].vendor_id,
+                                    role: objectList[0].role[0].slug,
+                                    head_image_url: objectList[0].head_image_url,
+                                    nick_name: objectList[0].nick_name,
+                                    status: objectList[0].status,
+                                    openid: objectList[0].openid,
+                                };
+                                break;
+                        }
+
+                        res.redirect(destination);
+                    }
+                })
+            });
+            break;
+
+        case "baseuserinfo":
+            // /wechat/base?code=[code]&state=[url]?[param]_[entity]
+
+            var code = req.query.code;
+            var param = req.query.state.split("_");
+            var destination;
+            if(param[0].indexOf("?")>-1) {
+                var destinationPath = param[0].split("?")[0];
+                destinationPath = destinationPath.replace(/0/g,".");
+                destinationPath = destinationPath.replace(/1/g,"/");
+                destination = destinationPath + "?" + param[0].split("?")[1];
+            }
+            else {
+                destination = param[0];
+                destination = destination.replace(/0/g,".");
+                destination = destination.replace(/1/g,"/");
+            }
+
+            var target = param[1]; // distinguish "vendor" or "user" to handle different type of user
+
+            var client;
+            switch(target) {
+                case "user":
+                    client = clientUser;
+                    break;
+
+                case "vendor":
+                    client = clientVendor;
+                    break;
+            }
+
+            if(!client) {
+                next(new Error("微信认证失败."));
+            }
+
+            client.getAccessToken(code, function (err, result) {
+                if(err) {
+                    next(new Error("微信认证失败. 请授权并重试."));
+                }
+
+                console.log(result);
+
+                if(result.errcode) {
+                    next(new Error("微信认证失败. 请授权并重试."));
+                }
 
                 //if(typeof(result) === "undefined") {
                 //    next(new Error("微信认证失败. 请授权并重试."));

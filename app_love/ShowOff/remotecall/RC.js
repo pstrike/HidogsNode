@@ -21,6 +21,24 @@ var RemoteCall = {
         return promise;
     },
 
+    getUserRanking: function (userId) {
+        var promise = new Promise(function(resolve, reject){
+            var url = APIUtils.makeUrl("/love/other/ranking?userid="+userId);
+            APIUtils.get(url, function(result) {
+                if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
+                    reject(Error(result));
+                }
+                else {
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    },
+
     supportUser: function (userId, ip) {
         var promise = new Promise(function(resolve, reject){
             var url = APIUtils.makeUrl("/love/other/support?userid="+userId+"&ip="+ip);

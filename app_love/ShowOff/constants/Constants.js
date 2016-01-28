@@ -4,6 +4,7 @@ module.exports = keyMirror({
     // actions
     ACTION_INIT_LOAD_USER: null,
     ACTION_INIT_CLIENT_ID: null,
+    ACTION_INIT_USER_RANKING: null,
     ACTION_INIT_FAIL: null,
 
     ACTION_SUPPORT_USER: null,

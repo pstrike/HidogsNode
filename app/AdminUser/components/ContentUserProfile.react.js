@@ -38,6 +38,7 @@ var app = React.createClass({
 
         var subscribeNo = 0;
         var petOwnerNo = 0;
+        var matchNo = 0;
         this.state.userList.forEach(function(user) {
             if(user.isSubscribe) {
                 subscribeNo++;
@@ -46,6 +47,8 @@ var app = React.createClass({
             if(user.pet.name) {
                 petOwnerNo++;
             }
+
+            matchNo += user.love.match_no;
         })
 
         return (
@@ -60,7 +63,8 @@ var app = React.createClass({
                     <div className="text-left">
                         <span className="label label-info">用户数:{this.state.userList.length}</span>&nbsp;&nbsp;&nbsp;
                         <span className="label label-info">宠友数(填了宠物资料):{petOwnerNo}</span>&nbsp;&nbsp;&nbsp;
-                        <span className="label label-info">关注数:{subscribeNo}</span>
+                        <span className="label label-info">关注数:{subscribeNo}</span>&nbsp;&nbsp;&nbsp;
+                        <span className="label label-info">配对数:{matchNo/2}</span>
                     </div>
 
                     <hr/>

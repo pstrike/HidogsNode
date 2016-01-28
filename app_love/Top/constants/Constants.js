@@ -11,6 +11,9 @@ module.exports = keyMirror({
     ACTION_LOAD_RANDOM_USER_OK: null,
     ACTION_LOAD_RANDOM_USER_FAIL: null,
 
+    ACTION_LOAD_USER_OK: null,
+    ACTION_LOAD_USER_FAIL: null,
+
     // states
     VENDOR_ORDER_STORE_STATE_LIST: null,
 

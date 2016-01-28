@@ -39,8 +39,8 @@
         "node-jsx": "~0.2.0"
     },
     "scripts": {
-        "start": "watchify -o public/js/love/tinderApp.js -v -d app_love/Tinder/app.js",
-        "build": "uglifyjs public/js/love/tinderApp.js -mo public/js/love/tinderApp.min.js"
+        "start": "watchify -o public/js/adminUserApp.js -v -d app/AdminUser/app.js",
+        "build": "uglifyjs public/js/adminUserApp.js -mo public/js/adminUserApp.min.js"
     },
     "browserify": {
         "transform": [

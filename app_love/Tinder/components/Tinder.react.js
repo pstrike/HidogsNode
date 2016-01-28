@@ -198,7 +198,11 @@ var app = React.createClass({
                                                             还没尽兴?
                                                         </h4>
 
-                                                        <p>分享狗狗的“求爱宣言”到朋友圈/微信群/QQ群,让朋友帮您点赞：
+                                                        <p>分享狗狗的&nbsp;
+                                                            <button id="submitProfileBtn" className="btn btn-hd-blue text-center" onClick={this._checkShowoff}>
+                                                                求爱宣言
+                                                            </button>
+                                                            &nbsp;到朋友圈/微信群/QQ群,让朋友帮您点赞：
                                                             <ul>
                                                                 <li>每积10个赞,每天就可以多匹配5只狗狗噢</li>
                                                                 <li>点赞越多,狗狗的相亲推荐排名越靠前</li>
@@ -304,6 +308,10 @@ var app = React.createClass({
     _hate: function() {
         Actions.hateUser(this.props.user.user_id, this.props.userList[slider.currentItemIndex].user_id)
         this._next();
+    },
+
+    _checkShowoff: function() {
+        window.location = "http://www.hidogs.cn/love/view/showoff?userid="+this.props.user.user_id;
     },
 
 });

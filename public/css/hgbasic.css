@@ -186,6 +186,8 @@ h3.hg-session {
 .roffset2  { margin-right: 2px; }
 .roffset5 { margin-right: 5px; }
 .roffset10 { margin-right: 10px; }
+.roffset15 { margin-right: 15px; }
+.roffset20 { margin-right: 20px; }
 
 .hg-pageheader.page-header {
     border: none;

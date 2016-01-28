@@ -16,6 +16,11 @@ function initLoadUser(user) {
     Store.emitChange();
 };
 
+function initUserRanking(ranking) {
+    _user.ranking = ranking.rank;
+    Store.emitChange();
+}
+
 function initClientId(clientId) {
     _clientId = clientId;
     Store.emitChange();
@@ -77,6 +82,10 @@ AppDispatcher.register(function(action) {
 
         case Constants.ACTION_INIT_CLIENT_ID:
             initClientId(action.clientId);
+            break;
+
+        case Constants.ACTION_INIT_USER_RANKING:
+            initUserRanking(JSON.parse(action.payload.response));
             break;
 
         case Constants.ACTION_SUPPORT_USER:

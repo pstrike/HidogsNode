@@ -26,6 +26,13 @@ var Actions = {
                 actionType: Constants.ACTION_INIT_LOAD_USER,
                 payload: payload,
             });
+
+            return RC.getUserRanking(userId);
+        }).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_INIT_USER_RANKING,
+                payload: payload,
+            });
         }, function(err) {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_INIT_FAIL,

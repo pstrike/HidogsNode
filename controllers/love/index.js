@@ -195,8 +195,26 @@ exports.otherget = function(req, res, next){
         case 'tinder':
             var userId = req.query.userid;
             var result = [];
+            var netLoveMeList = [];
 
             operation.getObject(operation.getCollectionList().user, userId, {user_id:1, pet:1, love:1, address:1}, function(user) {
+
+                var isMatched;
+                for(var m=0; m<user.love.love_me.length; m++) {
+                    isMatched = false;
+
+                    for(var n=0; n<user.love.i_love.length; n++) {
+                        if(user.love.love_me[m] == user.love.i_love[n]) {
+                            isMatched = true;
+                            break;
+                        }
+                    }
+
+                    if(!isMatched) {
+                        netLoveMeList.push(user.love.love_me[m]);
+                    }
+                }
+
                 var isCommonType = false;
                 for(var i=0; i<commonType.length; i++) {
                     if(user.pet.type == commonType[i]) {
@@ -205,11 +223,19 @@ exports.otherget = function(req, res, next){
                     }
                 }
 
-                var city = "其它";
+                var city = "其他";
                 if(user.address.city.indexOf('广州') > -1
                 ||user.address.city.indexOf('深圳') > -1
                 ||user.address.city.indexOf('上海') > -1
-                ||user.address.city.indexOf('北京') > -1) {
+                ||user.address.city.indexOf('北京') > -1
+                ||user.address.city.indexOf('长沙') > -1
+                ||user.address.city.indexOf('杭州') > -1
+                ||user.address.city.indexOf('温州') > -1
+                ||user.address.city.indexOf('天津') > -1
+                ||user.address.city.indexOf('重庆') > -1
+                ||user.address.city.indexOf('成都') > -1
+                ||user.address.city.indexOf('武汉') > -1
+                ||user.address.city.indexOf('沈阳') > -1) {
                     city = "主要";
                 }
 
@@ -229,20 +255,23 @@ exports.otherget = function(req, res, next){
                 operation.getObjectList(operation.getCollectionList().user, filter, {user_id:1, pet:1, address:1, created_time:1}, function(userList) {
                     var tempTargetUserList = userList.map(function(targetUser) {
                         if(isCommonType) {
-                            targetUser.score = userScoreForCommonType(user, targetUser);
+                            targetUser.score = userScoreForCommonType(user, targetUser, netLoveMeList);
                         }
                         else {
-                            targetUser.score = userScoreForOtherType(user, targetUser);
+                            targetUser.score = userScoreForOtherType(user, targetUser, netLoveMeList);
                         }
 
                         return targetUser;
                     })
 
-                    var isILoved = false;
-                    var isIHated = false;
+                    var isILoved;
+                    var isIHated;
                     var tmpResult = [];
 
                     tempTargetUserList.forEach(function(tmpTargetUser) {
+                        isILoved = false;
+                        isIHated = false;
+
                         for(var j=0; j<user.love.i_love.length; j++) {
                             if(tmpTargetUser.user_id == user.love.i_love[j]) {
                                 isILoved = true;
@@ -262,9 +291,6 @@ exports.otherget = function(req, res, next){
                         if(!isILoved && !isIHated) {
                             tmpResult.push(tmpTargetUser);
                         }
-
-                        isILoved = false;
-                        isIHated = false;
                     })
 
                     tmpResult = tmpResult.sort(function(a,b){return a.score<b.score?1:-1});
@@ -539,13 +565,59 @@ exports.otherget = function(req, res, next){
 
             break;
 
+        case "ranking":
+            var userId = req.query.userid;
+            var userList = [];
+
+            operation.getObjectList(operation.getCollectionList().user, {}, {user_id:1, pet:1, love:1}, function(objectList) {
+                objectList.forEach(function (user) {
+                    if (user.user_id.indexOf("robot") < 0 && user.pet && user.pet.name) {
+                        // the score is determine by love_me (weight 5) + support (weight 1)
+                        user.ranking = user.love.love_me.length*5 + user.love.support.length;
+
+                        userList.push(user);
+                    }
+                })
+
+                userList = userList.sort(function(a,b){return a.ranking<b.ranking?1:-1});
+                var counter;
+                for(counter=0; counter<userList.length; counter++) {
+                    //console.log("counter:"+counter+";user id:"+userList[counter].user_id)
+                    if(userList[counter].user_id == userId) {
+                        break;
+                    }
+                }
+
+                var rank = userList.length == 0 ? 0 : (userList.length - counter) / userList.length;
+                if(rank < 0.3) {
+                    rank = 0.3 + Math.random()*0.1;
+                }
+
+                //console.log("total:"+userList.length+";rank:"+counter);
+
+                res.send({
+                    rank: rank,
+                });
+            })
+
+
+
+            break;
+
         default:
             next();
     }
 };
 
-function userScoreForCommonType(user, targetUser) {
+function userScoreForCommonType(user, targetUser, netLoveMeList) {
     var result = 0;
+
+    for(var i=0; i<netLoveMeList.length; i++) {
+        if(netLoveMeList[i] == targetUser.user_id) {
+            result += 100000;
+            break;
+        }
+    }
 
     if(user.pet.type == targetUser.pet.type) {
         result += 10000;
@@ -599,8 +671,15 @@ function userScoreForCommonType(user, targetUser) {
     return result;
 }
 
-function userScoreForOtherType(user, targetUser) {
+function userScoreForOtherType(user, targetUser, netLoveMeList) {
     var result = 0;
+
+    for(var i=0; i<netLoveMeList.length; i++) {
+        if(netLoveMeList[i] == targetUser.user_id) {
+            result += 1000000;
+            break;
+        }
+    }
 
     if(user.pet.type == targetUser.pet.type) {
         result += 100000;

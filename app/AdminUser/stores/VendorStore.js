@@ -30,6 +30,14 @@ function getUserListSuccess(userList) {
                 user.visit_count = {love:0,talent:0};
             }
 
+            if(!user.visit_count.love) {
+                user.visit_count.love = 0;
+            }
+
+            if(!user.visit_count.talent) {
+                user.visit_count.talent = 0;
+            }
+
             _userList.push(user);
         }
     })
@@ -103,6 +111,8 @@ function getUserDetail(userId) {
 }
 
 function getUserDetailOk(user) {
+    user.love.match_no = 0;
+
     for(var i=0; i<user.love.i_love.length; i++){
         for(var j=0; j<user.love.love_me.length; j++) {
             if(user.love.i_love[i] == user.love.love_me[j]) {

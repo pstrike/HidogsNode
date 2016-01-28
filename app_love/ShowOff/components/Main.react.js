@@ -36,32 +36,52 @@ var app = React.createClass({
                 }
             }
         }
-        var supportBtn = <div className="col-xs-4"><button className="btn btn-hd-blue text-muted hg-like-btn text-center" onClick={this._support}>
-            <span className="glyphicon glyphicon-thumbs-up vcenter71" aria-hidden="true"></span>
-        </button></div>;
-        var supportInfoContent = <div className="col-xs-8">
-            <div className="voffset25"><span className="big-text">{this.props.user.love ? this.props.user.love.support.length : 0}</span>人支持</div>
-            <div className="sub-title-text"><small>(你的支持将提高狗狗相亲曝光的几率)</small></div>
-        </div>;
+        var supportBtn = <div className="col-xs-5">
+            <button className="btn btn-hd-blue text-muted hg-like-btn text-center" onClick={this._support}>
+                <span className="glyphicon glyphicon-thumbs-up vcenter71" aria-hidden="true"></span>
+            </button>
+            <div className="sub-title-text"><small>支持越多,成功率越高</small></div>
+        </div>
+        var supportInfoContent = <div className="col-xs-7">
+            <div className="voffset15"></div>
+            <div className="text-left">
+                <span className="roffset15">被追求<span className="big-text">{this.props.user.love ? this.props.user.love.love_me.length : 0}</span>次</span>
+                <span><span className="big-text">{this.props.user.love ? this.props.user.love.support.length : 0}</span>人支持</span>
+            </div>
+            <div className="voffset5 text-left"><small>颜值打败了<span className="big-text-20">{this.props.user.ranking ? parseInt(this.props.user.ranking*100) : 0}%</span>的单身狗</small></div>
+        </div>
         if(isSupported) {
-            supportBtn = <div className="col-xs-4"><button className="btn btn-hd-blue text-muted hg-share-btn text-center" onClick={this._share}>
-                分享
-            </button></div>;
+            supportBtn = <div className="col-xs-5">
+                <button className="btn btn-hd-blue text-muted hg-share-btn text-center" onClick={this._share}>
+                    分享
+                </button>
+                <div className="sub-title-text"><small>感谢支持</small></div>
+            </div>
 
-            supportInfoContent = <div className="col-xs-8">
-                <div className="voffset15 love-type4"><strong>感谢支持</strong><small>&nbsp;({this.props.user.love ? this.props.user.love.support.length : 0}人支持)</small></div>
-                <div className="sub-title-text voffset5">分享狗狗的求爱宣言到朋友圈,让更多的异性单身狗可以看到</div>
+            supportInfoContent = <div className="col-xs-7">
+                <div className="voffset15"></div>
+                <div className="text-left">
+                    <span className="roffset15">被追求<span className="big-text">{this.props.user.love ? this.props.user.love.love_me.length : 0}</span>次</span>
+                    <span><span className="big-text">{this.props.user.love ? this.props.user.love.support.length : 0}</span>人支持</span>
+                </div>
+                <div className="voffset5 text-left"><small>颜值打败了<span className="big-text-20">{this.props.user.ranking ? parseInt(this.props.user.ranking*100) : 0}%</span>的单身狗</small></div>
             </div>
         }
         if(this.props.user.user_id == this.props.sessionId) {
-            supportBtn = <div className="col-xs-6"><button className="btn btn-hd-blue text-muted hg-share-btn text-center" onClick={this._share}>
+            supportBtn = <div className="col-xs-5">
+                <button className="btn btn-hd-blue text-muted hg-share-btn text-center" onClick={this._share}>
                 分享
-            </button></div>;
-
-            supportInfoContent = <div className="col-xs-6">
-                <div className="voffset25 big-text">{this.props.user.love ? this.props.user.love.support.length : 0}</div>
-                <div className="sub-title-text">人支持</div>
+                </button>
             </div>;
+
+            supportInfoContent = <div className="col-xs-7">
+                <div className="voffset15"></div>
+                <div className="text-left">
+                    <span className="roffset15">被追求<span className="big-text">{this.props.user.love ? this.props.user.love.love_me.length : 0}</span>次</span>
+                    <span><span className="big-text">{this.props.user.love ? this.props.user.love.support.length : 0}</span>人支持</span>
+                </div>
+                <div className="voffset5 text-left"><small>颜值打败了<span className="big-text-20">{this.props.user.ranking ? parseInt(this.props.user.ranking*100) : 0}%</span>的单身狗</small></div>
+            </div>
         }
 
         var labelContent = "";

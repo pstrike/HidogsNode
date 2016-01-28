@@ -29,7 +29,7 @@ var app = React.createClass({
                     <div className="row text-center">
                         <div className="col-xs-12">
                             <span className="hg-love-top-trophy"><i className="fa fa-heart"></i> 最具魅力</span>
-                            <div>有{this.props.topList.fav ? this.props.topList.fav.love.love_me.length : 0}只狗狗喜欢ta</div>
+                            <div>有{this.props.topList.fav ? this.props.topList.fav.love.love_me.length : 0}只狗狗追求ta</div>
                         </div>
                         <div className="col-xs-12 voffset15">
                             <img src={this.props.topList.fav ? this.props.topList.fav.pet.image_url_list[0] : ""} className="hg-love-top-icon img-circle"/>
@@ -104,7 +104,7 @@ var app = React.createClass({
                 <div className="row text-center">
                     <div className="col-xs-12">
                         <span className="hg-love-top-trophy"><i className="fa fa-star"></i> 最花心</span>
-                        <div>喜欢了{this.props.topList.playdog ? this.props.topList.playdog.love.i_love.length : 0}只狗狗</div>
+                        <div>ta追求了{this.props.topList.playdog ? this.props.topList.playdog.love.i_love.length : 0}只狗狗</div>
                     </div>
                     <div className="col-xs-12 voffset15">
                         <img src={this.props.topList.playdog ? this.props.topList.playdog.pet.image_url_list[0] : ""} className="hg-love-top-icon img-circle"/>
@@ -141,8 +141,8 @@ var app = React.createClass({
             lazyContent = <div>
                 <div className="row text-center">
                     <div className="col-xs-12">
-                        <span className="hg-love-top-trophy"><i className="fa fa-hotel"></i> 最挑剔</span>
-                        <div>那么多佳丽,仅喜欢了{this.props.topList.lazy ? this.props.topList.lazy.love.i_love.length : 0}只狗狗</div>
+                        <span className="hg-love-top-trophy"><i className="fa fa-life-ring"></i> 最闷骚</span>
+                        <div>那么多佳丽,只追求了{this.props.topList.lazy ? this.props.topList.lazy.love.i_love.length : 0}只狗狗</div>
                     </div>
                     <div className="col-xs-12 voffset15">
                         <img src={this.props.topList.lazy ? this.props.topList.lazy.pet.image_url_list[0] : ""} className="hg-love-top-icon img-circle"/>
@@ -222,6 +222,26 @@ var app = React.createClass({
 
         }.bind(this))
 
+        // footer
+        var footerBtnContent = "";
+        if(this.props.user.pet && this.props.user.pet.name) {
+            if(this.props.user.isSubscribe) {
+                footerBtnContent = <button className="btn btn-hd-blue text-muted text-left" onClick={this._redirectToTinder}>
+                    开始配对
+                </button>
+            }
+            else {
+                footerBtnContent = <button className="btn btn-hd-blue text-muted text-left" onClick={this._checkQrCode}>
+                    关注公众号,开始相亲配对
+                </button>
+            }
+        }
+        else {
+            footerBtnContent = <button className="btn btn-hd-blue text-muted text-left" onClick={this._redirectToProfile}>
+                填写狗狗资料,开始相亲配对
+            </button>
+        }
+
         return (
             <div className="hg-love" id="react_body">
                 <div className="container blue-background-decoration"></div>
@@ -231,9 +251,9 @@ var app = React.createClass({
                 <div className="container text-center">
 
                     <div className="page-header text-center hg-pageheader">
-                        <h4>Top</h4>
+                        <h5>解救单身狗</h5>
 
-                        <h2 className="voffset10"><strong>萌宠排行榜</strong></h2>
+                        <h2 className="voffset10"><strong>萌宠相亲</strong></h2>
                     </div>
 
                     <hr/>
@@ -254,7 +274,7 @@ var app = React.createClass({
 
                     <hr/>
 
-                    <div className="voffset60">
+                    <div id="qrcodeAnchor" className="voffset60">
                         <h2>欢宠</h2>
                         <p>
                             “解救单身狗”萌宠相亲爱心公益活动旨在帮助宠友解决狗狗相亲找对象的老大难问题.解救单身狗的方式:
@@ -272,6 +292,16 @@ var app = React.createClass({
 
                 </div>
 
+                <footer className="small-footer footer">
+                    <div className="container">
+                        <div className="row text-right">
+                            <div className="col-xs-12">
+                                {footerBtnContent}
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+
 
             </div>
         );
@@ -284,7 +314,23 @@ var app = React.createClass({
     _genRandomStatement: function() {
         var index = parseInt(Math.random() * Statement.length, 10);
         return Statement[index];
-    }
+    },
+
+    _redirectToProfile: function() {
+        window.location = "http://www.hidogs.cn/love/view/profile";
+    },
+
+    _redirectToTinder: function() {
+        window.location = "http://www.hidogs.cn/love/view/tinder";
+    },
+
+    _checkQrCode: function() {
+        var position = $('body').scrollTop() + $('#qrcodeAnchor').offset().top;
+
+        $('body').animate({
+            scrollTop: position
+        }, 500);
+    },
 
 });
 

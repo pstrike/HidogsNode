@@ -8,6 +8,7 @@ var CHANGE_EVENT = 'change';
 // Store State
 var _topList = [];
 var _randomList = [];
+var _user = {};
 var _status = "";
 
 // Store actions
@@ -18,6 +19,18 @@ function loadTopList(topList) {
 
 function loadRandomUserList(randomList) {
     _randomList = randomList;
+    Store.emitChange();
+}
+
+function loadUserOk(user, subscribe) {
+    _user = user;
+    if(subscribe.subscribe == 1) {
+        _user.isSubscribe = true;
+    }
+    else {
+        _user.isSubscribe = false;
+    }
+
     Store.emitChange();
 }
 
@@ -41,6 +54,10 @@ var Store = assign({}, EventEmitter.prototype, {
 
     getStatus: function() {
         return _status;
+    },
+
+    getUser: function() {
+        return _user;
     },
 
     emitChange: function() {
@@ -76,6 +93,10 @@ AppDispatcher.register(function(action) {
 
         case Constants.ACTION_LOAD_RANDOM_USER_OK:
             loadRandomUserList((JSON.parse(action.payload.response)));
+            break;
+
+        case Constants.ACTION_LOAD_USER_OK:
+            loadUserOk(action.user, JSON.parse(action.payload.response));
             break;
 
         // HG Actions

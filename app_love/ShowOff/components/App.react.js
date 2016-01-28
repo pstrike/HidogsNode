@@ -104,8 +104,8 @@ var app = React.createClass({
                     var location = {
                         type: "Point",
                         coordinates: [
-                            parseFloat(longitude),
-                            parseFloat(latitude),
+                            parseFloat(longitude ? longitude : 0),
+                            parseFloat(latitude ? latitude : 0),
                         ],
                     };
 

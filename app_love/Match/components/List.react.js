@@ -19,7 +19,7 @@ var app = React.createClass({
                 <thead>
                 <tr>
                     <th></th>
-                    <th className="text-center">微信号</th>
+                    <th className="text-center">微信号/手机</th>
                     <th></th>
                 </tr>
                 </thead>
