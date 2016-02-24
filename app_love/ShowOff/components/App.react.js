@@ -20,6 +20,7 @@ function getAppState() {
     return {
         session: HGSessionStore.getSession(),
         wxSign: HGWXStore.getWxSign(),
+        visitor: Store.getVisitor(),
         user: Store.getUser(),
         clientId: Store.getClientId(),
         status: Store.getStatus(),
@@ -77,7 +78,7 @@ var app = React.createClass({
                     <img src="../../img/wxshareguide.png"/>
                 </div>
 
-                <Main user={this.state.user} clientId={this.state.clientId} sessionId={this.state.session.user_id}></Main>
+                <Main visitor={this.state.visitor} user={this.state.user} clientId={this.state.clientId} sessionId={this.state.session.user_id}></Main>
             </div>
         );
     },

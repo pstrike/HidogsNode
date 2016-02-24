@@ -7,12 +7,18 @@ var CHANGE_EVENT = 'change';
 
 // Store State
 var _user = {};
+var _visitor = {};
 var _clientId = "";
 var _status = "";
 
 // Store actions
 function initLoadUser(user) {
     _user = user;
+    Store.emitChange();
+};
+
+function initLoadVisitor(visitor) {
+    _visitor = visitor;
     Store.emitChange();
 };
 
@@ -31,6 +37,11 @@ function supportUser(clientId) {
     Store.emitChange();
 }
 
+function loveUser(visitorId) {
+    _user.love.love_me.push(visitorId);
+    Store.emitChange();
+}
+
 // Err Handling
 function err(msg, err) {
     console.log("[Err] "+msg);
@@ -43,6 +54,10 @@ var Store = assign({}, EventEmitter.prototype, {
 
     getUser: function() {
         return _user;
+    },
+
+    getVisitor: function() {
+        return _visitor;
     },
 
     getClientId: function() {
@@ -80,6 +95,10 @@ AppDispatcher.register(function(action) {
             initLoadUser(JSON.parse(action.payload.response));
             break;
 
+        case Constants.ACTION_INIT_LOAD_VISITOR:
+            initLoadVisitor(JSON.parse(action.payload.response));
+            break;
+
         case Constants.ACTION_INIT_CLIENT_ID:
             initClientId(action.clientId);
             break;
@@ -97,6 +116,14 @@ AppDispatcher.register(function(action) {
             break;
 
         case Constants.ACTION_UPDATE_LOCATION:
+            // do nothing
+            break;
+
+        case Constants.ACTION_LOVE_USER:
+            loveUser(action.visitorId);
+            break;
+
+        case Constants.ACTION_LOVE_USER_OK:
             // do nothing
             break;
 
@@ -119,6 +146,7 @@ AppDispatcher.register(function(action) {
         // Err Handling
         case Constants.ACTION_INIT_FAIL:
         case Constants.ACTION_SUPPORT_USER_FAIL:
+        case Constants.ACTION_LOVE_USER_FAIL:
         case Constants.ACTION_UPDATE_FAIL:
             err(action.actionType, action.err);
             break;

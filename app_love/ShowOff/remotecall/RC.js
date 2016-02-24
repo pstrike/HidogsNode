@@ -57,6 +57,24 @@ var RemoteCall = {
         return promise;
     },
 
+    loveUser: function (userId, lovedUserId) {
+        var promise = new Promise(function(resolve, reject){
+            var url = APIUtils.makeUrl("/love/other/loveuser?userid="+userId+"&loveduserid="+lovedUserId);
+            APIUtils.get(url, function(result) {
+                if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND
+                    || result.response == HidogsConstants.WEB_UTILS_REQUEST_ERROR) {
+                    reject(Error(result));
+                }
+                else {
+                    resolve(result);
+                }
+            });
+        });
+
+        return promise;
+    },
+
     updateUserLocation: function (user, callback) {
         var promise = new Promise(function(resolve, reject){
             var url = APIUtils.makeUrl("/user/other/location");

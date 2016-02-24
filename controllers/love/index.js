@@ -265,12 +265,16 @@ exports.otherget = function(req, res, next){
                     })
 
                     var isILoved;
-                    var isIHated;
+                    var iHatedNo;
+                    var isLoveMe;
+                    var isSameType;
                     var tmpResult = [];
 
                     tempTargetUserList.forEach(function(tmpTargetUser) {
                         isILoved = false;
-                        isIHated = false;
+                        iHatedNo = 0;
+                        isLoveMe = false;
+                        isSameType = false;
 
                         for(var j=0; j<user.love.i_love.length; j++) {
                             if(tmpTargetUser.user_id == user.love.i_love[j]) {
@@ -281,14 +285,37 @@ exports.otherget = function(req, res, next){
 
                         for(var k=0; k<user.love.i_hate.length; k++) {
                             if(tmpTargetUser.user_id == user.love.i_hate[k]) {
-                                isIHated = true;
-                                break;
+
+                                // if same type pet and hate before, then reduce the score for reshow preparation
+                                if(isCommonType) {
+                                    if(tmpTargetUser.score >= 10000) {
+                                        tmpTargetUser.score = 10000-1;
+                                        isSameType = true;
+                                    }
+                                }
+                                else {
+                                    if(tmpTargetUser.score >= 100000) {
+                                        tmpTargetUser.score = 100000-1;
+                                        isSameType = true;
+                                    }
+                                }
+
+                                iHatedNo++;
+                            }
+                        }
+
+                        for(var l=0; l<netLoveMeList.length; l++) {
+                            if(tmpTargetUser.user_id == netLoveMeList[l]) {
+                                isLoveMe = true;
                             }
                         }
 
                         //console.log("user:"+tmpTargetUser.user_id+" score:"+tmpTargetUser.score)
 
-                        if(!isILoved && !isIHated) {
+                        if(
+                            (!isILoved && iHatedNo<1)
+                            || (!isILoved && iHatedNo < 2 && (isLoveMe || isSameType))
+                        ) {
                             tmpResult.push(tmpTargetUser);
                         }
                     })

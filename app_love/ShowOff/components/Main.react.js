@@ -27,61 +27,87 @@ var app = React.createClass({
 
     render: function() {
 
-        var isSupported = false;
-        if(this.props.user.love) {
-            for(var i=0; i<this.props.user.love.support.length; i++) {
-                if(this.props.user.love.support[i] == this.props.clientId) {
-                    isSupported = true;
-                    break;
-                }
-            }
+        var isVisitorPetOwner = false;
+        if(this.props.visitor.pet && this.props.visitor.pet.name) {
+            isVisitorPetOwner = true;
         }
-        var supportBtn = <div className="col-xs-5">
-            <button className="btn btn-hd-blue text-muted hg-like-btn text-center" onClick={this._support}>
-                <span className="glyphicon glyphicon-thumbs-up vcenter71" aria-hidden="true"></span>
-            </button>
-            <div className="sub-title-text"><small>支持越多,成功率越高</small></div>
-        </div>
-        var supportInfoContent = <div className="col-xs-7">
+
+        var footerInfo = <div className="col-xs-7">
             <div className="voffset15"></div>
             <div className="text-left">
                 <span className="roffset15">被追求<span className="big-text">{this.props.user.love ? this.props.user.love.love_me.length : 0}</span>次</span>
                 <span><span className="big-text">{this.props.user.love ? this.props.user.love.support.length : 0}</span>人支持</span>
             </div>
             <div className="voffset5 text-left"><small>颜值打败了<span className="big-text-20">{this.props.user.ranking ? parseInt(this.props.user.ranking*100) : 0}%</span>的单身狗</small></div>
-        </div>
-        if(isSupported) {
-            supportBtn = <div className="col-xs-5">
-                <button className="btn btn-hd-blue text-muted hg-share-btn text-center" onClick={this._share}>
-                    分享
-                </button>
-                <div className="sub-title-text"><small>感谢支持</small></div>
-            </div>
+        </div>;
 
-            supportInfoContent = <div className="col-xs-7">
-                <div className="voffset15"></div>
-                <div className="text-left">
-                    <span className="roffset15">被追求<span className="big-text">{this.props.user.love ? this.props.user.love.love_me.length : 0}</span>次</span>
-                    <span><span className="big-text">{this.props.user.love ? this.props.user.love.support.length : 0}</span>人支持</span>
+        var footerBtn = "";
+
+        if(isVisitorPetOwner) {
+            var isLoved = false;
+
+            if(this.props.user.love) {
+                for(var i=0; i<this.props.user.love.love_me.length; i++) {
+                    if(this.props.user.love.love_me[i] == this.props.visitor.user_id) {
+                        isLoved = true;
+                        break;
+                    }
+                }
+            }
+
+            if(isLoved) {
+                footerBtn = <div className="col-xs-5">
+                    <button className="btn btn-hd-blue text-muted hg-share-btn text-center" onClick={this._share}>
+                        分享
+                    </button>
+                    <div className="sub-title-text"><small>感谢支持</small></div>
                 </div>
-                <div className="voffset5 text-left"><small>颜值打败了<span className="big-text-20">{this.props.user.ranking ? parseInt(this.props.user.ranking*100) : 0}%</span>的单身狗</small></div>
-            </div>
+            }
+            else {
+                footerBtn = <div className="col-xs-5">
+                    <button className="btn btn-hd-blue text-muted hg-like-btn text-center"
+                            onClick={this._love}>
+                        <span className="glyphicon glyphicon-heart vcenter71" aria-hidden="true"></span>
+                    </button>
+                    <div className="sub-title-text"><small>喜欢ta</small></div>
+                </div>
+            }
         }
+        else {
+            var isSupported = false;
+            if(this.props.user.love) {
+                for(var i=0; i<this.props.user.love.support.length; i++) {
+                    if(this.props.user.love.support[i] == this.props.clientId) {
+                        isSupported = true;
+                        break;
+                    }
+                }
+            }
+
+            if(isSupported) {
+                footerBtn = <div className="col-xs-5">
+                    <button className="btn btn-hd-blue text-muted hg-share-btn text-center" onClick={this._share}>
+                        分享
+                    </button>
+                    <div className="sub-title-text"><small>感谢支持</small></div>
+                </div>
+            }
+            else {
+                footerBtn = <div className="col-xs-5">
+                    <button className="btn btn-hd-blue text-muted hg-like-btn text-center" onClick={this._support}>
+                        <span className="glyphicon glyphicon-thumbs-up vcenter71" aria-hidden="true"></span>
+                    </button>
+                    <div className="sub-title-text"><small>支持越多,成功率越高</small></div>
+                </div>
+            }
+        }
+
         if(this.props.user.user_id == this.props.sessionId) {
-            supportBtn = <div className="col-xs-5">
+            footerBtn = <div className="col-xs-5">
                 <button className="btn btn-hd-blue text-muted hg-share-btn text-center" onClick={this._share}>
                 分享
                 </button>
             </div>;
-
-            supportInfoContent = <div className="col-xs-7">
-                <div className="voffset15"></div>
-                <div className="text-left">
-                    <span className="roffset15">被追求<span className="big-text">{this.props.user.love ? this.props.user.love.love_me.length : 0}</span>次</span>
-                    <span><span className="big-text">{this.props.user.love ? this.props.user.love.support.length : 0}</span>人支持</span>
-                </div>
-                <div className="voffset5 text-left"><small>颜值打败了<span className="big-text-20">{this.props.user.ranking ? parseInt(this.props.user.ranking*100) : 0}%</span>的单身狗</small></div>
-            </div>
         }
 
         var labelContent = "";
@@ -190,7 +216,16 @@ var app = React.createClass({
 
                         {moreImgContent}
 
-                        <div className="voffset60 container">
+                        <div className="voffset15 container">
+                            <button className="btn btn-hd-blue text-muted text-center" onClick={this._checkMore}>
+                                <span className="glyphicon glyphicon-info-sign"></span>
+                                &nbsp;点击这里还有更多狗狗 :)
+                            </button>
+                        </div>
+
+                        <hr/>
+
+                        <div className="voffset10 container">
                             <h2>欢宠</h2>
                             <p>
                                 “解救单身狗”萌宠相亲爱心公益活动旨在帮助宠友解决狗狗相亲找对象的老大难问题.解救单身狗的方式:
@@ -205,7 +240,7 @@ var app = React.createClass({
                             <img src="../../img/qcode129x.png"/>
                         </div>
 
-                        <div className="voffset60">&nbsp;</div>
+                        <div className="voffset10">&nbsp;</div>
 
                     </div>
 
@@ -214,8 +249,8 @@ var app = React.createClass({
                 <footer className="footer">
                     <div className="container">
                         <div className="row text-center">
-                            {supportInfoContent}
-                            {supportBtn}
+                            {footerInfo}
+                            {footerBtn}
                         </div>
                     </div>
                 </footer>
@@ -230,6 +265,14 @@ var app = React.createClass({
 
     _share: function() {
         document.getElementById('mcover').style.display='block';
+    },
+
+    _checkMore: function() {
+        window.location = "http://www.hidogs.cn/love/view/top";
+    },
+
+    _love: function() {
+        Actions.loveUser(this.props.visitor.user_id, this.props.user.user_id);
     },
 
 });

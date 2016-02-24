@@ -7,12 +7,26 @@ var RC = require('../remotecall/RC');
 var Actions = {
 
     getSession: function() {
+        var isValidSession = false;
         HGSessionRC.getSession().then(function (payload) {
-            AppDispatcher.dispatch({
-                actionType: HidogsConstants.HIDOGS_SESSION_LOAD_SUCCESSFUL,
-                payload: payload,
-            });
 
+            if(payload.response) {
+                AppDispatcher.dispatch({
+                    actionType: HidogsConstants.HIDOGS_SESSION_LOAD_SUCCESSFUL,
+                    payload: payload,
+                });
+
+                var visitor = JSON.parse(payload.response);
+                isValidSession = true;
+                return RC.getUser(visitor.user_id);
+            }
+        }).then(function (payload) {
+            if(isValidSession) {
+                AppDispatcher.dispatch({
+                    actionType: Constants.ACTION_INIT_LOAD_VISITOR,
+                    payload: payload,
+                });
+            }
         }, function(err) {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_INIT_FAIL,
@@ -61,6 +75,24 @@ var Actions = {
         }, function(err) {
             AppDispatcher.dispatch({
                 actionType: Constants.ACTION_SUPPORT_USER_FAIL,
+            });
+        });
+    },
+
+    loveUser: function(visitorId, lovedUserId) {
+        AppDispatcher.dispatch({
+            actionType: Constants.ACTION_LOVE_USER,
+            visitorId: visitorId,
+        });
+
+        RC.loveUser(visitorId, lovedUserId).then(function (payload) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_LOVE_USER_OK,
+                payload: payload,
+            });
+        }, function(err) {
+            AppDispatcher.dispatch({
+                actionType: Constants.ACTION_LOVE_USER_FAIL,
             });
         });
     },
