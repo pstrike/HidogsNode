@@ -3,6 +3,7 @@ var productpopularityjob = require('./productpopularityjob');
 var onsiteordernoticejob = require('./onsiteordernoticejob');
 var orderstatusupdatejob = require('./orderstatusupdatejob');
 var lovematchnoticejob = require('./lovematchnoticejob');
+var lovelovemenotice = require('./lovelovemenotice');
 
 exports.kickoff = function () {
     console.log("kick off schedulers")
@@ -11,4 +12,5 @@ exports.kickoff = function () {
     schedule.scheduleJob('0 */15 * * * *', onsiteordernoticejob.do);
     schedule.scheduleJob('0 0 0 */1 * *', orderstatusupdatejob.do);
     schedule.scheduleJob('0 0 20 * * *', lovematchnoticejob.do);
+    schedule.scheduleJob('0 1 20 * * 5', lovelovemenotice.do);
 }

@@ -21,163 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="App.react.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/VendorJoin/components/App.react.js">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-              <folding>
-                <marker date="1450508236000" expanded="true" signature="2920:3076" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="2952:3070" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="3105:3526" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="3153:3500" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="3205:3473" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="3266:3442" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="3645:3804" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="3677:3798" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="3918:4181" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="3950:4175" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="4210:4631" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="4258:4605" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="4310:4578" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="4371:4547" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="4748:4906" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="4780:4900" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="6362:13109" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="6454:6619" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="6633:13070" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="6687:7015" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="6738:6876" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="7064:7286" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="7303:7542" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="7559:7813" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="7648:7790" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="7830:8085" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="7919:8062" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="8102:8327" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="8344:8553" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="8570:8794" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="8867:10080" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="8957:9138" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="9186:9548" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="9328:9521" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="9355:9515" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="9569:10056" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="9711:10029" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="10152:11551" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="10495:11471" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="10533:10940" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="10699:10901" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="10726:10895" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="10973:11398" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="11139:11359" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="11623:13050" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="11958:12971" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="11996:12440" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="12162:12401" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="12189:12358" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="12473:12898" placeholder="&lt;xml/&gt;" />
-                <marker date="1450508236000" expanded="true" signature="12639:12859" placeholder="&lt;xml/&gt;" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ModalForm.react.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/VendorJoin/components/ModalForm.react.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="86" column="28" selection-start-line="86" selection-start-column="28" selection-end-line="86" selection-end-column="28" />
-              <folding>
-                <marker date="1450851533000" expanded="true" signature="3817:4750" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="5888:6743" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="10182:11024" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="11744:11877" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="11809:11868" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="12216:12617" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="12261:12552" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="24961:33461" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="25039:25398" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="25093:25210" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="25412:33014" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="25485:26427" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="25535:25729" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="25776:26404" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="25939:26370" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="25995:26341" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="26476:26842" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="26584:26819" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="26859:27180" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="26963:27157" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="27197:27606" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="27303:27583" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="27623:27953" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="27730:27930" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="27970:28322" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="28078:28299" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="28339:29428" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="28451:28569" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="28590:29405" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="29445:31316" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="29534:29676" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="29697:30385" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="29839:30358" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="29895:30327" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="29957:30160" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="30407:30790" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="30549:30763" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="30812:31293" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="30952:31266" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="31333:31680" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="31446:31657" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="31775:32270" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="31882:32182" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="32363:32498" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="32515:32605" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="32698:32859" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="32876:32959" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="33028:33446" placeholder="&lt;xml/&gt;" />
-                <marker date="1450851533000" expanded="true" signature="33093:33427" placeholder="&lt;xml/&gt;" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="db_admin.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/db/db_admin.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="22" column="23" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/controllers/wechat/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="7.350993">
-              <caret line="222" column="18" selection-start-line="43" selection-start-column="0" selection-end-line="222" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="vendorjoin.ejs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/vendor/views/vendorjoin.ejs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="32" column="40" selection-start-line="32" selection-start-column="40" selection-end-line="32" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Store.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/VendorJoin/stores/Store.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+            <state vertical-scroll-proportion="0.627907">
+              <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -202,14 +50,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/public/pages/love/rank.html" />
-        <option value="$PROJECT_DIR$/public/pages/love/rank_design.html" />
         <option value="$PROJECT_DIR$/app_love/Match/components/Input.react.js" />
         <option value="$PROJECT_DIR$/app_love/Match/components/App.react.js" />
         <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/app/AdminUser/actions/Actions.js" />
         <option value="$PROJECT_DIR$/app/AdminUser/constants/Constants.js" />
-        <option value="$PROJECT_DIR$/app/AdminUser/remotecall/RC.js" />
         <option value="$PROJECT_DIR$/app/AdminUser/components/ContentUserProfileModal.react.js" />
         <option value="$PROJECT_DIR$/schedulers/productpopularityjob.js" />
         <option value="$PROJECT_DIR$/config/index.js" />
@@ -238,7 +83,6 @@
         <option value="$PROJECT_DIR$/public/css/hgbasic.css" />
         <option value="$PROJECT_DIR$/public/css/hglove.css" />
         <option value="$PROJECT_DIR$/app/AdminUser/stores/VendorStore.js" />
-        <option value="$PROJECT_DIR$/app/AdminUser/components/ContentUserProfile.react.js" />
         <option value="$PROJECT_DIR$/db_conversion.js" />
         <option value="$PROJECT_DIR$/public/pages/love/show_design.html" />
         <option value="$PROJECT_DIR$/model/operation.js" />
@@ -251,8 +95,12 @@
         <option value="$PROJECT_DIR$/app_love/ShowOff/stores/Store.js" />
         <option value="$PROJECT_DIR$/app_love/ShowOff/components/Main.react.js" />
         <option value="$PROJECT_DIR$/app_love/ShowOff/actions/Actions.js" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/controllers/love/index.js" />
+        <option value="$PROJECT_DIR$/schedulers/lovelovemenotice.js" />
+        <option value="$PROJECT_DIR$/schedulers/index.js" />
+        <option value="$PROJECT_DIR$/app/AdminUser/remotecall/RC.js" />
+        <option value="$PROJECT_DIR$/app/AdminUser/components/ContentUserProfile.react.js" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
@@ -310,8 +158,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -327,154 +175,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wechat" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="VendorJoin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="VendorJoin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="stores" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HidogsNode" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="VendorJoin" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="components" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -584,7 +284,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25771606" sideWeight="0.40826052" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25617284" sideWeight="0.40826052" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -611,165 +311,18 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="14" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/db.js</url>
+          <line>18</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="15" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/AdminUser/actions/Actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="55" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminUser/stores/VendorStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="5" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminUser/components/ContentUserProfile.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7284768">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/hgbasic.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.8874172">
-          <caret line="106" column="4" selection-start-line="106" selection-start-column="4" selection-end-line="106" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Admin/components/ContentVendorProfileModal.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.9205298">
-          <caret line="150" column="28" selection-start-line="150" selection-start-column="28" selection-end-line="150" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Admin/components/ContentVendorProfile.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8013245">
-          <caret line="82" column="4" selection-start-line="82" selection-start-column="4" selection-end-line="82" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminProduct/components/ContentProductList.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.3642384">
-          <caret line="124" column="0" selection-start-line="124" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminOrder/components/OrderList.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33112583">
-          <caret line="50" column="41" selection-start-line="50" selection-start-column="41" selection-end-line="50" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminCoupon/components/ContentCouponProfile.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="65" column="6" selection-start-line="63" selection-start-column="4" selection-end-line="65" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/util/assignpathvaluetoobject.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.397351">
-          <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminCoupon/stores/Stores.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37306842">
-          <caret line="134" column="14" selection-start-line="134" selection-start-column="4" selection-end-line="134" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminCoupon/components/ContentCouponDetail.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="35" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminCoupon/components/App.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.03311258">
-          <caret line="42" column="25" selection-start-line="42" selection-start-column="25" selection-end-line="42" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminCoupon/actions/Actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminCoupon/remotecall/RC.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="22" selection-start-line="32" selection-start-column="22" selection-end-line="32" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/AdminCoupon/components/ContentCouponEdit.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66887414">
-          <caret line="203" column="12" selection-start-line="203" selection-start-column="12" selection-end-line="203" selection-end-column="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/user/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5629139">
-          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/product/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.27152318">
-          <caret line="688" column="25" selection-start-line="686" selection-start-column="24" selection-end-line="688" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db/db_product_meta_category.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="19" selection-start-line="40" selection-start-column="19" selection-end-line="40" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db/db_vendor_meta_role.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/vendor/views/vendorpage.ejs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/vendor/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/VendorJoin/components/ModalAgreement.react.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.589404">
@@ -847,13 +400,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app_love/ShowOff/stores/Store.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="130" column="55" selection-start-line="130" selection-start-column="25" selection-end-line="130" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app_love/ShowOff/actions/Actions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -861,31 +407,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44055945">
-          <caret line="41" column="88" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="88" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_love/ShowOff/components/App.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model/prototype.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.0905077">
           <caret line="77" column="4" selection-start-line="77" selection-start-column="4" selection-end-line="77" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/love/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4370861">
-          <caret line="315" column="52" selection-start-line="315" selection-start-column="52" selection-end-line="315" selection-end-column="52" />
         </state>
       </provider>
     </entry>
@@ -909,86 +434,17 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app_love/ShowOff/components/Main.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="9" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/VendorJoin/stores/Store.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/VendorJoin/components/App.react.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding>
-            <marker date="1450508236000" expanded="true" signature="2920:3076" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="2952:3070" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="3105:3526" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="3153:3500" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="3205:3473" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="3266:3442" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="3645:3804" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="3677:3798" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="3918:4181" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="3950:4175" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="4210:4631" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="4258:4605" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="4310:4578" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="4371:4547" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="4748:4906" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="4780:4900" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="6362:13109" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="6454:6619" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="6633:13070" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="6687:7015" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="6738:6876" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="7064:7286" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="7303:7542" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="7559:7813" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="7648:7790" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="7830:8085" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="7919:8062" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="8102:8327" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="8344:8553" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="8570:8794" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="8867:10080" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="8957:9138" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="9186:9548" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="9328:9521" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="9355:9515" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="9569:10056" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="9711:10029" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="10152:11551" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="10495:11471" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="10533:10940" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="10699:10901" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="10726:10895" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="10973:11398" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="11139:11359" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="11623:13050" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="11958:12971" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="11996:12440" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="12162:12401" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="12189:12358" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="12473:12898" placeholder="&lt;xml/&gt;" />
-            <marker date="1450508236000" expanded="true" signature="12639:12859" placeholder="&lt;xml/&gt;" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/vendor/views/vendorjoin.ejs">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.5804196">
           <caret line="32" column="40" selection-start-line="32" selection-start-column="40" selection-end-line="32" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1003,72 +459,218 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="86" column="28" selection-start-line="86" selection-start-column="28" selection-end-line="86" selection-end-column="28" />
-          <folding>
-            <marker date="1450851533000" expanded="true" signature="3817:4750" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="5888:6743" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="10182:11024" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="11744:11877" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="11809:11868" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="12216:12617" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="12261:12552" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="24961:33461" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="25039:25398" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="25093:25210" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="25412:33014" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="25485:26427" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="25535:25729" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="25776:26404" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="25939:26370" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="25995:26341" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="26476:26842" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="26584:26819" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="26859:27180" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="26963:27157" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="27197:27606" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="27303:27583" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="27623:27953" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="27730:27930" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="27970:28322" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="28078:28299" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="28339:29428" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="28451:28569" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="28590:29405" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="29445:31316" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="29534:29676" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="29697:30385" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="29839:30358" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="29895:30327" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="29957:30160" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="30407:30790" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="30549:30763" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="30812:31293" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="30952:31266" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="31333:31680" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="31446:31657" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="31775:32270" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="31882:32182" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="32363:32498" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="32515:32605" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="32698:32859" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="32876:32959" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="33028:33446" placeholder="&lt;xml/&gt;" />
-            <marker date="1450851533000" expanded="true" signature="33093:33427" placeholder="&lt;xml/&gt;" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/VendorJoin/components/App.react.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/mongodb/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.46774194">
+          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/db/db_admin.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.5322581">
           <caret line="22" column="23" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="23" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/db.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="2" selection-start-line="18" selection-start-column="2" selection-end-line="18" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/AdminUser/components/App.react.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/order/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_love/ShowOff/stores/Store.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="4.295154">
+          <caret line="130" column="55" selection-start-line="130" selection-start-column="25" selection-end-line="130" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Common/remotecall/wx.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="66" selection-start-line="7" selection-start-column="66" selection-end-line="7" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Common/actions/wx.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26431718">
+          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/hglove.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="190" column="1" selection-start-line="190" selection-start-column="1" selection-end-line="190" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/love/views/showoff.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="28" selection-start-line="13" selection-start-column="28" selection-end-line="13" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_love/ShowOff/components/App.react.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.37224668">
+          <caret line="157" column="9" selection-start-line="157" selection-start-column="9" selection-end-line="157" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Common/components/WXSign.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.0572687">
+          <caret line="32" column="17" selection-start-line="32" selection-start-column="17" selection-end-line="32" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.270925">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/wechat/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="7.350993">
-          <caret line="222" column="18" selection-start-line="43" selection-start-column="0" selection-end-line="222" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.2973568">
+          <caret line="188" column="11" selection-start-line="188" selection-start-column="11" selection-end-line="188" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_love/ShowOff/components/Main.react.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.7665198">
+          <caret line="231" column="36" selection-start-line="231" selection-start-column="36" selection-end-line="231" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/my.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26431718">
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/love/views/love.ejs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.68604654">
+          <caret line="35" column="23" selection-start-line="35" selection-start-column="23" selection-end-line="35" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schedulers/lovematchnoticejob.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7599119">
+          <caret line="23" column="21" selection-start-line="0" selection-start-column="0" selection-end-line="82" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.46255508">
+          <caret line="14" column="24" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db_conversion.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.69163">
+          <caret line="41" column="25" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/love/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.561674">
+          <caret line="362" column="21" selection-start-line="362" selection-start-column="21" selection-end-line="362" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/operation.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2665198">
+          <caret line="84" column="22" selection-start-line="84" selection-start-column="22" selection-end-line="84" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/product/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.92511016">
+          <caret line="68" column="25" selection-start-line="68" selection-start-column="25" selection-end-line="68" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schedulers/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4955947">
+          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/schedulers/lovelovemenotice.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="25" column="16" selection-start-line="25" selection-start-column="16" selection-end-line="25" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/AdminUser/remotecall/RC.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33039647">
+          <caret line="10" column="85" selection-start-line="10" selection-start-column="85" selection-end-line="10" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/AdminUser/components/ContentUserProfile.react.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="83" column="78" selection-start-line="83" selection-start-column="78" selection-end-line="83" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.627907">
+          <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="27" />
           <folding />
         </state>
       </provider>

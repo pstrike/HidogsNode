@@ -5,7 +5,7 @@ require('es6-shim');
 var RemoteCall = {
     getUserListPromise: function () {
         var promise = new Promise(function(resolve, reject){
-            var url = APIUtils.makeUrl("/users?projection=user_id,nick_name,gender,address,pet,love,modified_time,created_time,openid,visit_count,head_image_url");
+            var url = APIUtils.makeUrl("/users?projection=user_id,nick_name,gender,address,pet,love,modified_time,created_time,openid,visit_count,head_image_url,wx_id");
             APIUtils.get(url, function(result) {
                 if(result.response == HidogsConstants.WEB_UTILS_REQUEST_TIMEOUT
                     || result.response == HidogsConstants.WEB_UTILS_REQUEST_NOT_FOUND

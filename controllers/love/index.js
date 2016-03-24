@@ -336,10 +336,36 @@ exports.otherget = function(req, res, next){
                         result.push(tmpResult[i]);
                     }
 
+                    // make same type result in random way
+                    var disorderList = [];
+                    result.forEach(function(item) {
+                        if(isCommonType) {
+                            if(item.score >= 10000) {
+                                disorderList.push(item);
+                            }
+                        }
+                        else {
+                            if(item.score >= 100000) {
+                                disorderList.push(item);
+                            }
+                        }
+                    })
+                    disorderList = disorderList.sort(function(a,b){return Math.random()>.5 ? -1 : 1;});
+                    var finalResult = [];
+                    for(var i=0; i<result.length; i++) {
+                        if(i<disorderList.length) {
+                            finalResult.push(disorderList[i]);
+                        }
+                        else {
+                            finalResult.push(result[i]);
+                        }
+
+                    }
+
                     res.send({
                         isLimited: user.love.visit_status.count >= resultLimitedNo ? true : false,
-                        isMore: result.length < tmpResult.length ? true : false,
-                        result: result,
+                        isMore: finalResult.length < tmpResult.length ? true : false,
+                        result: finalResult,
                     });
                 })
             })

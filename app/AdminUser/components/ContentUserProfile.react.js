@@ -38,7 +38,10 @@ var app = React.createClass({
 
         var subscribeNo = 0;
         var petOwnerNo = 0;
+        var petMaleNo = 0;
+        var petFemaleNo = 0;
         var matchNo = 0;
+        var contactNo = 0;
         this.state.userList.forEach(function(user) {
             if(user.isSubscribe) {
                 subscribeNo++;
@@ -46,6 +49,17 @@ var app = React.createClass({
 
             if(user.pet.name) {
                 petOwnerNo++;
+
+                if(user.pet.gender == 1) {
+                    petMaleNo++;
+                }
+                else if(user.pet.gender == 2) {
+                    petFemaleNo++;
+                }
+            }
+
+            if(user.wx_id) {
+                contactNo++;
             }
 
             matchNo += user.love.match_no;
@@ -63,8 +77,11 @@ var app = React.createClass({
                     <div className="text-left">
                         <span className="label label-info">用户数:{this.state.userList.length}</span>&nbsp;&nbsp;&nbsp;
                         <span className="label label-info">宠友数(填了宠物资料):{petOwnerNo}</span>&nbsp;&nbsp;&nbsp;
+                        <span className="label label-info">男狗狗:{petMaleNo}</span>&nbsp;&nbsp;&nbsp;
+                        <span className="label label-info">女狗狗:{petFemaleNo}</span>&nbsp;&nbsp;&nbsp;
                         <span className="label label-info">关注数:{subscribeNo}</span>&nbsp;&nbsp;&nbsp;
-                        <span className="label label-info">配对数:{matchNo/2}</span>
+                        <span className="label label-info">配对数:{matchNo/2}</span>&nbsp;&nbsp;&nbsp;
+                        <span className="label label-info">有联系方式的用户:{contactNo}</span>
                     </div>
 
                     <hr/>
@@ -75,8 +92,11 @@ var app = React.createClass({
                             <th>昵称</th>
                             <th><a href="#" onClick={this._sortByKey.bind(this, 'gender')}>性别</a></th>
                             <th><a href="#" onClick={this._sortByKey.bind(this, 'address.city')}>地址</a></th>
+                            <th><a href="#" onClick={this._sortByKey.bind(this, 'wx_id')}>微信/手机号</a></th>
                             <th>宠物名称</th>
                             <th><a href="#" onClick={this._sortByKey.bind(this, 'pet.type')}>宠物品种</a></th>
+                            <th><a href="#" onClick={this._sortByKey.bind(this, 'pet.gender')}>宠物性别</a></th>
+                            <th><a href="#" onClick={this._sortByKey.bind(this, 'pet.color')}>宠物颜色</a></th>
                             <th><a href="#" onClick={this._sortByKey.bind(this, 'love.i_love.length')}>喜欢</a></th>
                             <th><a href="#" onClick={this._sortByKey.bind(this, 'love.love_me.length')}>被喜欢</a></th>
                             <th><a href="#" onClick={this._sortByKey.bind(this, 'love.i_hate.length')}>无感</a></th>
@@ -96,6 +116,14 @@ var app = React.createClass({
                             }
                             else if(item.gender == 1) {
                                 gender = '男';
+                            }
+
+                            var petGender = "";
+                            if(item.pet.gender == 2) {
+                                petGender = 'F';
+                            }
+                            else if(item.pet.gender == 1) {
+                                petGender = 'M';
                             }
 
                             var lastModifiedDate = ""
@@ -124,8 +152,11 @@ var app = React.createClass({
                                 </td>
                                 <td>{gender}</td>
                                 <td>{addressContent}</td>
+                                <td>{item.wx_id}</td>
                                 <td>{item.pet.name}</td>
                                 <td>{item.pet.type}</td>
+                                <td>{petGender}</td>
+                                <td>{item.pet.color}</td>
                                 <td>{item.love.i_love.length}</td>
                                 <td>{item.love.love_me.length}</td>
                                 <td>{item.love.i_hate.length}</td>
