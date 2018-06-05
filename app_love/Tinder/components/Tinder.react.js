@@ -170,6 +170,23 @@ var app = React.createClass({
                                             statementContent = Statement[index];
                                         }
 
+                                        var iconContent = "";
+                                        if(item.isLoveMe) {
+                                            iconContent = <div className="container"><div className="row hg-icon-container hg-tag-icon">
+                                                    <div className="col-xs-6 text-left">
+                                                        <img src='../../img/love/loveme.png' className="hg-opacity"/>
+                                                    </div>
+                                                    <div className="col-xs-6 text-right hg-love-icon">
+                                                        <img src={item.head_image_url} className="user-icon-normal img-circle white-border"/>
+                                                    </div>
+                                            </div></div>
+                                        }
+                                        else {
+                                            iconContent = <div className="text-right hg-love-icon hg-icon-container">
+                                                <img src={item.head_image_url} className="user-icon-normal img-circle white-border"/>
+                                            </div>
+                                        }
+
                                         var result = ""
                                         if(item.pet.name) {
 
@@ -221,6 +238,8 @@ var app = React.createClass({
                                             else {
                                                 result = <div className="Wallop-item text-center">
                                                     <div className={style}></div>
+
+                                                    {iconContent}
 
                                                     <div className="container love-content white_text">
                                                         <div className="row">

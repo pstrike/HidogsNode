@@ -200,8 +200,15 @@ body {
 
 .hg-love .hg-love-icon {
     height: 70px;
+    padding-right: 15px;
+}
+
+.hg-love .hg-tag-icon {
+    line-height: 70px;
+}
+
+.hg-love .hg-icon-container {
     margin-top: -70px;
-    margin-right: 15px;
 }
 
 .hg-love .hg-love-icon .user-icon-normal {
@@ -216,4 +223,8 @@ body {
 .hg-love .hg-love-top-icon {
     height: 165px;
     width: 165px
+}
+
+.hg-love .hg-opacity {
+    opacity: 0.8;
 }

@@ -252,7 +252,7 @@ exports.otherget = function(req, res, next){
                     }
                 }
 
-                operation.getObjectList(operation.getCollectionList().user, filter, {user_id:1, pet:1, address:1, created_time:1}, function(userList) {
+                operation.getObjectList(operation.getCollectionList().user, filter, {user_id:1, pet:1, address:1, created_time:1, head_image_url:1}, function(userList) {
                     var tempTargetUserList = userList.map(function(targetUser) {
                         if(isCommonType) {
                             targetUser.score = userScoreForCommonType(user, targetUser, netLoveMeList);
@@ -307,6 +307,7 @@ exports.otherget = function(req, res, next){
                         for(var l=0; l<netLoveMeList.length; l++) {
                             if(tmpTargetUser.user_id == netLoveMeList[l]) {
                                 isLoveMe = true;
+                                tmpTargetUser.isLoveMe = true; // set this flag so that F/E could handle
                             }
                         }
 
@@ -893,6 +894,8 @@ function visitCount(userId, callback) {
             else {
                 newUser.visit_count['love'] = 1;
             }
+
+            newUser.last_visited_time = new Date();
 
             operation.updateObject(operation.getCollectionList().user, newUser, function(result) {
                 if(result.status == 'fail') {

@@ -191,7 +191,7 @@ var app = React.createClass({
                     <div className="row text-center">
                         <div className="love-img-container love-img11"></div>
 
-                        <div className="hg-love-icon text-right">
+                        <div className="hg-love-icon text-right hg-icon-container">
                             <img src={this.props.user.head_image_url} className="user-icon-normal img-circle white-border"/>
                         </div>
 

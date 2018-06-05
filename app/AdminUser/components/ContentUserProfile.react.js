@@ -104,7 +104,7 @@ var app = React.createClass({
                             <th><a href="#" onClick={this._sortByKey.bind(this, 'love.match_no')}>配对</a></th>
                             <th><a href="#" onClick={this._sortByKey.bind(this, 'visit_count.love')}>访问次数</a></th>
                             <th><a href="#" onClick={this._sortByKey.bind(this, 'isSubscribe')}>关注?</a></th>
-                            <th><a href="#" onClick={this._sortByKey.bind(this, 'modified_time')}>最后访问</a></th>
+                            <th><a href="#" onClick={this._sortByKey.bind(this, 'last_visited_time')}>最后访问</a></th>
                             <th><a href="#" onClick={this._sortByKey.bind(this, 'created_time')}>首次访问</a></th>
                         </tr>
                         </thead>
@@ -126,9 +126,9 @@ var app = React.createClass({
                                 petGender = 'M';
                             }
 
-                            var lastModifiedDate = ""
-                            if(item.modified_time) {
-                                lastModifiedDate = formatdatetime.formatDate(new Date(item.modified_time));
+                            var lastVisitedDate = ""
+                            if(item.last_visited_time) {
+                                lastVisitedDate = formatdatetime.formatDate(new Date(item.last_visited_time));
                             }
 
                             var createdDate = ""
@@ -164,7 +164,7 @@ var app = React.createClass({
                                 <td>{item.love.match_no}</td>
                                 <td>{item.visit_count ? item.visit_count.love : 0}</td>
                                 <td>{item.isSubscribe == true ? "Y" : "N" }</td>
-                                <td>{lastModifiedDate}</td>
+                                <td>{lastVisitedDate}</td>
                                 <td>{createdDate}</td>
                             </tr>;
                         },this)}
